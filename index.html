@@ -3,179 +3,403 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Form Input Leads Properti</title>
-    <!-- Script Resmi Telegram Web App -->
+    <title>Form Data Leads Properti</title>
+    <!-- Telegram Web App SDK -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        body { font-family: Arial, sans-serif; padding: 15px; background: #f4f4f9; color: #333; margin: 0; }
-        h2 { text-align: center; color: #2481cc; margin-bottom: 5px; }
-        p.subtitle { text-align: center; color: #666; font-size: 13px; margin-bottom: 20px; }
-        .form-group { margin-bottom: 12px; }
-        label { display: block; margin-bottom: 4px; font-weight: bold; font-size: 13px; }
-        input, select, textarea { width: 100%; padding: 8px 10px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 5px; font-size: 14px; }
-        textarea { resize: vertical; height: 60px; }
-        .gps-box { background: #eef5fb; padding: 10px; border-radius: 5px; border: 1px dashed #2481cc; margin-bottom: 15px; }
-        button.btn-gps { background: #ff9800; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; font-size: 13px; font-weight: bold; width: 100%; margin-top: 5px; }
-        button.btn-gps:hover { background: #e68900; }
-        button.btn-submit { background: #2481cc; color: white; border: none; padding: 12px; width: 100%; font-size: 16px; cursor: pointer; border-radius: 5px; font-weight: bold; margin-top: 15px; }
-        button.btn-submit:hover { background: #1b65a0; }
-        .readonly-field { background: #e9ecef; color: #555; }
+        :root {
+            --tg-theme-bg-color: #ffffff;
+            --tg-theme-text-color: #222222;
+            --border-color: #e0e0e0;
+            --bg-card: #f8f9fa;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--tg-theme-bg-color, #f4f4f5);
+            color: var(--tg-theme-text-color, #222);
+            margin: 0;
+            padding: 12px;
+            font-size: 14px;
+        }
+
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        /* Header Layout[cite: 2] */
+        .app-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            background: #f1f3f5;
+            border-bottom: 1px solid var(--border-color);
+            font-weight: bold;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            color: #555;
+        }
+
+        .save-top-btn {
+            background: #2481cc;
+            color: #fff;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .sub-header {
+            display: flex;
+            justify-content: flex-end;
+            padding: 8px 16px 0 16px;
+        }
+
+        .code-badge {
+            background: #e9ecef;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-weight: bold;
+            font-size: 12px;
+            color: #333;
+            border: 1px dashed #ced4da;
+        }
+
+        /* Form Sections */
+        .section {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .section-title {
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #1a1a1a;
+            font-size: 13px;
+        }
+
+        .card-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px;
+        }
+
+        .form-group {
+            margin-bottom: 10px;
+        }
+
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
+
+        label {
+            display: block;
+            font-size: 12px;
+            color: #555;
+            margin-bottom: 4px;
+        }
+
+        input[type="text"],
+        input[type="tel"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid #ced4da;
+            border-radius: 6px;
+            font-size: 13px;
+            box-sizing: border-box;
+            background: #fff;
+        }
+
+        textarea {
+            resize: vertical;
+            height: 60px;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 4px;
+        }
+
+        .radio-label {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .btn-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 8px;
+            background: #e2e8f0;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            text-align: center;
+            font-size: 12px;
+        }
+
+        .hint-text {
+            font-size: 11px;
+            color: #d97706;
+            margin-top: 4px;
+            font-weight: 500;
+        }
+
+        .preview-box {
+            font-size: 12px;
+            color: #666;
+            margin-top: 6px;
+        }
+
+        .status-box {
+            font-size: 12px;
+            margin-top: 6px;
+            padding: 6px;
+            background: #ecfdf5;
+            border: 1px solid #a7f3d0;
+            border-radius: 4px;
+            color: #065f46;
+        }
+
+        .footer-action {
+            padding: 16px;
+            background: #fff;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 12px;
+            background: #10b981;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
 
-    <h2>CRM Properti</h2>
-    <p class="subtitle">Formulir Input & Update Data Leads</p>
-
-    <!-- KODE DATA -->
-    <div class="form-group">
-        <label>Kode Data:</label>
-        <input type="text" id="kode_data" value="TA-B0001" class="readonly-field" readonly>
+<div class="container">
+    <!-- Header Form[cite: 2] -->
+    <div class="app-header">
+        <button class="close-btn" onclick="Telegram.WebApp.close()">✕</button>
+        <span>Form Data Leads Properti</span>
+        <button class="save-top-btn" onclick="submitData()">Simpan</button>
     </div>
 
-    <!-- KATEGORI & STATUS PROPERTI -->
-    <div class="form-group">
-        <label>Sub Kategori Properti:</label>
-        <select id="sub_kategori">
-            <option value="Tanah">Tanah</option>
-            <option value="Rumah">Rumah</option>
-            <option value="Ruko">Ruko</option>
-            <option value="Kost">Kost</option>
-        </select>
+    <!-- Kode Data Badge[cite: 2] -->
+    <div class="sub-header">
+        <div class="code-badge" id="displayCode">KODE DATA: TA-B0001</div>
     </div>
 
-    <div class="form-group">
-        <label>Status Properti:</label>
-        <select id="status_properti">
-            <option value="Baru">Baru</option>
-            <option value="Sekunder">Sekunder / Resale</option>
-        </select>
+    <!-- 📌 1. KATEGORI PROPERTI[cite: 2] -->
+    <div class="section">
+        <div class="section-title">📌 1. KATEGORI PROPERTI</div>
+        <div class="card-box">
+            <div class="form-group">
+                <label>Sub-Kategori</label>
+                <select id="subKategori" onchange="updateCodePrefix()">
+                    <option value="TA">Tanah</option>
+                    <option value="RU">Rumah</option>
+                    <option value="RK">Ruko</option>
+                    <option value="GD">Gudang</option>
+                </select>
+            </div>
+            <div class="form-group" style="margin-top: 8px;">
+                <label>Status Properti</label>
+                <div class="radio-group">
+                    <label class="radio-label"><input type="radio" name="statusProperti" value="Baru" checked onchange="updateCodePrefix()"> Baru</label>
+                    <label class="radio-label"><input type="radio" name="statusProperti" value="Secondary" onchange="updateCodePrefix()"> Secondary</label>
+                    <label class="radio-label"><input type="radio" name="statusProperti" value="Lelang" onchange="updateCodePrefix()"> Lelang</label>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- DATA PEMILIK & MAKELAR -->
-    <div class="form-group">
-        <label>Nama Pemilik:</label>
-        <input type="text" id="nama_pemilik" placeholder="Contoh: Bpk. Budi">
+    <!-- 👤 2. DATA PEMILIK & MAKELAR[cite: 2] -->
+    <div class="section">
+        <div class="section-title">👤 2. DATA PEMILIK & MAKELAR</div>
+        <div class="card-box">
+            <div class="form-group">
+                <label>Nama Pemilik</label>
+                <input type="text" id="namaPemilik" placeholder="Bpk. Budi (Opsional)">
+            </div>
+            <div class="form-group">
+                <label>Kontak Pemilik</label>
+                <input type="tel" id="kontakPemilik" placeholder="08123456789 (Opsional)">
+            </div>
+            <div class="form-group">
+                <label>Nama Makelar</label>
+                <input type="text" id="namaMakelar" placeholder="(Opsional)">
+            </div>
+            <div class="form-group">
+                <label>Kontak Makelar</label>
+                <input type="tel" id="kontakMakelar" placeholder="(Opsional)">
+            </div>
+        </div>
     </div>
 
-    <div class="form-group">
-        <label>Kontak Pemilik (No HP/WA):</label>
-        <input type="text" id="kontak_pemilik" placeholder="Contoh: 08123456789">
+    <!-- 🖼️ 3. FOTO PROPERTI[cite: 2] -->
+    <div class="section">
+        <div class="section-title">🖼️ 3. FOTO PROPERTI</div>
+        <div class="card-box">
+            <label>Aksi</label>
+            <div class="btn-row">
+                <button type="button" class="action-btn" onclick="alert('Buka Kamera')">Ambil Foto</button>
+                <button type="button" class="action-btn" onclick="alert('Upload Galeri')">Upload</button>
+            </div>
+            <div class="hint-text">**minimal 1 foto</div>
+            <div class="preview-box" id="fotoPreview">Preview: <em>Belum ada foto dipilih.</em></div>
+        </div>
     </div>
 
-    <div class="form-group">
-        <label>Nama Makelar / Perantara:</label>
-        <input type="text" id="nama_makelar" placeholder="Contoh: Andi (Opsional)">
+    <!-- 📍 4. LOKASI PROPERTI[cite: 2] -->
+    <div class="section">
+        <div class="section-title">📍 4. LOKASI PROPERTI</div>
+        <div class="card-box">
+            <label>Aksi</label>
+            <div class="btn-row">
+                <button type="button" class="action-btn" onclick="getGpsLocation()">Lokasi Saat ini</button>
+                <button type="button" class="action-btn" onclick="alert('Pin Maps Aktif')">Tandai di Maps</button>
+            </div>
+            <div class="status-box" id="lokasiStatus">
+                ✅ Lokasi Berhasil ditambahkan<br>
+                🔗 Link Gmaps: <a href="https://maps.google.com/?q=-6.12345,106.12345" target="_blank" id="gmapsLink">https://maps.google.com/?q=-6.12345,106.12345</a><br>
+                📍 Wilayah: <span id="wilayahText">Kota Serang, Kec. Cipocok Jaya</span> (Terisi Otomatis)
+            </div>
+        </div>
     </div>
 
-    <div class="form-group">
-        <label>Kontak Makelar:</label>
-        <input type="text" id="kontak_makelar" placeholder="Contoh: 08987654321">
+    <!-- 📝 5. DETAIL PROPERTI[cite: 2] -->
+    <div class="section">
+        <div class="section-title">📝 5. DETAIL PROPERTI</div>
+        <div class="card-box">
+            <div class="form-group">
+                <label>Legalitas</label>
+                <input type="text" id="legalitas" placeholder="Cth: SHM / HGB (opsional)">
+            </div>
+            <div class="form-group">
+                <label>Harga Properti</label>
+                <input type="text" id="hargaProperti" placeholder="Cth: Rp250.000.000 (opsional)">
+            </div>
+            <div class="form-group">
+                <label>Catatan Tambahan</label>
+                <textarea id="catatan" placeholder="Tulis catatan jika ada (opsional) ..."></textarea>
+            </div>
+        </div>
     </div>
 
-    <!-- LOKASI GPS -->
-    <div class="gps-box">
-        <label style="color: #0d47a1;">📍 Koordinat Lokasi Properti:</label>
-        <input type="text" id="info_lokasi" class="readonly-field" value="Belum ada koordinat" readonly style="margin-top: 5px;">
-        <button type="button" class="btn-gps" onclick="ambilLokasiGPS()">🎯 Ambil Lokasi GPS Saat Ini</button>
+    <!-- 📊 6. TRACKING LEADS[cite: 2] -->
+    <div class="section">
+        <div class="section-title">📊 6. TRACKING LEADS</div>
+        <div class="card-box">
+            <div class="form-group">
+                <label>Status Followup</label>
+                <div class="radio-group">
+                    <label class="radio-label"><input type="radio" name="statusFollowup" value="Belum" checked> Belum</label>
+                    <label class="radio-label"><input type="radio" name="statusFollowup" value="On Process"> On Process</label>
+                    <label class="radio-label"><input type="radio" name="statusFollowup" value="Close"> Close</label>
+                </div>
+            </div>
+            <div class="form-group" style="margin-top: 10px;">
+                <label>Kategori Leads</label>
+                <div class="radio-group">
+                    <label class="radio-label"><input type="radio" name="kategoriLeads" value="Cold"> Cold</label>
+                    <label class="radio-label"><input type="radio" name="kategoriLeads" value="Warm"> Warm</label>
+                    <label class="radio-label"><input type="radio" name="kategoriLeads" value="HOT" checked> HOT</label>
+                    <label class="radio-label"><input type="radio" name="kategoriLeads" value="Suspect"> Suspect</label>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- LEGALITAS & HARGA -->
-    <div class="form-group">
-        <label>Legalitas:</label>
-        <select id="legalitas">
-            <option value="SHM">SHM (Sertifikat Hak Milik)</option>
-            <option value="HGB">HGB (Hak Guna Bangunan)</option>
-            <option value="AJB">AJB (Akta Jual Beli)</option>
-            <option value="Lainnya">Lainnya</option>
-        </select>
+    <!-- Tombol Simpan Utama[cite: 2] -->
+    <div class="footer-action">
+        <button class="btn-submit" onclick="submitData()">💾 SIMPAN DATA LEADS</button>
     </div>
+</div>
 
-    <div class="form-group">
-        <label>Harga (Rp):</label>
-        <input type="text" id="harga" placeholder="Contoh: 500000000">
-    </div>
+<script>
+    const tg = window.Telegram.WebApp;
+    tg.expand();
 
-    <!-- TRACKING LEADS -->
-    <div class="form-group">
-        <label>Status Follow-up:</label>
-        <select id="status_followup">
-            <option value="Belum">Belum</option>
-            <option value="On Process">On Process</option>
-            <option value="Close">Close</option>
-        </select>
-    </div>
+    function updateCodePrefix() {
+        const sub = document.getElementById('subKategori').value;
+        const statusEl = document.querySelector('input[name="statusProperti"]:checked');
+        const statusLetter = statusEl ? statusEl.value.charAt(0).toUpperCase() : 'B';
+        document.getElementById('displayCode').innerText = `KODE DATA: ${sub}-${statusLetter}0001`;
+    }
 
-    <div class="form-group">
-        <label>Kategori Leads:</label>
-        <select id="kategori_leads">
-            <option value="HOT">HOT</option>
-            <option value="Warm">Warm</option>
-            <option value="Cold">Cold</option>
-            <option value="Suspect">Suspect</option>
-        </select>
-    </div>
+    function getGpsLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(position => {
+                const lat = position.coords.latitude;
+                const lng = position.coords.longitude;
+                const url = `https://maps.google.com/?q=${lat},${lng}`;
+                document.getElementById('gmapsLink').href = url;
+                document.getElementById('gmapsLink').innerText = url;
+            }, () => { alert('Gagal mendeteksi GPS.'); });
+        } else { alert('Geolocation tidak didukung.'); }
+    }
 
-    <!-- CATATAN -->
-    <div class="form-group">
-        <label>Catatan Tambahan:</label>
-        <textarea id="catatan" placeholder="Tulis kondisi atau catatan properti..."></textarea>
-    </div>
+    function submitData() {
+        const payload = {
+            kode_data: document.getElementById('displayCode').innerText.replace('KODE DATA: ', ''),
+            sub_kategori: document.getElementById('subKategori').value,
+            status_properti: document.querySelector('input[name="statusProperti"]:checked').value,
+            nama_pemilik: document.getElementById('namaPemilik').value,
+            kontak_pemilik: document.getElementById('kontakPemilik').value,
+            nama_makelar: document.getElementById('namaMakelar').value,
+            kontak_makelar: document.getElementById('kontakMakelar').value,
+            foto_urls: ["https://example.com/foto1.jpg"],
+            latitude: -6.12345,
+            longitude: 106.12345,
+            kota_kabupaten: "Kota Serang",
+            kecamatan: "Kec. Cipocok Jaya",
+            legalitas: document.getElementById('legalitas').value,
+            harga: document.getElementById('hargaProperti').value,
+            catatan: document.getElementById('catatan').value,
+            status_followup: document.querySelector('input[name="statusFollowup"]:checked').value,
+            kategori_leads: document.querySelector('input[name="kategoriLeads"]:checked').value
+        };
 
-    <!-- TOMBOL KIRIM -->
-    <button class="btn-submit" onclick="kirimDataKeBot()">💾 Kirim Data ke Bot</button>
-
-    <script>
-        let tg = window.Telegram.WebApp;
-        tg.expand();
-
-        let latVal = "";
-        let lngVal = "";
-
-        // Fungsi untuk mengambil koordinat GPS real-time dari HP
-        function ambilLokasiGPS() {
-            if (navigator.geolocation) {
-                document.getElementById('info_lokasi').value = "Mengambil posisi GPS...";
-                navigator.geolocation.getCurrentPosition(
-                    function(position) {
-                        latVal = position.coords.latitude;
-                        lngVal = position.coords.longitude;
-                        document.getElementById('info_lokasi').value = `Lat: ${latVal.toFixed(6)}, Lng: ${lngVal.toFixed(6)}`;
-                        alert("✅ Lokasi Berhasil Dikunci!");
-                    },
-                    function(error) {
-                        alert("❌ Gagal mengambil lokasi: " + error.message);
-                        document.getElementById('info_lokasi').value = "Gagal mengambil koordinat";
-                    },
-                    { enableHighAccuracy: true }
-                );
-            } else {
-                alert("Geolocation tidak didukung di perangkat ini.");
-            }
+        if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+            tg.sendData(JSON.stringify(payload));
+            tg.close();
+        } else {
+            console.log("Payload:", payload);
+            alert("Data siap dikirim (Testing Mode)");
         }
-
-        // Fungsi mengirim data terstruktur JSON ke Bot Python
-        function kirimDataKeBot() {
-            let dataForm = {
-                kode_data: document.getElementById('kode_data').value,
-                sub_kategori: document.getElementById('sub_kategori').value,
-                status_properti: document.getElementById('status_properti').value,
-                nama_pemilik: document.getElementById('nama_pemilik').value,
-                kontak_pemilik: document.getElementById('kontak_pemilik').value,
-                nama_makelar: document.getElementById('nama_makelar').value,
-                kontak_makelar: document.getElementById('kontak_makelar').value,
-                latitude: latVal,
-                longitude: lngVal,
-                legalitas: document.getElementById('legalitas').value,
-                harga: document.getElementById('harga').value,
-                status_followup: document.getElementById('status_followup').value,
-                kategori_leads: document.getElementById('kategori_leads').value,
-                catatan: document.getElementById('catatan').value,
-                foto_urls: []
-            };
-
-            tg.sendData(JSON.stringify(dataForm));
-        }
-    </script>
+    }
+</script>
 </body>
 </html>
