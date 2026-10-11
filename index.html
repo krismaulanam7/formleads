@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Input Leads Properti</title>
+    <!-- Script Resmi Telegram Web App -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 15px; background: #f4f4f9; color: #333; margin: 0; }
+        h2 { text-align: center; color: #2481cc; margin-bottom: 5px; }
+        p.subtitle { text-align: center; color: #666; font-size: 13px; margin-bottom: 20px; }
+        .form-group { margin-bottom: 12px; }
+        label { display: block; margin-bottom: 4px; font-weight: bold; font-size: 13px; }
+        input, select, textarea { width: 100%; padding: 8px 10px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 5px; font-size: 14px; }
+        textarea { resize: vertical; height: 60px; }
+        .gps-box { background: #eef5fb; padding: 10px; border-radius: 5px; border: 1px dashed #2481cc; margin-bottom: 15px; }
+        button.btn-gps { background: #ff9800; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; font-size: 13px; font-weight: bold; width: 100%; margin-top: 5px; }
+        button.btn-gps:hover { background: #e68900; }
+        button.btn-submit { background: #2481cc; color: white; border: none; padding: 12px; width: 100%; font-size: 16px; cursor: pointer; border-radius: 5px; font-weight: bold; margin-top: 15px; }
+        button.btn-submit:hover { background: #1b65a0; }
+        .readonly-field { background: #e9ecef; color: #555; }
+    </style>
+</head>
+<body>
+
+    <h2>CRM Properti</h2>
+    <p class="subtitle">Formulir Input & Update Data Leads</p>
+
+    <!-- KODE DATA -->
+    <div class="form-group">
+        <label>Kode Data:</label>
+        <input type="text" id="kode_data" value="TA-B0001" class="readonly-field" readonly>
+    </div>
+
+    <!-- KATEGORI & STATUS PROPERTI -->
+    <div class="form-group">
+        <label>Sub Kategori Properti:</label>
+        <select id="sub_kategori">
+            <option value="Tanah">Tanah</option>
+            <option value="Rumah">Rumah</option>
+            <option value="Ruko">Ruko</option>
+            <option value="Kost">Kost</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label>Status Properti:</label>
+        <select id="status_properti">
+            <option value="Baru">Baru</option>
+            <option value="Sekunder">Sekunder / Resale</option>
+        </select>
+    </div>
+
+    <!-- DATA PEMILIK & MAKELAR -->
+    <div class="form-group">
+        <label>Nama Pemilik:</label>
+        <input type="text" id="nama_pemilik" placeholder="Contoh: Bpk. Budi">
+    </div>
+
+    <div class="form-group">
+        <label>Kontak Pemilik (No HP/WA):</label>
+        <input type="text" id="kontak_pemilik" placeholder="Contoh: 08123456789">
+    </div>
+
+    <div class="form-group">
+        <label>Nama Makelar / Perantara:</label>
+        <input type="text" id="nama_makelar" placeholder="Contoh: Andi (Opsional)">
+    </div>
+
+    <div class="form-group">
+        <label>Kontak Makelar:</label>
+        <input type="text" id="kontak_makelar" placeholder="Contoh: 08987654321">
+    </div>
+
+    <!-- LOKASI GPS -->
+    <div class="gps-box">
+        <label style="color: #0d47a1;">📍 Koordinat Lokasi Properti:</label>
+        <input type="text" id="info_lokasi" class="readonly-field" value="Belum ada koordinat" readonly style="margin-top: 5px;">
+        <button type="button" class="btn-gps" onclick="ambilLokasiGPS()">🎯 Ambil Lokasi GPS Saat Ini</button>
+    </div>
+
+    <!-- LEGALITAS & HARGA -->
+    <div class="form-group">
+        <label>Legalitas:</label>
+        <select id="legalitas">
+            <option value="SHM">SHM (Sertifikat Hak Milik)</option>
+            <option value="HGB">HGB (Hak Guna Bangunan)</option>
+            <option value="AJB">AJB (Akta Jual Beli)</option>
+            <option value="Lainnya">Lainnya</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label>Harga (Rp):</label>
+        <input type="text" id="harga" placeholder="Contoh: 500000000">
+    </div>
+
+    <!-- TRACKING LEADS -->
+    <div class="form-group">
+        <label>Status Follow-up:</label>
+        <select id="status_followup">
+            <option value="Belum">Belum</option>
+            <option value="On Process">On Process</option>
+            <option value="Close">Close</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label>Kategori Leads:</label>
+        <select id="kategori_leads">
+            <option value="HOT">HOT</option>
+            <option value="Warm">Warm</option>
+            <option value="Cold">Cold</option>
+            <option value="Suspect">Suspect</option>
+        </select>
+    </div>
+
+    <!-- CATATAN -->
+    <div class="form-group">
+        <label>Catatan Tambahan:</label>
+        <textarea id="catatan" placeholder="Tulis kondisi atau catatan properti..."></textarea>
+    </div>
+
+    <!-- TOMBOL KIRIM -->
+    <button class="btn-submit" onclick="kirimDataKeBot()">💾 Kirim Data ke Bot</button>
+
+    <script>
+        let tg = window.Telegram.WebApp;
+        tg.expand();
+
+        let latVal = "";
+        let lngVal = "";
+
+        // Fungsi untuk mengambil koordinat GPS real-time dari HP
+        function ambilLokasiGPS() {
+            if (navigator.geolocation) {
+                document.getElementById('info_lokasi').value = "Mengambil posisi GPS...";
+                navigator.geolocation.getCurrentPosition(
+                    function(position) {
+                        latVal = position.coords.latitude;
+                        lngVal = position.coords.longitude;
+                        document.getElementById('info_lokasi').value = `Lat: ${latVal.toFixed(6)}, Lng: ${lngVal.toFixed(6)}`;
+                        alert("✅ Lokasi Berhasil Dikunci!");
+                    },
+                    function(error) {
+                        alert("❌ Gagal mengambil lokasi: " + error.message);
+                        document.getElementById('info_lokasi').value = "Gagal mengambil koordinat";
+                    },
+                    { enableHighAccuracy: true }
+                );
+            } else {
+                alert("Geolocation tidak didukung di perangkat ini.");
+            }
+        }
+
+        // Fungsi mengirim data terstruktur JSON ke Bot Python
+        function kirimDataKeBot() {
+            let dataForm = {
+                kode_data: document.getElementById('kode_data').value,
+                sub_kategori: document.getElementById('sub_kategori').value,
+                status_properti: document.getElementById('status_properti').value,
+                nama_pemilik: document.getElementById('nama_pemilik').value,
+                kontak_pemilik: document.getElementById('kontak_pemilik').value,
+                nama_makelar: document.getElementById('nama_makelar').value,
+                kontak_makelar: document.getElementById('kontak_makelar').value,
+                latitude: latVal,
+                longitude: lngVal,
+                legalitas: document.getElementById('legalitas').value,
+                harga: document.getElementById('harga').value,
+                status_followup: document.getElementById('status_followup').value,
+                kategori_leads: document.getElementById('kategori_leads').value,
+                catatan: document.getElementById('catatan').value,
+                foto_urls: []
+            };
+
+            tg.sendData(JSON.stringify(dataForm));
+        }
+    </script>
+</body>
+</html>
