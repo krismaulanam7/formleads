@@ -146,7 +146,7 @@
             color: #495057;
         }
 
-        /* Spacing Tombol Toggle Super Rapat */
+        /* Spacing Tombol Toggle Super Rapat dan Konsisten */
         .toggle-btn-text {
             display: flex;
             flex-direction: column;
@@ -461,7 +461,7 @@
                 </div>
 
                 <!-- Fasilitas Umum/Sosial -->
-                <div class="form-group" style="margin-top: 8px;">
+                <div class="form-group" style="margin-top: 8px; margin-bottom: 2px;">
                     <label>Fasilitas Umum/Sosial</label>
                     <div class="checkbox-grid">
                         <label class="checkbox-label"><input type="checkbox" name="fasilitasUmum" value="Sekolah" onchange="updateRingkasan()"> Sekolah</label>
@@ -481,8 +481,8 @@
                     </div>
                 </div>
 
-                <!-- Tombol Tutup (Sangat Mepet) -->
-                <div class="toggle-btn-text" onclick="toggleDetails(false)">
+                <!-- Tombol Tutup (Jarak disamakan persis menjadi sangat mepet) -->
+                <div class="toggle-btn-text" style="margin-top: 2px;" onclick="toggleDetails(false)">
                     <span class="wedge-icon">︽</span>
                     <span class="toggle-label">Tutup</span>
                 </div>
