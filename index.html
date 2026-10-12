@@ -401,7 +401,7 @@
                 <textarea id="ringkasan" readonly placeholder="Ringkasan otomatis muncul di sini..."></textarea>
             </div>
 
-            <!-- Tombol Buka (Sangat Mepet) -->
+            <!-- Tombol Buka -->
             <div class="toggle-btn-text" id="btnOpenDetails" onclick="toggleDetails(true)">
                 <span class="toggle-label">Lengkapi</span>
                 <span class="wedge-icon">︾</span>
@@ -461,9 +461,9 @@
                 </div>
 
                 <!-- Fasilitas Umum/Sosial -->
-                <div class="form-group" style="margin-top: 8px; margin-bottom: 2px;">
+                <div class="form-group" style="margin-top: 8px; margin-bottom: 0px;">
                     <label>Fasilitas Umum/Sosial</label>
-                    <div class="checkbox-grid">
+                    <div class="checkbox-grid" style="margin-bottom: 0px;">
                         <label class="checkbox-label"><input type="checkbox" name="fasilitasUmum" value="Sekolah" onchange="updateRingkasan()"> Sekolah</label>
                         <label class="checkbox-label"><input type="checkbox" name="fasilitasUmum" value="Universitas" onchange="updateRingkasan()"> Universitas</label>
                         <label class="checkbox-label"><input type="checkbox" name="fasilitasUmum" value="Masjid" onchange="updateRingkasan()"> Masjid</label>
@@ -481,8 +481,8 @@
                     </div>
                 </div>
 
-                <!-- Tombol Tutup (Jarak disamakan persis menjadi sangat mepet) -->
-                <div class="toggle-btn-text" style="margin-top: 2px;" onclick="toggleDetails(false)">
+                <!-- Tombol Tutup (Ditarik mepet ke atas persis seperti bagian Lengkapi) -->
+                <div class="toggle-btn-text" style="margin-top: 0px;" onclick="toggleDetails(false)">
                     <span class="wedge-icon">︽</span>
                     <span class="toggle-label">Tutup</span>
                 </div>
