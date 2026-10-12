@@ -98,7 +98,7 @@
         }
 
         .form-group {
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
 
         .form-group:last-child {
@@ -146,15 +146,15 @@
             color: #495057;
         }
 
-        /* Styling Tombol Toggle Minimalis Teks Murni (Super Ringan) */
+        /* Spacing Tombol Toggle Lebih Rapat & Ringkas */
         .toggle-btn-text {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            padding: 6px 0;
-            margin: 8px 0;
+            padding: 2px 0;
+            margin: 2px 0;
             user-select: none;
             background: transparent;
             border: none;
@@ -165,12 +165,11 @@
             font-size: 13px;
             font-weight: normal;
             color: #222;
-            margin-bottom: -2px;
         }
 
         .toggle-btn-text .wedge-icon {
-            font-size: 16px;
-            line-height: 1;
+            font-size: 15px;
+            line-height: 1.1;
             color: #333;
             font-weight: bold;
         }
@@ -396,19 +395,19 @@
             </div>
 
             <!-- 2. Ringkasan -->
-            <div class="form-group">
+            <div class="form-group" style="margin-bottom: 2px;">
                 <label>Ringkasan</label>
                 <textarea id="ringkasan" readonly placeholder="Ringkasan otomatis muncul di sini..."></textarea>
             </div>
 
-            <!-- Tombol Buka (Modifier Down Wedge Unicode) -->
+            <!-- Tombol Buka (Rapat ke Ringkasan) -->
             <div class="toggle-btn-text" id="btnOpenDetails" onclick="toggleDetails(true)">
                 <span class="toggle-label">Lengkapi</span>
                 <span class="wedge-icon">︾</span>
             </div>
 
             <!-- Form Isian Tambahan -->
-            <div id="extraDetails" style="display: none; margin: 10px 0; padding: 10px 0; border-top: 1px dashed #cbd5e1; border-bottom: 1px dashed #cbd5e1;">
+            <div id="extraDetails" style="display: none; margin: 4px 0; padding: 8px 0; border-top: 1px dashed #cbd5e1; border-bottom: 1px dashed #cbd5e1;">
                 <div class="form-row">
                     <div class="form-col">
                         <label>Sertifikasi</label>
@@ -441,7 +440,7 @@
                 </div>
 
                 <!-- Fasilitas Rumah -->
-                <div class="form-group" style="margin-top: 12px;">
+                <div class="form-group" style="margin-top: 10px;">
                     <label>Fasilitas Rumah</label>
                     <div class="checkbox-grid">
                         <label class="checkbox-label"><input type="checkbox" name="fasilitasRumah" value="PDAM" onchange="updateRingkasan()"> PDAM</label>
@@ -460,8 +459,8 @@
                     </div>
                 </div>
 
-                <!-- Fasilitas Umum/Sosial (14 Pilihan Terpisah) -->
-                <div class="form-group" style="margin-top: 12px;">
+                <!-- Fasilitas Umum/Sosial -->
+                <div class="form-group" style="margin-top: 10px;">
                     <label>Fasilitas Umum/Sosial</label>
                     <div class="checkbox-grid">
                         <label class="checkbox-label"><input type="checkbox" name="fasilitasUmum" value="Sekolah" onchange="updateRingkasan()"> Sekolah</label>
@@ -481,14 +480,15 @@
                     </div>
                 </div>
 
-                <!-- Tombol Tutup (Modifier Up Wedge Unicode) -->
+                <!-- Tombol Tutup (Dengan Tulisan Tutup) -->
                 <div class="toggle-btn-text" onclick="toggleDetails(false)">
                     <span class="wedge-icon">︽</span>
+                    <span class="toggle-label">Tutup</span>
                 </div>
             </div>
 
             <!-- 3. Catatan Tambahan -->
-            <div class="form-group">
+            <div class="form-group" style="margin-top: 2px;">
                 <label>Catatan Tambahan</label>
                 <textarea id="catatan" placeholder="Tulis catatan jika ada (opsional) ..."></textarea>
             </div>
