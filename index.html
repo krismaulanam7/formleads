@@ -141,34 +141,41 @@
             height: 60px;
         }
 
-        /* Styling Ringkasan (Readonly) */
         textarea[readonly] {
             background-color: #f1f3f5;
             color: #495057;
         }
 
-        /* Tombol Panah Vertikal Bertumpuk */
-        .arrow-container {
+        /* Styling Tombol Toggle Minimalis (Foto 1) */
+        .toggle-btn-minimal {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            padding: 8px;
-            margin: 8px 0;
-            background: #e9ecef;
-            border-radius: 6px;
-            border: 1px solid #ced4da;
-            transition: background 0.2s;
+            padding: 8px 0;
+            margin: 10px 0;
+            user-select: none;
+            background: transparent;
+            border: none;
+            width: 100%;
         }
-        .arrow-container:hover {
-            background: #dee2e6;
-        }
-        .stacked-arrow {
-            font-size: 12px;
-            line-height: 10px;
-            color: #495057;
+
+        .toggle-btn-minimal .toggle-text {
+            font-size: 14px;
             font-weight: bold;
+            color: #222;
+            margin-bottom: 2px;
+        }
+
+        .toggle-btn-minimal .arrow-svg {
+            width: 24px;
+            height: 20px;
+            stroke: #222;
+            stroke-width: 2.5;
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
         }
 
         /* Checkbox Grid untuk Fasilitas */
@@ -176,7 +183,7 @@
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: 6px;
-            max-height: 150px;
+            max-height: 160px;
             overflow-y: auto;
             background: #fff;
             border: 1px solid #ced4da;
@@ -385,28 +392,29 @@
     <div class="section">
         <div class="section-title">📝 5. DETAIL PROPERTI</div>
         <div class="card-box">
-            <!-- 3 Kolom Utama -->
+            <!-- 1. Harga Properti -->
             <div class="form-group">
                 <label>Harga Properti</label>
                 <input type="text" id="hargaProperti" placeholder="Cth: Rp1.000.000,00" oninput="formatHarga(this)">
             </div>
+
+            <!-- 2. Ringkasan -->
             <div class="form-group">
                 <label>Ringkasan</label>
                 <textarea id="ringkasan" readonly placeholder="Ringkasan otomatis muncul di sini..."></textarea>
             </div>
-            <div class="form-group">
-                <label>Catatan Tambahan</label>
-                <textarea id="catatan" placeholder="Tulis catatan jika ada (opsional) ..."></textarea>
+
+            <!-- Tombol Buka (Berada tepat di antara Ringkasan & Catatan) -->
+            <div class="toggle-btn-minimal" id="btnOpenDetails" onclick="toggleDetails(true)">
+                <span class="toggle-text">Lengkapi</span>
+                <svg class="arrow-svg" viewBox="0 0 24 20">
+                    <polyline points="4,3 12,9 20,3"></polyline>
+                    <polyline points="4,11 12,17 20,11"></polyline>
+                </svg>
             </div>
 
-            <!-- Tombol Panah Bawah Bertumpuk (Expand) -->
-            <div class="arrow-container down" onclick="toggleDetails(true)">
-                <div class="stacked-arrow">▼</div>
-                <div class="stacked-arrow">▼</div>
-            </div>
-
-            <!-- Isian Tambahan (Hidden by default) -->
-            <div id="extraDetails" style="display: none; margin-top: 10px; border-top: 1px dashed #cbd5e1; padding-top: 10px;">
+            <!-- Form Isian Tambahan (Muncul di antara Ringkasan & Catatan saat diklik) -->
+            <div id="extraDetails" style="display: none; margin: 10px 0; padding: 10px 0; border-top: 1px dashed #cbd5e1; border-bottom: 1px dashed #cbd5e1;">
                 <div class="form-row">
                     <div class="form-col">
                         <label>Sertifikasi</label>
@@ -458,7 +466,7 @@
                     </div>
                 </div>
 
-                <!-- Fasilitas Umum/Sosial -->
+                <!-- Fasilitas Umum/Sosial (14 Pilihan) -->
                 <div class="form-group" style="margin-top: 12px;">
                     <label>Fasilitas Umum/Sosial</label>
                     <div class="checkbox-grid">
@@ -474,15 +482,24 @@
                         <label class="checkbox-label"><input type="checkbox" name="fasilitasUmum" value="Bandara" onchange="updateRingkasan()"> Bandara</label>
                         <label class="checkbox-label"><input type="checkbox" name="fasilitasUmum" value="Pasar" onchange="updateRingkasan()"> Pasar</label>
                         <label class="checkbox-label"><input type="checkbox" name="fasilitasUmum" value="Minimarket" onchange="updateRingkasan()"> Minimarket</label>
-                        <label class="checkbox-label"><input type="checkbox" name="fasilitasUmum" value="Stadion Wisata" onchange="updateRingkasan()"> Stadion Wisata</label>
+                        <label class="checkbox-label"><input type="checkbox" name="fasilitasUmum" value="Stadion" onchange="updateRingkasan()"> Stadion</label>
+                        <label class="checkbox-label"><input type="checkbox" name="fasilitasUmum" value="Wisata" onchange="updateRingkasan()"> Wisata</label>
                     </div>
                 </div>
 
-                <!-- Tombol Panah Atas Bertumpuk (Collapse) -->
-                <div class="arrow-container up" onclick="toggleDetails(false)" style="margin-top: 15px;">
-                    <div class="stacked-arrow">▲</div>
-                    <div class="stacked-arrow">▲</div>
+                <!-- Tombol Tutup Panah Atas Ganda -->
+                <div class="toggle-btn-minimal" onclick="toggleDetails(false)">
+                    <svg class="arrow-svg" viewBox="0 0 24 20">
+                        <polyline points="4,9 12,3 20,9"></polyline>
+                        <polyline points="4,17 12,11 20,17"></polyline>
+                    </svg>
                 </div>
+            </div>
+
+            <!-- 3. Catatan Tambahan -->
+            <div class="form-group">
+                <label>Catatan Tambahan</label>
+                <textarea id="catatan" placeholder="Tulis catatan jika ada (opsional) ..."></textarea>
             </div>
         </div>
     </div>
@@ -550,13 +567,13 @@
 
     function toggleDetails(show) {
         const extra = document.getElementById('extraDetails');
-        const downArrow = document.querySelector('.arrow-container.down');
+        const btnOpen = document.getElementById('btnOpenDetails');
         if (show) {
             extra.style.display = 'block';
-            downArrow.style.display = 'none';
+            btnOpen.style.display = 'none';
         } else {
             extra.style.display = 'none';
-            downArrow.style.display = 'flex';
+            btnOpen.style.display = 'flex';
         }
     }
 
