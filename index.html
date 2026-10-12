@@ -141,14 +141,6 @@
             height: 60px;
         }
 
-        /* Radio Group Sejajar & Rapi */
-        .radio-group {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            width: 100%;
-        }
-
         .radio-label {
             display: inline-flex;
             align-items: center;
@@ -159,23 +151,18 @@
             white-space: nowrap;
         }
 
-        /* Penataan Grid khusus 2, 3, dan 4 pilihan radio agar seimbang */
-        .radio-grid-2 {
+        /* Grid seragam 4 kolom agar setiap pilihan lurus vertikal ke bawah */
+        .radio-grid-4 {
             display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 8px;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 4px;
+            width: 100%;
         }
 
         .radio-grid-3 {
             display: grid;
             grid-template-columns: repeat(3, minmax(0, 1fr));
             gap: 8px;
-        }
-
-        .radio-grid-4 {
-            display: grid;
-            grid-template-columns: repeat(4, minmax(0, 1fr));
-            gap: 4px;
         }
 
         /* Efek disable untuk elemen tracking saat Sold */
@@ -370,7 +357,7 @@
             <!-- Status Listing -->
             <div class="form-group">
                 <label>Status Listing</label>
-                <div class="radio-grid-2">
+                <div class="radio-grid-4">
                     <label class="radio-label"><input type="radio" name="statusListing" value="Open" checked onchange="toggleStatusTracking()"> Open</label>
                     <label class="radio-label"><input type="radio" name="statusListing" value="Sold" onchange="toggleStatusTracking()"> Sold</label>
                 </div>
@@ -380,7 +367,7 @@
             <div id="trackingDependentFields">
                 <div class="form-group">
                     <label>Status Followup</label>
-                    <div class="radio-grid-3">
+                    <div class="radio-grid-4">
                         <label class="radio-label"><input type="radio" name="statusFollowup" value="Belum" checked> Belum</label>
                         <label class="radio-label"><input type="radio" name="statusFollowup" value="On Process"> On Process</label>
                         <label class="radio-label"><input type="radio" name="statusFollowup" value="Close"> Close</label>
