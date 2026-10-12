@@ -19,16 +19,16 @@
             background-color: var(--tg-theme-bg-color, #f4f4f5);
             color: var(--tg-theme-text-color, #222);
             margin: 0;
-            padding: 12px;
-            font-size: 14px;
+            padding: 4px;
+            font-size: 13px;
         }
 
         .container {
-            max-width: 480px;
+            max-width: 100%;
             margin: 0 auto;
             background: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            border-radius: 8px;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.08);
             overflow: hidden;
             border: 1px solid var(--border-color);
         }
@@ -37,7 +37,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 16px;
+            padding: 8px 12px;
             background: #f1f3f5;
             border-bottom: 1px solid var(--border-color);
             font-weight: bold;
@@ -46,7 +46,7 @@
         .close-btn {
             background: none;
             border: none;
-            font-size: 16px;
+            font-size: 15px;
             cursor: pointer;
             color: #555;
         }
@@ -55,50 +55,51 @@
             background: #2481cc;
             color: #fff;
             border: none;
-            padding: 6px 12px;
-            border-radius: 6px;
+            padding: 4px 10px;
+            border-radius: 4px;
             font-weight: 600;
+            font-size: 12px;
             cursor: pointer;
         }
 
         .sub-header {
             display: flex;
             justify-content: flex-end;
-            padding: 8px 16px 0 16px;
+            padding: 6px 10px 0 10px;
         }
 
         .code-badge {
             background: #e9ecef;
-            padding: 4px 8px;
+            padding: 2px 6px;
             border-radius: 4px;
             font-family: monospace;
             font-weight: bold;
-            font-size: 12px;
+            font-size: 11px;
             color: #333;
             border: 1px dashed #ced4da;
         }
 
         .section {
-            padding: 12px 16px;
+            padding: 8px 10px;
             border-bottom: 1px solid var(--border-color);
         }
 
         .section-title {
             font-weight: bold;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             color: #1a1a1a;
-            font-size: 13px;
+            font-size: 12px;
         }
 
         .card-box {
             background: var(--bg-card);
             border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 12px;
+            border-radius: 6px;
+            padding: 8px;
         }
 
         .form-group {
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         .form-group:last-child {
@@ -107,16 +108,16 @@
 
         label {
             display: block;
-            font-size: 12px;
+            font-size: 11px;
             color: #222;
             font-weight: bold;
-            margin-bottom: 4px;
+            margin-bottom: 2px;
         }
 
         .form-row {
             display: flex;
-            gap: 8px;
-            margin-bottom: 8px;
+            gap: 6px;
+            margin-bottom: 6px;
         }
 
         .form-col {
@@ -128,17 +129,17 @@
         select,
         textarea {
             width: 100%;
-            padding: 8px 10px;
+            padding: 6px 8px;
             border: 1px solid #ced4da;
-            border-radius: 6px;
-            font-size: 13px;
+            border-radius: 4px;
+            font-size: 12px;
             box-sizing: border-box;
             background: #fff;
         }
 
         textarea {
             resize: vertical;
-            height: 60px;
+            height: 50px;
         }
 
         textarea[readonly] {
@@ -146,7 +147,6 @@
             color: #495057;
         }
 
-        /* Spacing Tombol Toggle Super Rapat dan Konsisten */
         .toggle-btn-text {
             display: flex;
             flex-direction: column;
@@ -162,37 +162,36 @@
         }
 
         .toggle-btn-text .toggle-label {
-            font-size: 13px;
+            font-size: 12px;
             font-weight: normal;
             color: #222;
-            line-height: 1.1;
+            line-height: 1;
         }
 
         .toggle-btn-text .wedge-icon {
-            font-size: 15px;
-            line-height: 1.1;
+            font-size: 14px;
+            line-height: 1;
             color: #333;
             font-weight: bold;
         }
 
-        /* Checkbox Grid untuk Fasilitas */
         .checkbox-grid {
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 6px;
-            max-height: 160px;
+            gap: 4px;
+            max-height: 140px;
             overflow-y: auto;
             background: #fff;
             border: 1px solid #ced4da;
-            border-radius: 6px;
-            padding: 8px;
+            border-radius: 4px;
+            padding: 6px;
         }
 
         .checkbox-label {
             display: flex;
             align-items: center;
-            gap: 6px;
-            font-size: 12px;
+            gap: 4px;
+            font-size: 11px;
             font-weight: normal;
             cursor: pointer;
         }
@@ -200,8 +199,8 @@
         .radio-label {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            font-size: 13px;
+            gap: 4px;
+            font-size: 12px;
             font-weight: normal;
             cursor: pointer;
             white-space: nowrap;
@@ -217,7 +216,7 @@
         .radio-grid-3 {
             display: grid;
             grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 8px;
+            gap: 6px;
         }
 
         .disabled-section {
@@ -227,39 +226,39 @@
 
         .btn-row {
             display: flex;
-            gap: 8px;
-            margin-bottom: 6px;
+            gap: 6px;
+            margin-bottom: 4px;
         }
 
         .action-btn {
             flex: 1;
-            padding: 8px;
+            padding: 6px;
             background: #e2e8f0;
             border: 1px solid #cbd5e1;
-            border-radius: 6px;
+            border-radius: 4px;
             font-weight: 500;
             cursor: pointer;
             text-align: center;
-            font-size: 12px;
+            font-size: 11px;
         }
 
         .hint-text {
-            font-size: 11px;
+            font-size: 10px;
             color: #d97706;
-            margin-top: 4px;
+            margin-top: 2px;
             font-weight: 500;
         }
 
         .preview-box {
-            font-size: 12px;
+            font-size: 11px;
             color: #666;
-            margin-top: 6px;
+            margin-top: 4px;
         }
 
         .status-box {
-            font-size: 12px;
-            margin-top: 6px;
-            padding: 6px;
+            font-size: 11px;
+            margin-top: 4px;
+            padding: 4px 6px;
             background: #ecfdf5;
             border: 1px solid #a7f3d0;
             border-radius: 4px;
@@ -267,18 +266,18 @@
         }
 
         .footer-action {
-            padding: 16px;
+            padding: 10px;
             background: #fff;
         }
 
         .btn-submit {
             width: 100%;
-            padding: 12px;
+            padding: 10px;
             background: #10b981;
             color: white;
             border: none;
-            border-radius: 8px;
-            font-size: 14px;
+            border-radius: 6px;
+            font-size: 13px;
             font-weight: bold;
             cursor: pointer;
         }
@@ -408,7 +407,7 @@
             </div>
 
             <!-- Form Isian Tambahan -->
-            <div id="extraDetails" style="display: none; margin: 4px 0; padding: 6px 0; border-top: 1px dashed #cbd5e1; border-bottom: 1px dashed #cbd5e1;">
+            <div id="extraDetails" style="display: none; margin: 4px 0; padding: 4px 0; border-top: 1px dashed #cbd5e1; border-bottom: 1px dashed #cbd5e1;">
                 <div class="form-row">
                     <div class="form-col">
                         <label>Sertifikasi</label>
@@ -441,7 +440,7 @@
                 </div>
 
                 <!-- Fasilitas Rumah -->
-                <div class="form-group" style="margin-top: 8px;">
+                <div class="form-group" style="margin-top: 6px;">
                     <label>Fasilitas Rumah</label>
                     <div class="checkbox-grid">
                         <label class="checkbox-label"><input type="checkbox" name="fasilitasRumah" value="PDAM" onchange="updateRingkasan()"> PDAM</label>
@@ -461,7 +460,7 @@
                 </div>
 
                 <!-- Fasilitas Umum/Sosial -->
-                <div class="form-group" style="margin-top: 8px; margin-bottom: 0px;">
+                <div class="form-group" style="margin-top: 6px; margin-bottom: 0px;">
                     <label>Fasilitas Umum/Sosial</label>
                     <div class="checkbox-grid" style="margin-bottom: 0px;">
                         <label class="checkbox-label"><input type="checkbox" name="fasilitasUmum" value="Sekolah" onchange="updateRingkasan()"> Sekolah</label>
@@ -481,7 +480,7 @@
                     </div>
                 </div>
 
-                <!-- Tombol Tutup (Ditarik mepet ke atas persis seperti bagian Lengkapi) -->
+                <!-- Tombol Tutup -->
                 <div class="toggle-btn-text" style="margin-top: 0px;" onclick="toggleDetails(false)">
                     <span class="wedge-icon">︽</span>
                     <span class="toggle-label">Tutup</span>
