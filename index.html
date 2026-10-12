@@ -146,36 +146,33 @@
             color: #495057;
         }
 
-        /* Styling Tombol Toggle Minimalis (Foto 1) */
-        .toggle-btn-minimal {
+        /* Styling Tombol Toggle Minimalis Teks Murni (Super Ringan) */
+        .toggle-btn-text {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            padding: 8px 0;
-            margin: 10px 0;
+            padding: 6px 0;
+            margin: 8px 0;
             user-select: none;
             background: transparent;
             border: none;
             width: 100%;
         }
 
-        .toggle-btn-minimal .toggle-text {
-            font-size: 14px;
-            font-weight: bold;
+        .toggle-btn-text .toggle-label {
+            font-size: 13px;
+            font-weight: normal;
             color: #222;
-            margin-bottom: 2px;
+            margin-bottom: -2px;
         }
 
-        .toggle-btn-minimal .arrow-svg {
-            width: 24px;
-            height: 20px;
-            stroke: #222;
-            stroke-width: 2.5;
-            fill: none;
-            stroke-linecap: round;
-            stroke-linejoin: round;
+        .toggle-btn-text .wedge-icon {
+            font-size: 16px;
+            line-height: 1;
+            color: #333;
+            font-weight: bold;
         }
 
         /* Checkbox Grid untuk Fasilitas */
@@ -404,16 +401,13 @@
                 <textarea id="ringkasan" readonly placeholder="Ringkasan otomatis muncul di sini..."></textarea>
             </div>
 
-            <!-- Tombol Buka (Berada tepat di antara Ringkasan & Catatan) -->
-            <div class="toggle-btn-minimal" id="btnOpenDetails" onclick="toggleDetails(true)">
-                <span class="toggle-text">Lengkapi</span>
-                <svg class="arrow-svg" viewBox="0 0 24 20">
-                    <polyline points="4,3 12,9 20,3"></polyline>
-                    <polyline points="4,11 12,17 20,11"></polyline>
-                </svg>
+            <!-- Tombol Buka (Modifier Down Wedge Unicode) -->
+            <div class="toggle-btn-text" id="btnOpenDetails" onclick="toggleDetails(true)">
+                <span class="toggle-label">Lengkapi</span>
+                <span class="wedge-icon">︾</span>
             </div>
 
-            <!-- Form Isian Tambahan (Muncul di antara Ringkasan & Catatan saat diklik) -->
+            <!-- Form Isian Tambahan -->
             <div id="extraDetails" style="display: none; margin: 10px 0; padding: 10px 0; border-top: 1px dashed #cbd5e1; border-bottom: 1px dashed #cbd5e1;">
                 <div class="form-row">
                     <div class="form-col">
@@ -466,7 +460,7 @@
                     </div>
                 </div>
 
-                <!-- Fasilitas Umum/Sosial (14 Pilihan) -->
+                <!-- Fasilitas Umum/Sosial (14 Pilihan Terpisah) -->
                 <div class="form-group" style="margin-top: 12px;">
                     <label>Fasilitas Umum/Sosial</label>
                     <div class="checkbox-grid">
@@ -487,12 +481,9 @@
                     </div>
                 </div>
 
-                <!-- Tombol Tutup Panah Atas Ganda -->
-                <div class="toggle-btn-minimal" onclick="toggleDetails(false)">
-                    <svg class="arrow-svg" viewBox="0 0 24 20">
-                        <polyline points="4,9 12,3 20,9"></polyline>
-                        <polyline points="4,17 12,11 20,17"></polyline>
-                    </svg>
+                <!-- Tombol Tutup (Modifier Up Wedge Unicode) -->
+                <div class="toggle-btn-text" onclick="toggleDetails(false)">
+                    <span class="wedge-icon">︽</span>
                 </div>
             </div>
 
