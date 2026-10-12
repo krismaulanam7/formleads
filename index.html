@@ -546,14 +546,30 @@
     }
 
     function formatHarga(input) {
-        let val = input.value.replace(/[^0-9]/g, '');
+        let cursorPosition = input.selectionStart;
+        let originalLength = input.value.length;
+
+        // Ambil hanya angka sebelum koma/desimal untuk mencegah pelipatan angka
+        let val = input.value.replace(/^Rp\s?/, '').split(',')[0].replace(/[^0-9]/g, '');
+
         if (val === '') {
             input.value = '';
             return;
         }
+
         let num = parseInt(val, 10);
         let formatted = num.toLocaleString('id-ID');
         input.value = 'Rp' + formatted + ',00';
+
+        let newLength = input.value.length;
+        cursorPosition = cursorPosition + (newLength - originalLength);
+        
+        if (cursorPosition > input.value.length - 3) {
+            cursorPosition = input.value.length - 3;
+        }
+        if (cursorPosition < 0) cursorPosition = 0;
+        
+        input.setSelectionRange(cursorPosition, cursorPosition);
     }
 
     function toggleDetails(show) {
