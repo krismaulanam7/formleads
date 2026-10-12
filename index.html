@@ -157,6 +157,12 @@
             cursor: pointer;
         }
 
+        /* Efek disable untuk elemen tracking saat Sold */
+        .disabled-section {
+            opacity: 0.4;
+            pointer-events: none;
+        }
+
         .btn-row {
             display: flex;
             gap: 8px;
@@ -229,6 +235,7 @@
         <div class="code-badge" id="displayCode">KODE DATA: TA-B0001</div>
     </div>
 
+    <!-- 1. KATEGORI PROPERTI -->
     <div class="section">
         <div class="section-title">📌 1. KATEGORI PROPERTI</div>
         <div class="card-box">
@@ -236,11 +243,15 @@
                 <label>Kategori</label>
                 <select id="subKategori" onchange="updateCodePrefix()">
                     <option value="TA">Tanah</option>
-                    <option value="RU">Rumah</option>
-                    <option value="RK">Ruko</option>
-                    <option value="GD">Gudang</option>
-                    <option value="KO">Kost / Mess</option>
+                    <option value="RM">Rumah</option>
+                    <option value="RU">Ruko</option>
+                    <option value="RK">Rukos</option>
+                    <option value="KO">Kosan</option>
+                    <option value="KN">Kontrakan</option>
+                    <option value="KE">Kebun</option>
+                    <option value="VI">Villa</option>
                     <option value="AP">Apartemen</option>
+                    <option value="GU">Gudang</option>
                 </select>
             </div>
             <div class="form-group" style="margin-top: 8px;">
@@ -254,6 +265,7 @@
         </div>
     </div>
 
+    <!-- 2. DATA PEMILIK & MAKELAR -->
     <div class="section">
         <div class="section-title">👤 2. DATA PEMILIK & MAKELAR</div>
         <div class="card-box">
@@ -280,6 +292,7 @@
         </div>
     </div>
 
+    <!-- 3. FOTO PROPERTI -->
     <div class="section">
         <div class="section-title">🖼️ 3. FOTO PROPERTI</div>
         <div class="card-box">
@@ -293,6 +306,7 @@
         </div>
     </div>
 
+    <!-- 4. LOKASI PROPERTI -->
     <div class="section">
         <div class="section-title">📍 4. LOKASI PROPERTI</div>
         <div class="card-box">
@@ -309,6 +323,7 @@
         </div>
     </div>
 
+    <!-- 5. DETAIL PROPERTI -->
     <div class="section">
         <div class="section-title">📝 5. DETAIL PROPERTI</div>
         <div class="card-box">
@@ -327,24 +342,37 @@
         </div>
     </div>
 
+    <!-- 6. TRACKING LEADS -->
     <div class="section">
         <div class="section-title">📊 6. TRACKING LEADS</div>
         <div class="card-box">
+            <!-- Status Listing -->
             <div class="form-group">
-                <label>Status Followup</label>
+                <label>Status Listing</label>
                 <div class="radio-group">
-                    <label class="radio-label"><input type="radio" name="statusFollowup" value="Belum" checked> Belum</label>
-                    <label class="radio-label"><input type="radio" name="statusFollowup" value="On Process"> On Process</label>
-                    <label class="radio-label"><input type="radio" name="statusFollowup" value="Close"> Close</label>
+                    <label class="radio-label"><input type="radio" name="statusListing" value="Open" checked onchange="toggleStatusTracking()"> Open</label>
+                    <label class="radio-label"><input type="radio" name="statusListing" value="Sold" onchange="toggleStatusTracking()"> Sold</label>
                 </div>
             </div>
-            <div class="form-group" style="margin-top: 10px; margin-bottom: 0;">
-                <label>Kategori Leads</label>
-                <div class="radio-group">
-                    <label class="radio-label"><input type="radio" name="kategoriLeads" value="Cold"> Cold</label>
-                    <label class="radio-label"><input type="radio" name="kategoriLeads" value="Warm"> Warm</label>
-                    <label class="radio-label"><input type="radio" name="kategoriLeads" value="HOT" checked> HOT</label>
-                    <label class="radio-label"><input type="radio" name="kategoriLeads" value="Suspect"> Suspect</label>
+
+            <!-- Kontainer Status Followup & Status Leads (Dapat di-disable) -->
+            <div id="trackingDependentFields" style="margin-top: 10px;">
+                <div class="form-group" style="margin-bottom: 10px;">
+                    <label>Status Followup</label>
+                    <div class="radio-group">
+                        <label class="radio-label"><input type="radio" name="statusFollowup" value="Belum" checked> Belum</label>
+                        <label class="radio-label"><input type="radio" name="statusFollowup" value="On Process"> On Process</label>
+                        <label class="radio-label"><input type="radio" name="statusFollowup" value="Close"> Close</label>
+                    </div>
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label>Status Leads</label>
+                    <div class="radio-group">
+                        <label class="radio-label"><input type="radio" name="statusLeads" value="Cold"> Cold</label>
+                        <label class="radio-label"><input type="radio" name="statusLeads" value="Warm"> Warm</label>
+                        <label class="radio-label"><input type="radio" name="statusLeads" value="HOT" checked> HOT</label>
+                        <label class="radio-label"><input type="radio" name="statusLeads" value="Suspect"> Suspect</label>
+                    </div>
                 </div>
             </div>
         </div>
@@ -366,6 +394,20 @@
         document.getElementById('displayCode').innerText = `KODE DATA: ${sub}-${statusLetter}0001`;
     }
 
+    function toggleStatusTracking() {
+        const statusListing = document.querySelector('input[name="statusListing"]:checked').value;
+        const dependentContainer = document.getElementById('trackingDependentFields');
+        const inputs = dependentContainer.querySelectorAll('input');
+
+        if (statusListing === 'Sold') {
+            dependentContainer.classList.add('disabled-section');
+            inputs.forEach(input => input.disabled = true);
+        } else {
+            dependentContainer.classList.remove('disabled-section');
+            inputs.forEach(input => input.disabled = false);
+        }
+    }
+
     function getGpsLocation() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(position => {
@@ -379,6 +421,8 @@
     }
 
     function submitData() {
+        const statusListingVal = document.querySelector('input[name="statusListing"]:checked').value;
+        
         const payload = {
             kode_data: document.getElementById('displayCode').innerText.replace('KODE DATA: ', ''),
             sub_kategori: document.getElementById('subKategori').value,
@@ -395,8 +439,9 @@
             legalitas: document.getElementById('legalitas').value,
             harga: document.getElementById('hargaProperti').value,
             catatan: document.getElementById('catatan').value,
-            status_followup: document.querySelector('input[name="statusFollowup"]:checked').value,
-            kategori_leads: document.querySelector('input[name="kategoriLeads"]:checked').value
+            status_listing: statusListingVal,
+            status_followup: statusListingVal === 'Sold' ? '' : document.querySelector('input[name="statusFollowup"]:checked').value,
+            status_leads: statusListingVal === 'Sold' ? '' : document.querySelector('input[name="statusLeads"]:checked').value
         };
 
         if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
