@@ -1,10 +1,26 @@
+import os
+import json
+from datetime import datetime
+from flask import Flask, render_template_string, request
+import telebot
+from telebot import types
+
+# GANTI DENGAN TOKEN DARI BOTFATHER KAMU
+TOKEN = "MASUKKAN_TOKEN_BOTFATHER_DI_SINI"
+
+bot = telebot.TeleBot(TOKEN)
+app = Flask(__name__)
+
+# -------------------------------------------------------------
+# 🌐 KODE FRONTEND (HTML, CSS, & JS TERPADU)
+# -------------------------------------------------------------
+HTML_TEMPLATE = """
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Form Data Leads Properti</title>
-    <!-- Telegram Web App SDK -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root {
@@ -13,225 +29,78 @@
             --border-color: #e0e0e0;
             --bg-card: #f8f9fa;
         }
-
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background-color: var(--tg-theme-bg-color, #f4f4f5);
             color: var(--tg-theme-text-color, #222);
-            margin: 0;
-            padding: 12px;
-            font-size: 14px;
+            margin: 0; padding: 12px; font-size: 14px;
         }
-
         .container {
-            max-width: 480px;
-            margin: 0 auto;
-            background: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-            overflow: hidden;
-            border: 1px solid var(--border-color);
+            max-width: 480px; margin: 0 auto; background: #ffffff;
+            border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            overflow: hidden; border: 1px solid var(--border-color);
         }
-
-        /* Header Layout[cite: 2] */
         .app-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 16px;
-            background: #f1f3f5;
-            border-bottom: 1px solid var(--border-color);
-            font-weight: bold;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 12px 16px; background: #f1f3f5; border-bottom: 1px solid var(--border-color); font-weight: bold;
         }
+        .close-btn { background: none; border: none; font-size: 16px; cursor: pointer; color: #555; }
+        .save-top-btn { background: #2481cc; color: #fff; border: none; padding: 6px 12px; border-radius: 6px; font-weight: 600; cursor: pointer; }
+        .sub-header { display: flex; justify-content: flex-end; padding: 8px 16px 0 16px; }
+        .code-badge { background: #e9ecef; padding: 4px 8px; border-radius: 4px; font-family: monospace; font-weight: bold; font-size: 12px; color: #333; border: 1px dashed #ced4da; }
+        .section { padding: 12px 16px; border-bottom: 1px solid var(--border-color); }
+        .section-title { font-weight: bold; margin-bottom: 8px; color: #1a1a1a; font-size: 13px; }
+        .card-box { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 12px; }
+        
+        .form-group { margin-bottom: 10px; }
+        .form-group:last-child { margin-bottom: 0; }
+        
+        /* Sub-label dibuat Bold secara konsisten */
+        label { display: block; font-size: 12px; color: #333; font-weight: bold; margin-bottom: 4px; }
+        
+        /* Layout Bersebelahan (Grid 2 Kolom) */
+        .form-row { display: flex; gap: 8px; margin-bottom: 10px; }
+        .form-col { flex: 1; }
 
-        .close-btn {
-            background: none;
-            border: none;
-            font-size: 16px;
-            cursor: pointer;
-            color: #555;
+        input[type="text"], input[type="tel"], select, textarea {
+            width: 100%; padding: 8px 10px; border: 1px solid #ced4da; border-radius: 6px; font-size: 13px; box-sizing: border-box; background: #fff;
         }
-
-        .save-top-btn {
-            background: #2481cc;
-            color: #fff;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-weight: 600;
-            cursor: pointer;
-        }
-
-        .sub-header {
-            display: flex;
-            justify-content: flex-end;
-            padding: 8px 16px 0 16px;
-        }
-
-        .code-badge {
-            background: #e9ecef;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-family: monospace;
-            font-weight: bold;
-            font-size: 12px;
-            color: #333;
-            border: 1px dashed #ced4da;
-        }
-
-        /* Form Sections */
-        .section {
-            padding: 12px 16px;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .section-title {
-            font-weight: bold;
-            margin-bottom: 8px;
-            color: #1a1a1a;
-            font-size: 13px;
-        }
-
-        .card-box {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 12px;
-        }
-
-        .form-group {
-            margin-bottom: 10px;
-        }
-
-        .form-group:last-child {
-            margin-bottom: 0;
-        }
-
-        label {
-            display: block;
-            font-size: 12px;
-            color: #555;
-            margin-bottom: 4px;
-        }
-
-        input[type="text"],
-        input[type="tel"],
-        select,
-        textarea {
-            width: 100%;
-            padding: 8px 10px;
-            border: 1px solid #ced4da;
-            border-radius: 6px;
-            font-size: 13px;
-            box-sizing: border-box;
-            background: #fff;
-        }
-
-        textarea {
-            resize: vertical;
-            height: 60px;
-        }
-
-        .radio-group {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-            margin-top: 4px;
-        }
-
-        .radio-label {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            font-size: 13px;
-            cursor: pointer;
-        }
-
-        .btn-row {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 6px;
-        }
-
-        .action-btn {
-            flex: 1;
-            padding: 8px;
-            background: #e2e8f0;
-            border: 1px solid #cbd5e1;
-            border-radius: 6px;
-            font-weight: 500;
-            cursor: pointer;
-            text-align: center;
-            font-size: 12px;
-        }
-
-        .hint-text {
-            font-size: 11px;
-            color: #d97706;
-            margin-top: 4px;
-            font-weight: 500;
-        }
-
-        .preview-box {
-            font-size: 12px;
-            color: #666;
-            margin-top: 6px;
-        }
-
-        .status-box {
-            font-size: 12px;
-            margin-top: 6px;
-            padding: 6px;
-            background: #ecfdf5;
-            border: 1px solid #a7f3d0;
-            border-radius: 4px;
-            color: #065f46;
-        }
-
-        .footer-action {
-            padding: 16px;
-            background: #fff;
-        }
-
-        .btn-submit {
-            width: 100%;
-            padding: 12px;
-            background: #10b981;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: bold;
-            cursor: pointer;
-        }
+        textarea { resize: vertical; height: 60px; }
+        .radio-group { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 4px; }
+        .radio-label { display: flex; align-items: center; gap: 4px; font-size: 13px; font-weight: normal; cursor: pointer; }
+        .btn-row { display: flex; gap: 8px; margin-bottom: 6px; }
+        .action-btn { flex: 1; padding: 8px; background: #e2e8f0; border: 1px solid #cbd5e1; border-radius: 6px; font-weight: 500; cursor: pointer; text-align: center; font-size: 12px; }
+        .hint-text { font-size: 11px; color: #d97706; margin-top: 4px; font-weight: 500; }
+        .preview-box { font-size: 12px; color: #666; margin-top: 6px; }
+        .status-box { font-size: 12px; margin-top: 6px; padding: 6px; background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 4px; color: #065f46; }
+        .footer-action { padding: 16px; background: #fff; }
+        .btn-submit { width: 100%; padding: 12px; background: #10b981; color: white; border: none; border-radius: 8px; font-size: 14px; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
-
 <div class="container">
-    <!-- Header Form[cite: 2] -->
     <div class="app-header">
         <button class="close-btn" onclick="Telegram.WebApp.close()">✕</button>
         <span>Form Data Leads Properti</span>
         <button class="save-top-btn" onclick="submitData()">Simpan</button>
     </div>
-
-    <!-- Kode Data Badge[cite: 2] -->
     <div class="sub-header">
         <div class="code-badge" id="displayCode">KODE DATA: TA-B0001</div>
     </div>
 
-    <!-- 📌 1. KATEGORI PROPERTI[cite: 2] -->
+    <!-- 📌 1. KATEGORI PROPERTI -->
     <div class="section">
         <div class="section-title">📌 1. KATEGORI PROPERTI</div>
         <div class="card-box">
             <div class="form-group">
-                <label>Sub-Kategori</label>
+                <label>Kategori</label>
                 <select id="subKategori" onchange="updateCodePrefix()">
                     <option value="TA">Tanah</option>
                     <option value="RU">Rumah</option>
                     <option value="RK">Ruko</option>
                     <option value="GD">Gudang</option>
+                    <option value="KO">Kost / Mess</option>
+                    <option value="AP">Apartemen</option>
                 </select>
             </div>
             <div class="form-group" style="margin-top: 8px;">
@@ -245,30 +114,34 @@
         </div>
     </div>
 
-    <!-- 👤 2. DATA PEMILIK & MAKELAR[cite: 2] -->
+    <!-- 👤 2. DATA PEMILIK & MAKELAR (Bersebelahan) -->
     <div class="section">
         <div class="section-title">👤 2. DATA PEMILIK & MAKELAR</div>
         <div class="card-box">
-            <div class="form-group">
-                <label>Nama Pemilik</label>
-                <input type="text" id="namaPemilik" placeholder="Bpk. Budi (Opsional)">
+            <div class="form-row">
+                <div class="form-col">
+                    <label>Nama Pemilik</label>
+                    <input type="text" id="namaPemilik" placeholder="Bpk. Budi (Opsional)">
+                </div>
+                <div class="form-col">
+                    <label>Kontak Pemilik</label>
+                    <input type="tel" id="kontakPemilik" placeholder="0812... (Opsional)">
+                </div>
             </div>
-            <div class="form-group">
-                <label>Kontak Pemilik</label>
-                <input type="tel" id="kontakPemilik" placeholder="08123456789 (Opsional)">
-            </div>
-            <div class="form-group">
-                <label>Nama Makelar</label>
-                <input type="text" id="namaMakelar" placeholder="(Opsional)">
-            </div>
-            <div class="form-group">
-                <label>Kontak Makelar</label>
-                <input type="tel" id="kontakMakelar" placeholder="(Opsional)">
+            <div class="form-row" style="margin-bottom: 0;">
+                <div class="form-col">
+                    <label>Nama Makelar</label>
+                    <input type="text" id="namaMakelar" placeholder="(Opsional)">
+                </div>
+                <div class="form-col">
+                    <label>Kontak Makelar</label>
+                    <input type="tel" id="kontakMakelar" placeholder="(Opsional)">
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- 🖼️ 3. FOTO PROPERTI[cite: 2] -->
+    <!-- 🖼️ 3. FOTO PROPERTI -->
     <div class="section">
         <div class="section-title">🖼️ 3. FOTO PROPERTI</div>
         <div class="card-box">
@@ -282,7 +155,7 @@
         </div>
     </div>
 
-    <!-- 📍 4. LOKASI PROPERTI[cite: 2] -->
+    <!-- 📍 4. LOKASI PROPERTI -->
     <div class="section">
         <div class="section-title">📍 4. LOKASI PROPERTI</div>
         <div class="card-box">
@@ -299,7 +172,7 @@
         </div>
     </div>
 
-    <!-- 📝 5. DETAIL PROPERTI[cite: 2] -->
+    <!-- 📝 5. DETAIL PROPERTI -->
     <div class="section">
         <div class="section-title">📝 5. DETAIL PROPERTI</div>
         <div class="card-box">
@@ -311,14 +184,14 @@
                 <label>Harga Properti</label>
                 <input type="text" id="hargaProperti" placeholder="Cth: Rp250.000.000 (opsional)">
             </div>
-            <div class="form-group">
+            <div class="form-group" style="margin-bottom: 0;">
                 <label>Catatan Tambahan</label>
                 <textarea id="catatan" placeholder="Tulis catatan jika ada (opsional) ..."></textarea>
             </div>
         </div>
     </div>
 
-    <!-- 📊 6. TRACKING LEADS[cite: 2] -->
+    <!-- 📊 6. TRACKING LEADS -->
     <div class="section">
         <div class="section-title">📊 6. TRACKING LEADS</div>
         <div class="card-box">
@@ -330,7 +203,7 @@
                     <label class="radio-label"><input type="radio" name="statusFollowup" value="Close"> Close</label>
                 </div>
             </div>
-            <div class="form-group" style="margin-top: 10px;">
+            <div class="form-group" style="margin-top: 10px; margin-bottom: 0;">
                 <label>Kategori Leads</label>
                 <div class="radio-group">
                     <label class="radio-label"><input type="radio" name="kategoriLeads" value="Cold"> Cold</label>
@@ -342,7 +215,6 @@
         </div>
     </div>
 
-    <!-- Tombol Simpan Utama[cite: 2] -->
     <div class="footer-action">
         <button class="btn-submit" onclick="submitData()">💾 SIMPAN DATA LEADS</button>
     </div>
@@ -403,3 +275,111 @@
 </script>
 </body>
 </html>
+"""
+
+@app.route('/')
+def index():
+    return render_template_string(HTML_TEMPLATE)
+
+# -------------------------------------------------------------
+# 🤖 KODE BACKEND (TELEGRAM BOT & GOOGLE SHEETS MAPPING)
+# -------------------------------------------------------------
+@bot.message_handler(commands=['start', 'help'])
+def send_welcome(message):
+    markup = types.InlineKeyboardMarkup()
+    web_app_url = "https://YOUR_NGROK_URL.ngrok-free.app" 
+    web_app = types.WebAppInfo(url=web_app_url)
+    
+    markup.add(types.InlineKeyboardButton("📝 Buka Form Data Leads", web_app=web_app))
+    bot.reply_to(message, "Halo! Silakan klik tombol di bawah untuk mengisi data leads properti:", reply_markup=markup)
+
+@bot.message_handler(content_types=['web_app_data'])
+def handle_web_app_data(message):
+    try:
+        data = json.loads(message.web_app_data.data)
+        
+        # 📌 1. KATEGORI PROPERTI & KODE DATA
+        kode_data = data.get('kode_data', 'TA-B0001')
+        sub_kategori = data.get('sub_kategori', 'TA')
+        status_properti = data.get('status_properti', 'Baru')
+        kategori_properti_sheet = f"{sub_kategori} ({status_properti})"
+        
+        # 👤 2. DATA PEMILIK & MAKELAR
+        nama_pemilik = data.get('nama_pemilik', '')
+        kontak_pemilik = data.get('kontak_pemilik', '')
+        nama_makelar = data.get('nama_makelar', '')
+        kontak_makelar = data.get('kontak_makelar', '')
+        
+        # 🖼️ 3. FOTO PROPERTI
+        foto_list = data.get('foto_urls', [])
+        foto_sheet = ", ".join(foto_list)
+        
+        # 📍 4. LOKASI PROPERTI & GEOCODING
+        lat = data.get('latitude', '')
+        lng = data.get('longitude', '')
+        lokasi_gmaps = f"https://maps.google.com/?q={lat},{lng}" if lat and lng else ""
+        kota_kabupaten = data.get('kota_kabupaten', '')
+        kecamatan = data.get('kecamatan', '')
+        
+        # 📝 5. DETAIL PROPERTI (LEGALITAS, HARGA, CATATAN)
+        legalitas = data.get('legalitas', '')
+        
+        # Sanitasi harga ketat (membersihkan Rp, spasi, titik, koma -> integer murni)[cite: 1]
+        raw_harga = str(data.get('harga', ''))
+        clean_harga = ''.join(filter(str.isdigit, raw_harga))
+        harga_numeric = int(clean_harga) if clean_harga else ""
+        
+        catatan = data.get('catatan', '')
+        
+        # 📊 6. TRACKING LEADS (STATUS & KATEGORI)
+        status_followup = data.get('status_followup', 'Belum')
+        kategori_leads = data.get('kategori_leads', 'HOT')
+        
+        # ⚙️ 7. SISTEM AUTOMATION (TANGGAL & KONTRIBUTOR)
+        tanggal_leads = datetime.now().strftime("%d %m %Y") # Kolom Q: DD MM YYYY (Locked saat Update)[cite: 1, 2]
+        
+        user_info = message.from_user
+        username = f"@{user_info.username}" if user_info.username else f"ID: {user_info.id}"
+        kontributor_leads = f"{user_info.first_name} ({username})" # Kolom R[cite: 1, 2]
+        
+        # 🚀 PEMETAAN FINAL KE GOOGLE SHEETS (KOLOM A s.d. R, Header Baris 6, Data Baris 7+)[cite: 1]
+        row_data = [
+            "=ROW()-6",              # Kolom A: No[cite: 1, 2]
+            kode_data,               # Kolom B: Kode[cite: 1, 2]
+            kategori_properti_sheet, # Kolom C: Kategori Properti[cite: 1, 2]
+            nama_pemilik,            # Kolom D: Nama Pemilik[cite: 1, 2]
+            kontak_pemilik,          # Kolom E: Kontak Pemilik[cite: 1, 2]
+            nama_makelar,            # Kolom F: Nama Makelar[cite: 1, 2]
+            kontak_makelar,          # Kolom G: Kontak Makelar[cite: 1, 2]
+            foto_sheet,              # Kolom H: Foto[cite: 1, 2]
+            lokasi_gmaps,            # Kolom I: Lokasi[cite: 1, 2]
+            kota_kabupaten,          # Kolom J: Kota/Kabupaten[cite: 1, 2]
+            kecamatan,               # Kolom K: Kecamatan[cite: 1, 2]
+            legalitas,               # Kolom L: Legalitas[cite: 1, 2]
+            harga_numeric,           # Kolom M: Harga[cite: 1, 2]
+            catatan,                 # Kolom N: Catatan[cite: 1, 2]
+            status_followup,         # Kolom O: Status Followup[cite: 1, 2]
+            kategori_leads,          # Kolom P: Kategori Leads[cite: 1, 2]
+            tanggal_leads,           # Kolom Q: Tanggal Leads[cite: 1, 2]
+            kontributor_leads        # Kolom R: Kontributor Leads[cite: 1, 2]
+        ]
+        
+        print("Data berhasil dipetakan untuk Google Sheets:", row_data)
+        
+        bot.send_message(
+            message.chat.id,
+            f"💾 **DATA LEADS BERHASIL DISIMPAN!**\n\n"
+            f"• **Kode Data:** `{kode_data}`\n"
+            f"• **Kategori:** {kategori_properti_sheet}\n"
+            f"• **Status Followup:** {status_followup}\n"
+            f"• **Kategori Leads:** {kategori_leads}\n"
+            f"• **Link Lokasi:** {lokasi_gmaps if lokasi_gmaps else 'Tidak ada'}",
+            parse_mode="Markdown"
+        )
+        
+    except Exception as e:
+        bot.send_message(message.chat.id, f"❌ Terjadi kesalahan: {str(e)}")
+
+if __name__ == '__main__':
+    print("Menjalankan server Flask & Bot Telegram...")
+    app.run(port=5000, debug=True)
