@@ -98,7 +98,7 @@
         }
 
         .form-group {
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
 
         .form-group:last-child {
@@ -110,7 +110,7 @@
             font-size: 12px;
             color: #222;
             font-weight: bold;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
         }
 
         .form-row {
@@ -141,20 +141,41 @@
             height: 60px;
         }
 
+        /* Radio Group Sejajar & Rapi */
         .radio-group {
             display: flex;
+            align-items: center;
             gap: 12px;
-            flex-wrap: wrap;
-            margin-top: 4px;
+            width: 100%;
         }
 
         .radio-label {
-            display: flex;
+            display: inline-flex;
             align-items: center;
-            gap: 4px;
+            gap: 6px;
             font-size: 13px;
             font-weight: normal;
             cursor: pointer;
+            white-space: nowrap;
+        }
+
+        /* Penataan Grid khusus 2, 3, dan 4 pilihan radio agar seimbang */
+        .radio-grid-2 {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 8px;
+        }
+
+        .radio-grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 8px;
+        }
+
+        .radio-grid-4 {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 4px;
         }
 
         /* Efek disable untuk elemen tracking saat Sold */
@@ -254,9 +275,9 @@
                     <option value="GU">Gudang</option>
                 </select>
             </div>
-            <div class="form-group" style="margin-top: 8px;">
+            <div class="form-group">
                 <label>Status Properti</label>
-                <div class="radio-group">
+                <div class="radio-grid-3">
                     <label class="radio-label"><input type="radio" name="statusProperti" value="Baru" checked onchange="updateCodePrefix()"> Baru</label>
                     <label class="radio-label"><input type="radio" name="statusProperti" value="Secondary" onchange="updateCodePrefix()"> Secondary</label>
                     <label class="radio-label"><input type="radio" name="statusProperti" value="Lelang" onchange="updateCodePrefix()"> Lelang</label>
@@ -349,17 +370,17 @@
             <!-- Status Listing -->
             <div class="form-group">
                 <label>Status Listing</label>
-                <div class="radio-group">
+                <div class="radio-grid-2">
                     <label class="radio-label"><input type="radio" name="statusListing" value="Open" checked onchange="toggleStatusTracking()"> Open</label>
                     <label class="radio-label"><input type="radio" name="statusListing" value="Sold" onchange="toggleStatusTracking()"> Sold</label>
                 </div>
             </div>
 
             <!-- Kontainer Status Followup & Status Leads (Dapat di-disable) -->
-            <div id="trackingDependentFields" style="margin-top: 10px;">
-                <div class="form-group" style="margin-bottom: 10px;">
+            <div id="trackingDependentFields">
+                <div class="form-group">
                     <label>Status Followup</label>
-                    <div class="radio-group">
+                    <div class="radio-grid-3">
                         <label class="radio-label"><input type="radio" name="statusFollowup" value="Belum" checked> Belum</label>
                         <label class="radio-label"><input type="radio" name="statusFollowup" value="On Process"> On Process</label>
                         <label class="radio-label"><input type="radio" name="statusFollowup" value="Close"> Close</label>
@@ -367,7 +388,7 @@
                 </div>
                 <div class="form-group" style="margin-bottom: 0;">
                     <label>Status Leads</label>
-                    <div class="radio-group">
+                    <div class="radio-grid-4">
                         <label class="radio-label"><input type="radio" name="statusLeads" value="Cold"> Cold</label>
                         <label class="radio-label"><input type="radio" name="statusLeads" value="Warm"> Warm</label>
                         <label class="radio-label"><input type="radio" name="statusLeads" value="HOT" checked> HOT</label>
