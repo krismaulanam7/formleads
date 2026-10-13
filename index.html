@@ -226,13 +226,14 @@
 
         .btn-row {
             display: flex;
-            gap: 6px;
+            gap: 8px;
+            justify-content: center;
             margin-bottom: 4px;
         }
 
         .action-btn {
-            flex: 1;
-            padding: 6px;
+            width: 120px;
+            padding: 5px 8px;
             background: #e2e8f0;
             border: 1px solid #cbd5e1;
             border-radius: 4px;
@@ -240,6 +241,7 @@
             cursor: pointer;
             text-align: center;
             font-size: 11px;
+            box-sizing: border-box;
         }
 
         .hint-text {
@@ -258,11 +260,33 @@
         .status-box {
             font-size: 11px;
             margin-top: 4px;
-            padding: 4px 6px;
-            background: #ecfdf5;
-            border: 1px solid #a7f3d0;
+            padding: 6px 8px;
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
             border-radius: 4px;
+            color: #334155;
+            line-height: 1.4;
+        }
+
+        .status-box.active {
+            background: #ecfdf5;
+            border-color: #a7f3d0;
             color: #065f46;
+        }
+
+        .wilayah-wrapper {
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .wilayah-prefix {
+            flex-shrink: 0;
+            margin-right: 4px;
+        }
+
+        .wilayah-content {
+            display: flex;
+            flex-direction: column;
         }
 
         .footer-action {
@@ -293,7 +317,7 @@
     </div>
 
     <div class="sub-header">
-        <div class="code-badge" id="displayCode">KODE DATA: TA-B0001</div>
+        <div class="code-badge" id="displayCode">KODE: TA-B0001</div>
     </div>
 
     <!-- 1. KATEGORI PROPERTI -->
@@ -333,21 +357,21 @@
             <div class="form-row">
                 <div class="form-col">
                     <label>Nama Pemilik</label>
-                    <input type="text" id="namaPemilik" placeholder="Bpk. Budi (Opsional)">
+                    <input type="text" id="namaPemilik" placeholder="Bpk. Budi (opsional)">
                 </div>
                 <div class="form-col">
                     <label>Kontak Pemilik</label>
-                    <input type="tel" id="kontakPemilik" placeholder="0812... (Opsional)">
+                    <input type="tel" id="kontakPemilik" placeholder="0812... (opsional)">
                 </div>
             </div>
             <div class="form-row" style="margin-bottom: 0;">
                 <div class="form-col">
                     <label>Nama Makelar</label>
-                    <input type="text" id="namaMakelar" placeholder="(Opsional)">
+                    <input type="text" id="namaMakelar" placeholder="(opsional)">
                 </div>
                 <div class="form-col">
                     <label>Kontak Makelar</label>
-                    <input type="tel" id="kontakMakelar" placeholder="(Opsional)">
+                    <input type="tel" id="kontakMakelar" placeholder="(opsional)">
                 </div>
             </div>
         </div>
@@ -362,7 +386,7 @@
                 <button type="button" class="action-btn" onclick="alert('Buka Kamera')">Ambil Foto</button>
                 <button type="button" class="action-btn" onclick="alert('Upload Galeri')">Upload</button>
             </div>
-            <div class="hint-text">**minimal 1 foto</div>
+            <div class="hint-text">*minimal 1 foto</div>
             <div class="preview-box" id="fotoPreview">Preview: <em>Belum ada foto dipilih.</em></div>
         </div>
     </div>
@@ -377,9 +401,16 @@
                 <button type="button" class="action-btn" onclick="alert('Pin Maps Aktif')">Tandai di Maps</button>
             </div>
             <div class="status-box" id="lokasiStatus">
-                ✅ Lokasi Berhasil ditambahkan<br>
-                🔗 Link Gmaps: <a href="https://maps.google.com/?q=-6.12345,106.12345" target="_blank" id="gmapsLink">https://maps.google.com/?q=-6.12345,106.12345</a><br>
-                📍 Wilayah: <span id="wilayahText">Kota Serang, Kec. Cipocok Jaya</span> (Terisi Otomatis)
+                <div id="statusTitle">⚠️ Tambahkan lokasi</div>
+                <div>🔗 Link Gmaps: <a href="#" target="_blank" id="gmapsLink" style="display:none;"></a></div>
+                <div class="wilayah-wrapper">
+                    <span class="wilayah-prefix">📌 Wilayah:</span>
+                    <div class="wilayah-content" id="wilayahText"></div>
+                </div>
+            </div>
+            <div class="form-group" style="margin-top: 6px; margin-bottom: 0;">
+                <label>Nama Jalan / Detail Alamat</label>
+                <input type="text" id="inputJalan" placeholder="Cth: Jl/Kp/Gg/Blok/Nomer/Nama Perumahan" oninput="updateJalanManual()">
             </div>
         </div>
     </div>
@@ -388,9 +419,9 @@
     <div class="section">
         <div class="section-title">📝 5. DETAIL PROPERTI</div>
         <div class="card-box">
-            <!-- 1. Harga Properti -->
+            <!-- 1. Harga -->
             <div class="form-group">
-                <label>Harga Properti</label>
+                <label>Harga</label>
                 <input type="text" id="hargaProperti" placeholder="Cth: Rp1.000.000,00" oninput="formatHarga(this)">
             </div>
 
@@ -503,9 +534,9 @@
                 </div>
             </div>
 
-            <!-- 3. Catatan Tambahan -->
+            <!-- 3. Catatan -->
             <div class="form-group" style="margin-top: 2px;">
-                <label>Catatan Tambahan</label>
+                <label>Catatan</label>
                 <textarea id="catatan" placeholder="Tulis catatan jika ada (opsional) ..."></textarea>
             </div>
         </div>
@@ -554,11 +585,15 @@
     const tg = window.Telegram.WebApp;
     tg.expand();
 
+    let currentKota = "";
+    let currentKec = "";
+    let currentKel = "";
+
     function updateCodePrefix() {
         const sub = document.getElementById('subKategori').value;
         const statusEl = document.querySelector('input[name="statusProperti"]:checked');
         const statusLetter = statusEl ? statusEl.value.charAt(0).toUpperCase() : 'B';
-        document.getElementById('displayCode').innerText = `KODE DATA: ${sub}-${statusLetter}0001`;
+        document.getElementById('displayCode').innerText = `KODE: ${sub}-${statusLetter}0001`;
     }
 
     function formatHarga(input) {
@@ -642,14 +677,56 @@
         }
     }
 
+    function renderWilayahText() {
+        const wilayahText = document.getElementById('wilayahText');
+        const jalanInput = document.getElementById('inputJalan').value.trim();
+
+        if (!currentKota && !currentKec && !currentKel && !jalanInput) {
+            wilayahText.innerHTML = '';
+            return;
+        }
+
+        let barisWilayah = `Kota/Kabupaten ${currentKota || '-'}, Kec. ${currentKec || '-'}, Kel. ${currentKel || '-'}`;
+        let barisJalan = jalanInput ? `Jl. ${jalanInput}` : '';
+
+        wilayahText.innerHTML = `<span>${barisWilayah}</span>${barisJalan ? `<span>${barisJalan}</span>` : ''}`;
+    }
+
+    function updateJalanManual() {
+        renderWilayahText();
+    }
+
+    function setLocationData(lat, lng, kota, kec, kel, jalanDefault) {
+        const statusBox = document.getElementById('lokasiStatus');
+        const statusTitle = document.getElementById('statusTitle');
+        const gmapsLink = document.getElementById('gmapsLink');
+
+        const url = `https://maps.google.com/?q=${lat},${lng}`;
+
+        statusBox.classList.add('active');
+        statusTitle.innerText = '✅ Lokasi Berhasil ditambahkan';
+        
+        gmapsLink.href = url;
+        gmapsLink.innerText = url;
+        gmapsLink.style.display = 'inline';
+
+        currentKota = kota;
+        currentKec = kec;
+        currentKel = kel;
+
+        if (jalanDefault && !document.getElementById('inputJalan').value) {
+            document.getElementById('inputJalan').value = jalanDefault;
+        }
+
+        renderWilayahText();
+    }
+
     function getGpsLocation() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(position => {
                 const lat = position.coords.latitude;
                 const lng = position.coords.longitude;
-                const url = `https://maps.google.com/?q=${lat},${lng}`;
-                document.getElementById('gmapsLink').href = url;
-                document.getElementById('gmapsLink').innerText = url;
+                setLocationData(lat, lng, "Serang", "Cipocok Jaya", "Banjaragung", "Raya Petir - Serang");
             }, () => { alert('Gagal mendeteksi GPS.'); });
         } else { alert('Geolocation tidak didukung.'); }
     }
@@ -658,7 +735,7 @@
         const statusListingVal = document.querySelector('input[name="statusListing"]:checked').value;
         
         const payload = {
-            kode_data: document.getElementById('displayCode').innerText.replace('KODE DATA: ', ''),
+            kode_data: document.getElementById('displayCode').innerText.replace('KODE: ', ''),
             sub_kategori: document.getElementById('subKategori').value,
             status_properti: document.querySelector('input[name="statusProperti"]:checked').value,
             nama_pemilik: document.getElementById('namaPemilik').value,
@@ -668,8 +745,7 @@
             foto_urls: ["https://example.com/foto1.jpg"],
             latitude: -6.12345,
             longitude: 106.12345,
-            kota_kabupaten: "Kota Serang",
-            kecamatan: "Kec. Cipocok Jaya",
+            jalan: document.getElementById('inputJalan').value,
             harga: document.getElementById('hargaProperti').value,
             ringkasan: document.getElementById('ringkasan').value,
             catatan: document.getElementById('catatan').value,
