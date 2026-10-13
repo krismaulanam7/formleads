@@ -443,7 +443,7 @@
                 <div class="form-group" style="margin-top: 6px;">
                     <label>Fasilitas Rumah</label>
                     <div class="checkbox-grid">
-                        <label class="checkbox-label"><input type="checkbox" name="fasilitasRumah" value="PDAM" onchange="updateRingkasan()"> PDAM</label>
+                        <label class="checkbox-label"><input type="checkbox" name="fasilitasRumah" value="PAM" onchange="updateRingkasan()"> PAM</label>
                         <label class="checkbox-label"><input type="checkbox" name="fasilitasRumah" value="Sumur Bor" onchange="updateRingkasan()"> Sumur Bor</label>
                         <label class="checkbox-label"><input type="checkbox" name="fasilitasRumah" value="Garasi Mobil" onchange="updateRingkasan()"> Garasi Mobil</label>
                         <label class="checkbox-label"><input type="checkbox" name="fasilitasRumah" value="Garasi Motor" onchange="updateRingkasan()"> Garasi Motor</label>
@@ -460,23 +460,39 @@
                 </div>
 
                 <!-- Fasilitas Umum/Sosial -->
-                <div class="form-group" style="margin-top: 6px; margin-bottom: 0px;">
+                <div class="form-group" style="margin-top: 6px;">
                     <label>Fasilitas Umum/Sosial</label>
+                    <div class="checkbox-grid">
+                        <label class="checkbox-label"><input type="checkbox" name="fasilitasUmumSosial" value="Pos security" onchange="updateRingkasan()"> Pos security</label>
+                        <label class="checkbox-label"><input type="checkbox" name="fasilitasUmumSosial" value="One gate sistem" onchange="updateRingkasan()"> One gate sistem</label>
+                        <label class="checkbox-label"><input type="checkbox" name="fasilitasUmumSosial" value="Lapangan" onchange="updateRingkasan()"> Lapangan</label>
+                        <label class="checkbox-label"><input type="checkbox" name="fasilitasUmumSosial" value="Musholla" onchange="updateRingkasan()"> Musholla</label>
+                        <label class="checkbox-label"><input type="checkbox" name="fasilitasUmumSosial" value="Masjid" onchange="updateRingkasan()"> Masjid</label>
+                        <label class="checkbox-label"><input type="checkbox" name="fasilitasUmumSosial" value="Taman" onchange="updateRingkasan()"> Taman</label>
+                        <label class="checkbox-label"><input type="checkbox" name="fasilitasUmumSosial" value="Area sport center" onchange="updateRingkasan()"> Area sport center</label>
+                        <label class="checkbox-label"><input type="checkbox" name="fasilitasUmumSosial" value="Lampu PJU" onchange="updateRingkasan()"> Lampu PJU</label>
+                        <label class="checkbox-label"><input type="checkbox" name="fasilitasUmumSosial" value="Jalan Paving" onchange="updateRingkasan()"> Jalan Paving</label>
+                        <label class="checkbox-label"><input type="checkbox" name="fasilitasUmumSosial" value="Jalan Aspal" onchange="updateRingkasan()"> Jalan Aspal</label>
+                        <label class="checkbox-label"><input type="checkbox" name="fasilitasUmumSosial" value="Jalan Cor" onchange="updateRingkasan()"> Jalan Cor</label>
+                        <label class="checkbox-label"><input type="checkbox" name="fasilitasUmumSosial" value="Kolam Renang" onchange="updateRingkasan()"> Kolam Renang</label>
+                    </div>
+                </div>
+
+                <!-- Fasilitas Publik -->
+                <div class="form-group" style="margin-top: 6px; margin-bottom: 0px;">
+                    <label>Fasilitas Publik</label>
                     <div class="checkbox-grid" style="margin-bottom: 0px;">
-                        <label class="checkbox-label"><input type="checkbox" name="fasilitasUmum" value="Sekolah" onchange="updateRingkasan()"> Sekolah</label>
-                        <label class="checkbox-label"><input type="checkbox" name="fasilitasUmum" value="Universitas" onchange="updateRingkasan()"> Universitas</label>
-                        <label class="checkbox-label"><input type="checkbox" name="fasilitasUmum" value="Masjid" onchange="updateRingkasan()"> Masjid</label>
-                        <label class="checkbox-label"><input type="checkbox" name="fasilitasUmum" value="Taman" onchange="updateRingkasan()"> Taman</label>
-                        <label class="checkbox-label"><input type="checkbox" name="fasilitasUmum" value="Lapangan" onchange="updateRingkasan()"> Lapangan</label>
-                        <label class="checkbox-label"><input type="checkbox" name="fasilitasUmum" value="Halte BUS" onchange="updateRingkasan()"> Halte BUS</label>
-                        <label class="checkbox-label"><input type="checkbox" name="fasilitasUmum" value="Halte Angkot" onchange="updateRingkasan()"> Halte Angkot</label>
-                        <label class="checkbox-label"><input type="checkbox" name="fasilitasUmum" value="Stasiun" onchange="updateRingkasan()"> Stasiun</label>
-                        <label class="checkbox-label"><input type="checkbox" name="fasilitasUmum" value="Terminal" onchange="updateRingkasan()"> Terminal</label>
-                        <label class="checkbox-label"><input type="checkbox" name="fasilitasUmum" value="Bandara" onchange="updateRingkasan()"> Bandara</label>
-                        <label class="checkbox-label"><input type="checkbox" name="fasilitasUmum" value="Pasar" onchange="updateRingkasan()"> Pasar</label>
-                        <label class="checkbox-label"><input type="checkbox" name="fasilitasUmum" value="Minimarket" onchange="updateRingkasan()"> Minimarket</label>
-                        <label class="checkbox-label"><input type="checkbox" name="fasilitasUmum" value="Stadion" onchange="updateRingkasan()"> Stadion</label>
-                        <label class="checkbox-label"><input type="checkbox" name="fasilitasUmum" value="Wisata" onchange="updateRingkasan()"> Wisata</label>
+                        <label class="checkbox-label"><input type="checkbox" name="fasilitasPublik" value="Sekolah" onchange="updateRingkasan()"> Sekolah</label>
+                        <label class="checkbox-label"><input type="checkbox" name="fasilitasPublik" value="Universitas" onchange="updateRingkasan()"> Universitas</label>
+                        <label class="checkbox-label"><input type="checkbox" name="fasilitasPublik" value="Halte BUS" onchange="updateRingkasan()"> Halte BUS</label>
+                        <label class="checkbox-label"><input type="checkbox" name="fasilitasPublik" value="Halte Angkot" onchange="updateRingkasan()"> Halte Angkot</label>
+                        <label class="checkbox-label"><input type="checkbox" name="fasilitasPublik" value="Stasiun" onchange="updateRingkasan()"> Stasiun</label>
+                        <label class="checkbox-label"><input type="checkbox" name="fasilitasPublik" value="Terminal" onchange="updateRingkasan()"> Terminal</label>
+                        <label class="checkbox-label"><input type="checkbox" name="fasilitasPublik" value="Bandara" onchange="updateRingkasan()"> Bandara</label>
+                        <label class="checkbox-label"><input type="checkbox" name="fasilitasPublik" value="Pasar" onchange="updateRingkasan()"> Pasar</label>
+                        <label class="checkbox-label"><input type="checkbox" name="fasilitasPublik" value="Minimarket" onchange="updateRingkasan()"> Minimarket</label>
+                        <label class="checkbox-label"><input type="checkbox" name="fasilitasPublik" value="Stadion" onchange="updateRingkasan()"> Stadion</label>
+                        <label class="checkbox-label"><input type="checkbox" name="fasilitasPublik" value="Wisata" onchange="updateRingkasan()"> Wisata</label>
                     </div>
                 </div>
 
@@ -549,7 +565,6 @@
         let cursorPosition = input.selectionStart;
         let originalLength = input.value.length;
 
-        // Ambil hanya angka sebelum koma/desimal untuk mencegah pelipatan angka
         let val = input.value.replace(/^Rp\s?/, '').split(',')[0].replace(/[^0-9]/g, '');
 
         if (val === '') {
@@ -604,8 +619,11 @@
         const fRumah = Array.from(document.querySelectorAll('input[name="fasilitasRumah"]:checked')).map(cb => cb.value);
         if (fRumah.length > 0) parts.push(`Fasilitas Rumah: ${fRumah.join(', ')}`);
 
-        const fUmum = Array.from(document.querySelectorAll('input[name="fasilitasUmum"]:checked')).map(cb => cb.value);
-        if (fUmum.length > 0) parts.push(`Fasilitas Umum/Sosial: ${fUmum.join(', ')}`);
+        const fUmumSosial = Array.from(document.querySelectorAll('input[name="fasilitasUmumSosial"]:checked')).map(cb => cb.value);
+        if (fUmumSosial.length > 0) parts.push(`Fasilitas Umum/Sosial: ${fUmumSosial.join(', ')}`);
+
+        const fPublik = Array.from(document.querySelectorAll('input[name="fasilitasPublik"]:checked')).map(cb => cb.value);
+        if (fPublik.length > 0) parts.push(`Fasilitas Publik: ${fPublik.join(', ')}`);
 
         document.getElementById('ringkasan').value = parts.length > 0 ? parts.join(', ') + '.' : '';
     }
