@@ -224,7 +224,7 @@
             pointer-events: none;
         }
 
-        /* Perbaikan Center Tombol Sejajar Garis Biru (Space-around) */
+        /* Tombol Center & Lebar Lebih Proporsional (Sesuai Garis Biru Tua) */
         .btn-row {
             display: flex;
             justify-content: space-around;
@@ -233,7 +233,8 @@
         }
 
         .action-btn {
-            width: 48%;
+            width: 40%;
+            max-width: 150px;
             padding: 5px 8px;
             background: #e2e8f0;
             border: 1px solid #cbd5e1;
@@ -258,13 +259,13 @@
             margin-top: 4px;
         }
 
-        /* Style Teks Lokasi Polos Tanpa Box Hijau/Abu */
+        /* Tampilan Lokasi Polos & Rapat */
         .location-info {
             font-size: 11px;
             margin-top: 4px;
             display: flex;
             flex-direction: column;
-            gap: 3px;
+            gap: 2px;
             color: #333;
         }
 
@@ -272,6 +273,12 @@
             display: flex;
             align-items: flex-start;
             gap: 4px;
+        }
+
+        /* Kotak Input Jalan Sejajar dengan Teks Wilayah & Sangat Dempet */
+        .jalan-input-wrapper {
+            margin-top: 2px;
+            padding-left: 56px;
         }
 
         .footer-action {
@@ -386,7 +393,6 @@
                 <button type="button" class="action-btn" onclick="alert('Pin Maps Aktif')">Tandai di Maps</button>
             </div>
             
-            <!-- Tampilan Polos Tanpa Box Hijau -->
             <div class="location-info">
                 <div id="statusTitle">⚠️ Tambahkan lokasi</div>
                 <div>🔗 Link Gmaps: <a href="#" target="_blank" id="gmapsLink" style="display:none;"></a></div>
@@ -394,8 +400,8 @@
                     <span>📌 Wilayah:</span>
                     <span id="wilayahText">-</span>
                 </div>
-                <div style="margin-top: 4px;">
-                    <input type="text" id="inputJalan" placeholder="Cth: Jl/Kp/Gg/Blok/Nomer/Nama Perumahan" oninput="updateJalanManual()">
+                <div class="jalan-input-wrapper">
+                    <input type="text" id="inputJalan" placeholder="Cth: Jl/Kp/Gg/Blok/Nomer/Nama Perumahan (opsional)" oninput="updateJalanManual()">
                 </div>
             </div>
         </div>
