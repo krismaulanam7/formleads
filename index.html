@@ -224,15 +224,16 @@
             pointer-events: none;
         }
 
+        /* Perbaikan Center Tombol Sejajar Garis Biru (Space-around) */
         .btn-row {
             display: flex;
+            justify-content: space-around;
             gap: 8px;
-            justify-content: center;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
         }
 
         .action-btn {
-            width: 120px;
+            width: 48%;
             padding: 5px 8px;
             background: #e2e8f0;
             border: 1px solid #cbd5e1;
@@ -257,36 +258,20 @@
             margin-top: 4px;
         }
 
-        .status-box {
+        /* Style Teks Lokasi Polos Tanpa Box Hijau/Abu */
+        .location-info {
             font-size: 11px;
             margin-top: 4px;
-            padding: 6px 8px;
-            background: #f8fafc;
-            border: 1px solid #cbd5e1;
-            border-radius: 4px;
-            color: #334155;
-            line-height: 1.4;
-        }
-
-        .status-box.active {
-            background: #ecfdf5;
-            border-color: #a7f3d0;
-            color: #065f46;
-        }
-
-        .wilayah-wrapper {
-            display: flex;
-            align-items: flex-start;
-        }
-
-        .wilayah-prefix {
-            flex-shrink: 0;
-            margin-right: 4px;
-        }
-
-        .wilayah-content {
             display: flex;
             flex-direction: column;
+            gap: 3px;
+            color: #333;
+        }
+
+        .location-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 4px;
         }
 
         .footer-action {
@@ -400,17 +385,18 @@
                 <button type="button" class="action-btn" onclick="getGpsLocation()">Lokasi Saat ini</button>
                 <button type="button" class="action-btn" onclick="alert('Pin Maps Aktif')">Tandai di Maps</button>
             </div>
-            <div class="status-box" id="lokasiStatus">
+            
+            <!-- Tampilan Polos Tanpa Box Hijau -->
+            <div class="location-info">
                 <div id="statusTitle">⚠️ Tambahkan lokasi</div>
                 <div>🔗 Link Gmaps: <a href="#" target="_blank" id="gmapsLink" style="display:none;"></a></div>
-                <div class="wilayah-wrapper">
-                    <span class="wilayah-prefix">📌 Wilayah:</span>
-                    <div class="wilayah-content" id="wilayahText"></div>
+                <div class="location-row">
+                    <span>📌 Wilayah:</span>
+                    <span id="wilayahText">-</span>
                 </div>
-            </div>
-            <div class="form-group" style="margin-top: 6px; margin-bottom: 0;">
-                <label>Nama Jalan / Detail Alamat</label>
-                <input type="text" id="inputJalan" placeholder="Cth: Jl/Kp/Gg/Blok/Nomer/Nama Perumahan" oninput="updateJalanManual()">
+                <div style="margin-top: 4px;">
+                    <input type="text" id="inputJalan" placeholder="Cth: Jl/Kp/Gg/Blok/Nomer/Nama Perumahan" oninput="updateJalanManual()">
+                </div>
             </div>
         </div>
     </div>
@@ -682,14 +668,14 @@
         const jalanInput = document.getElementById('inputJalan').value.trim();
 
         if (!currentKota && !currentKec && !currentKel && !jalanInput) {
-            wilayahText.innerHTML = '';
+            wilayahText.innerText = '-';
             return;
         }
 
         let barisWilayah = `Kota/Kabupaten ${currentKota || '-'}, Kec. ${currentKec || '-'}, Kel. ${currentKel || '-'}`;
         let barisJalan = jalanInput ? `Jl. ${jalanInput}` : '';
 
-        wilayahText.innerHTML = `<span>${barisWilayah}</span>${barisJalan ? `<span>${barisJalan}</span>` : ''}`;
+        wilayahText.innerHTML = `${barisWilayah}${barisJalan ? `, ${barisJalan}` : ''}`;
     }
 
     function updateJalanManual() {
@@ -697,13 +683,11 @@
     }
 
     function setLocationData(lat, lng, kota, kec, kel, jalanDefault) {
-        const statusBox = document.getElementById('lokasiStatus');
         const statusTitle = document.getElementById('statusTitle');
         const gmapsLink = document.getElementById('gmapsLink');
 
         const url = `https://maps.google.com/?q=${lat},${lng}`;
 
-        statusBox.classList.add('active');
         statusTitle.innerText = '✅ Lokasi Berhasil ditambahkan';
         
         gmapsLink.href = url;
@@ -745,7 +729,7 @@
             foto_urls: ["https://example.com/foto1.jpg"],
             latitude: -6.12345,
             longitude: 106.12345,
-            jalan: document.getElementById('inputJalan').value,
+            wilayah_lengkap: document.getElementById('wilayahText').innerText,
             harga: document.getElementById('hargaProperti').value,
             ringkasan: document.getElementById('ringkasan').value,
             catatan: document.getElementById('catatan').value,
