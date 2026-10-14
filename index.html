@@ -272,7 +272,7 @@
             margin-top: 4px;
         }
 
-        /* CSS Grid Presisi untuk Lokasi Properti */
+        /* CSS Grid Presisi untuk Lokasi Properti & Tautan */
         .location-info {
             font-size: 11px;
             margin-top: 6px;
@@ -285,7 +285,7 @@
         .location-grid {
             display: grid;
             grid-template-columns: auto 1fr;
-            gap: 2px 4px;
+            gap: 3px 4px;
             align-items: start;
             width: 100%;
             box-sizing: border-box;
@@ -420,12 +420,19 @@
             
             <div class="location-info">
                 <div id="statusTitle">⚠️ Tambahkan lokasi</div>
-                <div class="gmaps-link-container">🔗 Link Gmaps: <a href="#" target="_blank" id="gmapsLink" style="display:none;"></a></div>
                 
                 <div class="location-grid">
+                    <!-- Baris Tautan -->
+                    <span class="loc-label" id="tautanLabel" style="display:none;">🔗 Tautan:</span>
+                    <div class="gmaps-link-container" id="tautanContainer" style="display:none;">
+                        <a href="#" target="_blank" id="gmapsLink"></a>
+                    </div>
+
+                    <!-- Baris Wilayah -->
                     <span class="loc-label">📌 Wilayah:</span>
                     <span id="wilayahText">-</span>
                     
+                    <!-- Baris Input Jalan Manual -->
                     <div class="jalan-input-container">
                         <input type="text" id="inputJalan" placeholder="Cth: Jl/Kp/Gg/Blok/Nomer/Nama Perumahan (Isi manual)">
                     </div>
@@ -699,15 +706,18 @@
 
     function setLocationData(lat, lng, kota, kec, kel) {
         const statusTitle = document.getElementById('statusTitle');
+        const tautanLabel = document.getElementById('tautanLabel');
+        const tautanContainer = document.getElementById('tautanContainer');
         const gmapsLink = document.getElementById('gmapsLink');
 
         const url = `https://maps.google.com/?q=${lat},${lng}`;
 
         statusTitle.innerText = '✅ Lokasi Berhasil ditambahkan';
         
+        tautanLabel.style.display = 'block';
+        tautanContainer.style.display = 'block';
         gmapsLink.href = url;
         gmapsLink.innerText = url;
-        gmapsLink.style.display = 'inline';
 
         currentKota = kota;
         currentKec = kec;
