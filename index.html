@@ -206,6 +206,15 @@
             white-space: nowrap;
         }
 
+        /* Perbaikan Grid Responsif untuk Status Properti (3 Kolom Merata) */
+        .radio-grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 4px;
+            width: 100%;
+        }
+
+        /* Perbaikan Grid 4 Kolom Seragam untuk Tracking Leads agar Vertikal Sejajar Sempurna */
         .radio-grid-4 {
             display: grid;
             grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -213,18 +222,11 @@
             width: 100%;
         }
 
-        .radio-grid-3 {
-            display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 6px;
-        }
-
         .disabled-section {
             opacity: 0.4;
             pointer-events: none;
         }
 
-        /* Tombol Center & Lebar Lebih Proporsional (Sesuai Garis Biru Tua) */
         .btn-row {
             display: flex;
             justify-content: space-around;
@@ -259,7 +261,7 @@
             margin-top: 4px;
         }
 
-        /* Tampilan Lokasi Polos & Rapat */
+        /* Tampilan Lokasi Responsif & Rapi */
         .location-info {
             font-size: 11px;
             margin-top: 4px;
@@ -275,7 +277,11 @@
             gap: 4px;
         }
 
-        /* Kotak Input Jalan Sejajar dengan Teks Wilayah & Sangat Dempet */
+        .gmaps-link-container {
+            word-break: break-all;
+            overflow-wrap: break-word;
+        }
+
         .jalan-input-wrapper {
             margin-top: 2px;
             padding-left: 56px;
@@ -395,7 +401,7 @@
             
             <div class="location-info">
                 <div id="statusTitle">⚠️ Tambahkan lokasi</div>
-                <div>🔗 Link Gmaps: <a href="#" target="_blank" id="gmapsLink" style="display:none;"></a></div>
+                <div class="gmaps-link-container">🔗 Link Gmaps: <a href="#" target="_blank" id="gmapsLink" style="display:none;"></a></div>
                 <div class="location-row">
                     <span>📌 Wilayah:</span>
                     <span id="wilayahText">-</span>
@@ -541,8 +547,8 @@
             <div class="form-group">
                 <label>Status Listing</label>
                 <div class="radio-grid-4">
-                    <label class="radio-label"><input type="radio" name="statusListing" value="Open" checked onchange="toggleStatusTracking()"> Open</label>
-                    <label class="radio-label"><input type="radio" name="statusListing" value="Sold" onchange="toggleStatusTracking()"> Sold</label>
+                    <label class="radio-label" style="grid-column: span 2;"><input type="radio" name="statusListing" value="Open" checked onchange="toggleStatusTracking()"> Open</label>
+                    <label class="radio-label" style="grid-column: span 2;"><input type="radio" name="statusListing" value="Sold" onchange="toggleStatusTracking()"> Sold</label>
                 </div>
             </div>
 
@@ -550,9 +556,9 @@
                 <div class="form-group">
                     <label>Status Followup</label>
                     <div class="radio-grid-4">
-                        <label class="radio-label"><input type="radio" name="statusFollowup" value="Belum" checked> Belum</label>
-                        <label class="radio-label"><input type="radio" name="statusFollowup" value="On Process"> On Process</label>
-                        <label class="radio-label"><input type="radio" name="statusFollowup" value="Close"> Close</label>
+                        <label class="radio-label" style="grid-column: span 1;"><input type="radio" name="statusFollowup" value="Belum" checked> Belum</label>
+                        <label class="radio-label" style="grid-column: span 2;"><input type="radio" name="statusFollowup" value="On Process"> On Process</label>
+                        <label class="radio-label" style="grid-column: span 1;"><input type="radio" name="statusFollowup" value="Close"> Close</label>
                     </div>
                 </div>
                 <div class="form-group" style="margin-bottom: 0;">
