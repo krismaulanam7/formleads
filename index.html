@@ -272,7 +272,7 @@
             margin-top: 4px;
         }
 
-        /* Perbaikan styling Lokasi Properti agar sejajar rapi */
+        /* CSS Grid Presisi untuk Lokasi Properti */
         .location-info {
             font-size: 11px;
             margin-top: 6px;
@@ -282,10 +282,17 @@
             color: #333;
         }
 
-        .location-row {
-            display: flex;
-            align-items: flex-start;
-            gap: 4px;
+        .location-grid {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 2px 4px;
+            align-items: start;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .loc-label {
+            white-space: nowrap;
         }
 
         .gmaps-link-container {
@@ -293,8 +300,9 @@
             overflow-wrap: break-word;
         }
 
-        .jalan-input-wrapper {
-            margin-top: 4px;
+        .jalan-input-container {
+            grid-column: 2;
+            margin-top: 2px;
             width: 100%;
         }
 
@@ -413,12 +421,14 @@
             <div class="location-info">
                 <div id="statusTitle">⚠️ Tambahkan lokasi</div>
                 <div class="gmaps-link-container">🔗 Link Gmaps: <a href="#" target="_blank" id="gmapsLink" style="display:none;"></a></div>
-                <div class="location-row">
-                    <span>📌 Wilayah:</span>
+                
+                <div class="location-grid">
+                    <span class="loc-label">📌 Wilayah:</span>
                     <span id="wilayahText">-</span>
-                </div>
-                <div class="jalan-input-wrapper">
-                    <input type="text" id="inputJalan" placeholder="Cth: Jl/Kp/Gg/Blok/Nomer/Nama Perumahan (Isi manual)">
+                    
+                    <div class="jalan-input-container">
+                        <input type="text" id="inputJalan" placeholder="Cth: Jl/Kp/Gg/Blok/Nomer/Nama Perumahan (Isi manual)">
+                    </div>
                 </div>
             </div>
         </div>
@@ -684,7 +694,6 @@
             wilayahText.innerText = '-';
             return;
         }
-        // Hanya menampilkan hirarki administratif murni
         wilayahText.innerText = `Kota/Kab. ${currentKota || '-'}, Kec. ${currentKec || '-'}, Kel. ${currentKel || '-'}`;
     }
 
@@ -704,8 +713,6 @@
         currentKec = kec;
         currentKel = kel;
 
-        // Input jalan dibiarkan kosong (murni diisi manual oleh user)
-
         renderWilayahText();
     }
 
@@ -722,7 +729,6 @@
     function submitData() {
         const statusListingVal = document.querySelector('input[name="statusListing"]:checked').value;
         
-        // Menggabungkan wilayah administratif dan input manual jalan untuk payload data
         const wilayahAdmin = document.getElementById('wilayahText').innerText;
         const jalanManual = document.getElementById('inputJalan').value.trim();
         const wilayahLengkapFinal = jalanManual ? `${wilayahAdmin}, Jl. ${jalanManual}` : wilayahAdmin;
