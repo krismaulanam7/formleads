@@ -420,7 +420,7 @@
             <label>Aksi</label>
             <div class="btn-row">
                 <button type="button" class="action-btn" onclick="getGpsLocation()">Lokasi Saat ini</button>
-                <button type="button" class="action-btn" onclick="alert('Pin Maps Aktif')">Tandai di Maps</button>
+                <button type="button" class="action-btn" onclick="tandaiDiMaps()">Tandai di Maps</button>
             </div>
             
             <div class="location-info">
@@ -612,9 +612,9 @@
     const tg = window.Telegram.WebApp;
     tg.expand();
 
-    let currentKota = "";
-    let currentKec = "";
-    let currentKel = "";
+    let currentKota = "Serang";
+    let currentKec = "Cipocok Jaya";
+    let currentKel = "Banjaragung";
 
     function updateCodePrefix() {
         const sub = document.getElementById('subKategori').value;
@@ -706,10 +706,6 @@
 
     function renderWilayahText() {
         const wilayahText = document.getElementById('wilayahText');
-        if (!currentKota && !currentKec && !currentKel) {
-            wilayahText.innerText = '-';
-            return;
-        }
         wilayahText.innerText = `Kota/Kab. ${currentKota || '-'}, Kec. ${currentKec || '-'}, Kel. ${currentKel || '-'}`;
     }
 
@@ -743,6 +739,35 @@
                 setLocationData(lat, lng, "Serang", "Cipocok Jaya", "Banjaragung");
             }, () => { alert('Gagal mendeteksi GPS.'); });
         } else { alert('Geolocation tidak didukung.'); }
+    }
+
+    function tandaiDiMaps() {
+        // Membuka Google Maps agar pengguna bisa menandai lokasi
+        const mapsUrl = "https://maps.google.com";
+        if (tg && tg.openLink) {
+            tg.openLink(mapsUrl);
+        } else {
+            window.open(mapsUrl, '_blank');
+        }
+
+        // Prompt otomatis untuk memasukkan link/koordinat yang sudah disalin dari Maps
+        setTimeout(() => {
+            const pastedUrl = prompt("Paste Link atau Koordinat Google Maps lokasi yang sudah Anda tandai di sini:");
+            if (pastedUrl && pastedUrl.trim() !== "") {
+                const statusTitle = document.getElementById('statusTitle');
+                const tautanLabel = document.getElementById('tautanLabel');
+                const tautanContainer = document.getElementById('tautanContainer');
+                const gmapsLink = document.getElementById('gmapsLink');
+
+                statusTitle.innerText = '✅Lokasi Berhasil ditambahkan';
+                tautanLabel.style.display = 'flex';
+                tautanContainer.style.display = 'block';
+                gmapsLink.href = pastedUrl.trim();
+                gmapsLink.innerText = pastedUrl.trim();
+
+                renderWilayahText();
+            }
+        }, 600);
     }
 
     function submitData() {
