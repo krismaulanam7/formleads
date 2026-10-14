@@ -272,12 +272,13 @@
             margin-top: 4px;
         }
 
+        /* Perbaikan styling Lokasi Properti agar sejajar rapi */
         .location-info {
             font-size: 11px;
-            margin-top: 4px;
+            margin-top: 6px;
             display: flex;
             flex-direction: column;
-            gap: 2px;
+            gap: 4px;
             color: #333;
         }
 
@@ -293,8 +294,8 @@
         }
 
         .jalan-input-wrapper {
-            margin-top: 2px;
-            padding-left: 56px;
+            margin-top: 4px;
+            width: 100%;
         }
 
         .footer-action {
@@ -417,7 +418,7 @@
                     <span id="wilayahText">-</span>
                 </div>
                 <div class="jalan-input-wrapper">
-                    <input type="text" id="inputJalan" placeholder="Cth: Jl/Kp/Gg/Blok/Nomer/Nama Perumahan (opsional)" oninput="updateJalanManual()">
+                    <input type="text" id="inputJalan" placeholder="Cth: Jl/Kp/Gg/Blok/Nomer/Nama Perumahan (Isi manual)">
                 </div>
             </div>
         </div>
@@ -679,24 +680,15 @@
 
     function renderWilayahText() {
         const wilayahText = document.getElementById('wilayahText');
-        const jalanInput = document.getElementById('inputJalan').value.trim();
-
-        if (!currentKota && !currentKec && !currentKel && !jalanInput) {
+        if (!currentKota && !currentKec && !currentKel) {
             wilayahText.innerText = '-';
             return;
         }
-
-        let barisWilayah = `Kota/Kabupaten ${currentKota || '-'}, Kec. ${currentKec || '-'}, Kel. ${currentKel || '-'}`;
-        let barisJalan = jalanInput ? `Jl. ${jalanInput}` : '';
-
-        wilayahText.innerHTML = `${barisWilayah}${barisJalan ? `, ${barisJalan}` : ''}`;
+        // Hanya menampilkan hirarki administratif murni
+        wilayahText.innerText = `Kota/Kab. ${currentKota || '-'}, Kec. ${currentKec || '-'}, Kel. ${currentKel || '-'}`;
     }
 
-    function updateJalanManual() {
-        renderWilayahText();
-    }
-
-    function setLocationData(lat, lng, kota, kec, kel, jalanDefault) {
+    function setLocationData(lat, lng, kota, kec, kel) {
         const statusTitle = document.getElementById('statusTitle');
         const gmapsLink = document.getElementById('gmapsLink');
 
@@ -712,9 +704,7 @@
         currentKec = kec;
         currentKel = kel;
 
-        if (jalanDefault && !document.getElementById('inputJalan').value) {
-            document.getElementById('inputJalan').value = jalanDefault;
-        }
+        // Input jalan dibiarkan kosong (murni diisi manual oleh user)
 
         renderWilayahText();
     }
@@ -724,13 +714,18 @@
             navigator.geolocation.getCurrentPosition(position => {
                 const lat = position.coords.latitude;
                 const lng = position.coords.longitude;
-                setLocationData(lat, lng, "Serang", "Cipocok Jaya", "Banjaragung", "Raya Petir - Serang");
+                setLocationData(lat, lng, "Serang", "Cipocok Jaya", "Banjaragung");
             }, () => { alert('Gagal mendeteksi GPS.'); });
         } else { alert('Geolocation tidak didukung.'); }
     }
 
     function submitData() {
         const statusListingVal = document.querySelector('input[name="statusListing"]:checked').value;
+        
+        // Menggabungkan wilayah administratif dan input manual jalan untuk payload data
+        const wilayahAdmin = document.getElementById('wilayahText').innerText;
+        const jalanManual = document.getElementById('inputJalan').value.trim();
+        const wilayahLengkapFinal = jalanManual ? `${wilayahAdmin}, Jl. ${jalanManual}` : wilayahAdmin;
         
         const payload = {
             kode_data: document.getElementById('displayCode').innerText.replace('KODE: ', ''),
@@ -743,7 +738,7 @@
             foto_urls: ["https://example.com/foto1.jpg"],
             latitude: -6.12345,
             longitude: 106.12345,
-            wilayah_lengkap: document.getElementById('wilayahText').innerText,
+            wilayah_lengkap: wilayahLengkapFinal,
             harga: document.getElementById('hargaProperti').value,
             ringkasan: document.getElementById('ringkasan').value,
             catatan: document.getElementById('catatan').value,
