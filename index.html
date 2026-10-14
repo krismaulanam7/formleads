@@ -209,11 +209,11 @@
             white-space: nowrap;
         }
 
-        /* Status Properti Grid: Kustom Persentase (25% 45% 30%) agar Secondary leluasa */
+        /* Status Properti: Flexbox space-between agar Secondary berada pas di tengah */
         .status-properti-grid {
-            display: grid;
-            grid-template-columns: 25% 45% 30%;
-            gap: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             width: 100%;
             box-sizing: border-box;
         }
