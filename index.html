@@ -213,10 +213,10 @@
             width: 100%;
         }
 
-        /* Master Grid 4 Kolom Seragam untuk Tracking Leads */
+        /* Master Grid 4 Kolom dengan Lebar Kolom ke-2 Disesuaikan untuk Mencegah Tumpang Tindih */
         .radio-grid-4 {
             display: grid;
-            grid-template-columns: repeat(4, minmax(0, 1fr));
+            grid-template-columns: minmax(50px, 1fr) minmax(95px, 1.2fr) minmax(60px, 1fr) minmax(60px, 1fr);
             gap: 4px;
             width: 100%;
         }
@@ -542,33 +542,33 @@
     <div class="section">
         <div class="section-title">📊 6. TRACKING LEADS</div>
         <div class="card-box">
-            <!-- Status Listing (Master Grid 4 Kolom dengan Spanning) -->
+            <!-- Status Listing (Open di Kolom 1, Sold di Kolom 2 agar sejajar dengan On Process & Warm) -->
             <div class="form-group">
                 <label>Status Listing</label>
                 <div class="radio-grid-4">
-                    <label class="radio-label" style="grid-column: 1 / span 1;"><input type="radio" name="statusListing" value="Open" checked onchange="toggleStatusTracking()"> Open</label>
-                    <label class="radio-label" style="grid-column: 3 / span 2;"><input type="radio" name="statusListing" value="Sold" onchange="toggleStatusTracking()"> Sold</label>
+                    <label class="radio-label" style="grid-column: 1;"><input type="radio" name="statusListing" value="Open" checked onchange="toggleStatusTracking()"> Open</label>
+                    <label class="radio-label" style="grid-column: 2;"><input type="radio" name="statusListing" value="Sold" onchange="toggleStatusTracking()"> Sold</label>
                 </div>
             </div>
 
             <div id="trackingDependentFields">
-                <!-- Status Followup (Master Grid 4 Kolom dengan Spanning agar On Process tidak menabrak Close) -->
+                <!-- Status Followup (Belum di Col 1, On Process di Col 2, Close di Col 3) -->
                 <div class="form-group">
                     <label>Status Followup</label>
                     <div class="radio-grid-4">
-                        <label class="radio-label" style="grid-column: 1 / span 1;"><input type="radio" name="statusFollowup" value="Belum" checked> Belum</label>
-                        <label class="radio-label" style="grid-column: 2 / span 2;"><input type="radio" name="statusFollowup" value="On Process"> On Process</label>
-                        <label class="radio-label" style="grid-column: 4 / span 1;"><input type="radio" name="statusFollowup" value="Close"> Close</label>
+                        <label class="radio-label" style="grid-column: 1;"><input type="radio" name="statusFollowup" value="Belum" checked> Belum</label>
+                        <label class="radio-label" style="grid-column: 2;"><input type="radio" name="statusFollowup" value="On Process"> On Process</label>
+                        <label class="radio-label" style="grid-column: 3;"><input type="radio" name="statusFollowup" value="Close"> Close</label>
                     </div>
                 </div>
-                <!-- Status Leads (Master Grid 4 Kolom) -->
+                <!-- Status Leads (Cold di Col 1, Warm di Col 2, HOT di Col 3, Suspect di Col 4) -->
                 <div class="form-group" style="margin-bottom: 0;">
                     <label>Status Leads</label>
                     <div class="radio-grid-4">
-                        <label class="radio-label" style="grid-column: 1 / span 1;"><input type="radio" name="statusLeads" value="Cold"> Cold</label>
-                        <label class="radio-label" style="grid-column: 2 / span 1;"><input type="radio" name="statusLeads" value="Warm"> Warm</label>
-                        <label class="radio-label" style="grid-column: 3 / span 1;"><input type="radio" name="statusLeads" value="HOT" checked> HOT</label>
-                        <label class="radio-label" style="grid-column: 4 / span 1;"><input type="radio" name="statusLeads" value="Suspect"> Suspect</label>
+                        <label class="radio-label" style="grid-column: 1;"><input type="radio" name="statusLeads" value="Cold"> Cold</label>
+                        <label class="radio-label" style="grid-column: 2;"><input type="radio" name="statusLeads" value="Warm"> Warm</label>
+                        <label class="radio-label" style="grid-column: 3;"><input type="radio" name="statusLeads" value="HOT" checked> HOT</label>
+                        <label class="radio-label" style="grid-column: 4;"><input type="radio" name="statusLeads" value="Suspect"> Suspect</label>
                     </div>
                 </div>
             </div>
