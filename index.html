@@ -96,6 +96,7 @@
             border: 1px solid var(--border-color);
             border-radius: 6px;
             padding: 8px;
+            overflow-x: auto;
         }
 
         .form-group {
@@ -213,12 +214,18 @@
             width: 100%;
         }
 
-        /* Master Grid 4 Kolom dengan Lebar Kolom ke-2 Disesuaikan untuk Mencegah Tumpang Tindih */
-        .radio-grid-4 {
+        /* Unified Master Grid untuk Tracking Leads (Menjamin Sejajar Vertikal & Full Text Tanpa Overflow) */
+        .unified-tracking-grid {
             display: grid;
-            grid-template-columns: minmax(50px, 1fr) minmax(95px, 1.2fr) minmax(60px, 1fr) minmax(60px, 1fr);
-            gap: 4px;
+            grid-template-columns: repeat(4, max-content);
+            gap: 4px 10px;
             width: 100%;
+        }
+
+        .grid-section-label {
+            font-size: 11px;
+            color: #222;
+            font-weight: bold;
         }
 
         .disabled-section {
@@ -542,35 +549,24 @@
     <div class="section">
         <div class="section-title">📊 6. TRACKING LEADS</div>
         <div class="card-box">
-            <!-- Status Listing (Open di Kolom 1, Sold di Kolom 2 agar sejajar dengan On Process & Warm) -->
-            <div class="form-group">
-                <label>Status Listing</label>
-                <div class="radio-grid-4">
-                    <label class="radio-label" style="grid-column: 1;"><input type="radio" name="statusListing" value="Open" checked onchange="toggleStatusTracking()"> Open</label>
-                    <label class="radio-label" style="grid-column: 2;"><input type="radio" name="statusListing" value="Sold" onchange="toggleStatusTracking()"> Sold</label>
-                </div>
-            </div>
+            <div class="unified-tracking-grid">
+                <!-- Status Listing -->
+                <div class="grid-section-label" style="grid-column: 1 / -1;">Status Listing</div>
+                <label class="radio-label" style="grid-column: 1;"><input type="radio" name="statusListing" value="Open" checked onchange="toggleStatusTracking()"> Open</label>
+                <label class="radio-label" style="grid-column: 2;"><input type="radio" name="statusListing" value="Sold" onchange="toggleStatusTracking()"> Sold</label>
 
-            <div id="trackingDependentFields">
-                <!-- Status Followup (Belum di Col 1, On Process di Col 2, Close di Col 3) -->
-                <div class="form-group">
-                    <label>Status Followup</label>
-                    <div class="radio-grid-4">
-                        <label class="radio-label" style="grid-column: 1;"><input type="radio" name="statusFollowup" value="Belum" checked> Belum</label>
-                        <label class="radio-label" style="grid-column: 2;"><input type="radio" name="statusFollowup" value="On Process"> On Process</label>
-                        <label class="radio-label" style="grid-column: 3;"><input type="radio" name="statusFollowup" value="Close"> Close</label>
-                    </div>
-                </div>
-                <!-- Status Leads (Cold di Col 1, Warm di Col 2, HOT di Col 3, Suspect di Col 4) -->
-                <div class="form-group" style="margin-bottom: 0;">
-                    <label>Status Leads</label>
-                    <div class="radio-grid-4">
-                        <label class="radio-label" style="grid-column: 1;"><input type="radio" name="statusLeads" value="Cold"> Cold</label>
-                        <label class="radio-label" style="grid-column: 2;"><input type="radio" name="statusLeads" value="Warm"> Warm</label>
-                        <label class="radio-label" style="grid-column: 3;"><input type="radio" name="statusLeads" value="HOT" checked> HOT</label>
-                        <label class="radio-label" style="grid-column: 4;"><input type="radio" name="statusLeads" value="Suspect"> Suspect</label>
-                    </div>
-                </div>
+                <!-- Status Followup -->
+                <div class="grid-section-label tracking-dependent" style="grid-column: 1 / -1; margin-top: 4px;">Status Followup</div>
+                <label class="radio-label tracking-dependent" style="grid-column: 1;"><input type="radio" name="statusFollowup" value="Belum" checked> Belum</label>
+                <label class="radio-label tracking-dependent" style="grid-column: 2;"><input type="radio" name="statusFollowup" value="On Process"> On Process</label>
+                <label class="radio-label tracking-dependent" style="grid-column: 3;"><input type="radio" name="statusFollowup" value="Close"> Close</label>
+
+                <!-- Status Leads -->
+                <div class="grid-section-label tracking-dependent" style="grid-column: 1 / -1; margin-top: 4px;">Status Leads</div>
+                <label class="radio-label tracking-dependent" style="grid-column: 1;"><input type="radio" name="statusLeads" value="Cold"> Cold</label>
+                <label class="radio-label tracking-dependent" style="grid-column: 2;"><input type="radio" name="statusLeads" value="Warm"> Warm</label>
+                <label class="radio-label tracking-dependent" style="grid-column: 3;"><input type="radio" name="statusLeads" value="HOT" checked> HOT</label>
+                <label class="radio-label tracking-dependent" style="grid-column: 4;"><input type="radio" name="statusLeads" value="Suspect"> Suspect</label>
             </div>
         </div>
     </div>
@@ -664,14 +660,14 @@
 
     function toggleStatusTracking() {
         const statusListing = document.querySelector('input[name="statusListing"]:checked').value;
-        const dependentContainer = document.getElementById('trackingDependentFields');
-        const inputs = dependentContainer.querySelectorAll('input');
+        const dependents = document.querySelectorAll('.tracking-dependent');
+        const inputs = document.querySelectorAll('.tracking-dependent input');
 
         if (statusListing === 'Sold') {
-            dependentContainer.classList.add('disabled-section');
+            dependents.forEach(el => el.classList.add('disabled-section'));
             inputs.forEach(input => input.disabled = true);
         } else {
-            dependentContainer.classList.remove('disabled-section');
+            dependents.forEach(el => el.classList.remove('disabled-section'));
             inputs.forEach(input => input.disabled = false);
         }
     }
