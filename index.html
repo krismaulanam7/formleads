@@ -280,6 +280,11 @@
             color: #333;
         }
 
+        #statusTitle {
+            color: #d97706;
+            font-weight: 600;
+        }
+
         .location-grid {
             display: grid;
             grid-template-columns: auto 1fr;
@@ -457,7 +462,7 @@
     <div class="section">
         <div class="section-title">🖼️ 3. FOTO PROPERTI</div>
         <div class="card-box">
-            <label>Aksi</label>
+            <label>Pilih</label>
             <div class="btn-row">
                 <button type="button" class="action-btn" onclick="alert('Buka Kamera')">Ambil Foto</button>
                 <button type="button" class="action-btn" onclick="alert('Upload Galeri')">Upload</button>
@@ -471,7 +476,7 @@
     <div class="section">
         <div class="section-title">📍 4. LOKASI PROPERTI</div>
         <div class="card-box">
-            <label>Aksi</label>
+            <label>Pilih</label>
             <div class="btn-row">
                 <button type="button" class="action-btn" onclick="getGpsLocation()">Lokasi Saat ini</button>
                 <button type="button" class="action-btn" onclick="tandaiDiMaps()">Tandai di Maps</button>
@@ -786,6 +791,7 @@
         const url = `https://maps.google.com/?q=${lat},${lng}`;
 
         statusTitle.innerText = '✅Lokasi Berhasil ditambahkan';
+        statusTitle.style.color = '#10b981'; // Berubah jadi hijau saat berhasil
         
         tautanLabel.style.display = 'flex';
         tautanContainer.style.display = 'block';
@@ -810,7 +816,6 @@
     }
 
     function tandaiDiMaps() {
-        // 1. Otomatis Buka Google Maps
         const mapsUrl = "https://maps.google.com";
         if (tg && tg.openLink) {
             tg.openLink(mapsUrl);
@@ -818,7 +823,6 @@
             window.open(mapsUrl, '_blank');
         }
 
-        // 2. Tampilkan Modal Kotak Input Custom
         document.getElementById('manualMapsUrl').value = '';
         document.getElementById('mapsModal').style.display = 'flex';
     }
@@ -836,6 +840,8 @@
             const gmapsLink = document.getElementById('gmapsLink');
 
             statusTitle.innerText = '✅Lokasi Berhasil ditambahkan';
+            statusTitle.style.color = '#10b981'; // Berubah jadi hijau saat berhasil
+            
             tautanLabel.style.display = 'flex';
             tautanContainer.style.display = 'block';
             gmapsLink.href = url;
