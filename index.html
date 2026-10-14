@@ -311,6 +311,60 @@
             width: 100%;
         }
 
+        /* Modal Box Custom untuk Input Link Maps */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
+        }
+
+        .modal-box {
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 12px;
+            width: 100%;
+            max-width: 360px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .modal-title {
+            font-weight: bold;
+            font-size: 12px;
+            margin-bottom: 8px;
+            color: #111;
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 6px;
+            margin-top: 10px;
+        }
+
+        .modal-btn {
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+        }
+
+        .modal-btn-cancel {
+            background: #e4e4e7;
+            color: #3f3f46;
+        }
+
+        .modal-btn-confirm {
+            background: #2563eb;
+            color: #ffffff;
+        }
+
         .footer-action {
             padding: 10px;
             background: #fff;
@@ -608,6 +662,20 @@
     </div>
 </div>
 
+<!-- Modal Custom Pop-up Tempel Link Maps -->
+<div class="modal-overlay" id="mapsModal">
+    <div class="modal-box">
+        <div class="modal-title">📌 Tempel Link Google Maps</div>
+        <div class="form-group">
+            <input type="text" id="manualMapsUrl" placeholder="https://maps.google.com/..." />
+        </div>
+        <div class="modal-actions">
+            <button class="modal-btn modal-btn-cancel" onclick="closeMapsModal()">Batal</button>
+            <button class="modal-btn modal-btn-confirm" onclick="applyMapsUrl()">Gunakan Link Ini</button>
+        </div>
+    </div>
+</div>
+
 <script>
     const tg = window.Telegram.WebApp;
     tg.expand();
@@ -742,7 +810,7 @@
     }
 
     function tandaiDiMaps() {
-        // Membuka Google Maps agar pengguna bisa menandai lokasi
+        // 1. Otomatis Buka Google Maps
         const mapsUrl = "https://maps.google.com";
         if (tg && tg.openLink) {
             tg.openLink(mapsUrl);
@@ -750,24 +818,34 @@
             window.open(mapsUrl, '_blank');
         }
 
-        // Prompt otomatis untuk memasukkan link/koordinat yang sudah disalin dari Maps
-        setTimeout(() => {
-            const pastedUrl = prompt("Paste Link atau Koordinat Google Maps lokasi yang sudah Anda tandai di sini:");
-            if (pastedUrl && pastedUrl.trim() !== "") {
-                const statusTitle = document.getElementById('statusTitle');
-                const tautanLabel = document.getElementById('tautanLabel');
-                const tautanContainer = document.getElementById('tautanContainer');
-                const gmapsLink = document.getElementById('gmapsLink');
+        // 2. Tampilkan Modal Kotak Input Custom
+        document.getElementById('manualMapsUrl').value = '';
+        document.getElementById('mapsModal').style.display = 'flex';
+    }
 
-                statusTitle.innerText = '✅Lokasi Berhasil ditambahkan';
-                tautanLabel.style.display = 'flex';
-                tautanContainer.style.display = 'block';
-                gmapsLink.href = pastedUrl.trim();
-                gmapsLink.innerText = pastedUrl.trim();
+    function closeMapsModal() {
+        document.getElementById('mapsModal').style.display = 'none';
+    }
 
-                renderWilayahText();
-            }
-        }, 600);
+    function applyMapsUrl() {
+        const url = document.getElementById('manualMapsUrl').value.trim();
+        if (url) {
+            const statusTitle = document.getElementById('statusTitle');
+            const tautanLabel = document.getElementById('tautanLabel');
+            const tautanContainer = document.getElementById('tautanContainer');
+            const gmapsLink = document.getElementById('gmapsLink');
+
+            statusTitle.innerText = '✅Lokasi Berhasil ditambahkan';
+            tautanLabel.style.display = 'flex';
+            tautanContainer.style.display = 'block';
+            gmapsLink.href = url;
+            gmapsLink.innerText = url;
+
+            renderWilayahText();
+            closeMapsModal();
+        } else {
+            alert('Harap masukkan link Google Maps!');
+        }
     }
 
     function submitData() {
