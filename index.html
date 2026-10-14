@@ -3,11 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Lokasi Properti - Telegram Mini App</title>
+  <title>Input Properti - Telegram Mini App</title>
   <!-- Telegram Web App SDK -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
-    /* Reset & Base Styling untuk Mobile First */
     * {
       box-sizing: border-box;
       margin: 0;
@@ -16,8 +15,8 @@
     }
 
     body {
-      background-color: #f4f4f5;
-      color: #1c1c1e;
+      background-color: var(--tg-theme-bg-color, #f4f4f5);
+      color: var(--tg-theme-text-color, #1c1c1e);
       display: flex;
       justify-content: center;
       padding: 12px;
@@ -27,27 +26,28 @@
 
     .container {
       width: 100%;
-      max-width: 390px; /* Lebar standar layar HP */
-      background: #ffffff;
+      max-width: 390px;
+      background: var(--tg-theme-secondary-bg-color, #ffffff);
       border-radius: 12px;
-      padding: 12px 14px;
+      padding: 14px;
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
     }
 
-    /* Header Status Success */
+    /* Status Header */
     .status-header {
       color: #10b981;
       font-weight: 600;
-      margin-bottom: 8px;
       display: flex;
       align-items: center;
-      gap: 2px;
     }
 
     /* 
-      STRUKTUR UTAMA CSS GRID 
-      Kolom 1 (Label & Colon) : Dipaksa rata kanan (Right Aligned)
-      Kolom 2 (Value Column)  : Dipaksa rata kiri (Left Aligned) - SEMUA NILAI TERKUNCI DI SINI
+      STRUKTUR GRID PRESISI:
+      Kolom 1: Label & Titik dua
+      Kolom 2: Tempat terkunci huruf h, q, K, B, dan Text Box
     */
     .property-location-grid {
       display: grid;
@@ -57,76 +57,89 @@
       align-items: start;
     }
 
-    /* Style Label & Titik Dua */
     .grid-label {
       display: flex;
       justify-content: space-between;
       align-items: center;
       white-space: nowrap;
       font-weight: 500;
-      color: #3f3f46;
+      color: var(--tg-theme-hint-color, #3f3f46);
     }
 
     .grid-label .colon {
-      margin-left: 2px; /* Menjaga titik dua rapat di kata Wilayah & Tautan */
+      margin-left: 2px;
     }
 
-    /* Style Kolom Nilai (Value) */
     .grid-value {
       word-break: break-all;
-      color: #18181b;
+      color: var(--tg-theme-text-color, #18181b);
     }
 
     .grid-value a {
-      color: #2563eb;
+      color: var(--tg-theme-link-color, #2563eb);
       text-decoration: none;
     }
 
-    .grid-value a:hover {
-      text-decoration: underline;
-    }
-
-    /* Text Box Input Alamat Manual */
+    /* Textbox Alamat Manual terkunci di Kolom 2 */
     .address-input-container {
-      grid-column: 2; /* Mengunci lokasi tepat di bawah Kolom Value (Huruf K & B) */
+      grid-column: 2;
       width: 100%;
       margin-top: 2px;
     }
 
     .address-input {
       width: 100%;
-      padding: 7px 9px;
+      padding: 8px 10px;
       border: 1px solid #d4d4d8;
       border-radius: 6px;
       font-size: 12px;
-      color: #27272a;
+      color: var(--tg-theme-text-color, #27272a);
       outline: none;
       background-color: #fafafa;
-      transition: border-color 0.2s, background-color 0.2s;
+      transition: border-color 0.2s;
     }
 
     .address-input:focus {
-      border-color: #2563eb;
+      border-color: var(--tg-theme-button-color, #2563eb);
       background-color: #ffffff;
     }
 
     .address-input::placeholder {
       color: #a1a1aa;
     }
+
+    /* Tombol Aksi */
+    .submit-btn {
+      width: 100%;
+      padding: 10px;
+      background-color: var(--tg-theme-button-color, #2563eb);
+      color: var(--tg-theme-button-text-color, #ffffff);
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      margin-top: 6px;
+    }
+
+    .submit-btn:active {
+      opacity: 0.9;
+    }
   </style>
 </head>
 <body>
 
   <div class="container">
-    <!-- Header Status -->
+    
+    <!-- Status Header -->
     <div class="status-header">
       ✅Lokasi Berhasil ditambahkan
     </div>
 
-    <!-- Layout Grid Presisi -->
+    <!-- Layout Grid Rata Kiri Presisi -->
     <div class="property-location-grid">
       
-      <!-- Baris 1: Tautan -->
+      <!-- Tautan -->
       <div class="grid-label">
         <span>🔗Tautan</span>
         <span class="colon">:</span>
@@ -135,7 +148,7 @@
         <a href="https://maps.google.com/?q=-6.117276,106.1708675" target="_blank" rel="noopener">https://maps.google.com/?<br>q=-6.117276,106.1708675</a>
       </div>
 
-      <!-- Baris 2: Wilayah -->
+      <!-- Wilayah -->
       <div class="grid-label">
         <span>📌Wilayah</span>
         <span class="colon">:</span>
@@ -144,25 +157,49 @@
         Kota/Kab. Serang, Kec. Cipocok Jaya, Kel.<br>Banjaragung
       </div>
 
-      <!-- Baris 3: Text Box Alamat Lengkap -->
+      <!-- Textbox Alamat Manual -->
       <div class="address-input-container">
         <input 
           type="text" 
+          id="detailAlamat"
           class="address-input" 
           placeholder="Lengkapi alamat . . . (Kp, Jl, Gg, Blok, No)"
         />
       </div>
 
     </div>
+
+    <!-- Tombol Simpan/Kirim ke Telegram -->
+    <button class="submit-btn" onclick="simpanData()">Simpan Data Properti</button>
+
   </div>
 
   <script>
     // Inisialisasi Telegram WebApp SDK
     const tg = window.Telegram?.WebApp;
+    
     if (tg) {
       tg.ready();
-      tg.expand(); // Memaksimalkan tampilan layar Mini App
+      tg.expand(); // Memaksimalkan tampilan di HP
+    }
+
+    function simpanData() {
+      const detailAlamat = document.getElementById('detailAlamat').value;
+      
+      const payload = {
+        tautan: "https://maps.google.com/?q=-6.117276,106.1708675",
+        wilayah: "Kota/Kab. Serang, Kec. Cipocok Jaya, Kel. Banjaragung",
+        detailAlamat: detailAlamat
+      };
+
+      if (tg) {
+        // Mengirimkan data kembali ke Bot Telegram
+        tg.sendData(JSON.stringify(payload));
+      } else {
+        alert("Data berhasil disimpan: " + JSON.stringify(payload));
+      }
     }
   </script>
+
 </body>
 </html>
