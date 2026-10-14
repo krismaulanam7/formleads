@@ -1,205 +1,782 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Input Properti - Telegram Mini App</title>
-  <!-- Telegram Web App SDK -->
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Data Leads Properti</title>
+    <!-- Telegram Web App SDK -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        :root {
+            --tg-theme-bg-color: #ffffff;
+            --tg-theme-text-color: #222222;
+            --border-color: #e0e0e0;
+            --bg-card: #f8f9fa;
+        }
 
-    body {
-      background-color: var(--tg-theme-bg-color, #f4f4f5);
-      color: var(--tg-theme-text-color, #1c1c1e);
-      display: flex;
-      justify-content: center;
-      padding: 12px;
-      font-size: 13.5px;
-      line-height: 1.4;
-    }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--tg-theme-bg-color, #f4f4f5);
+            color: var(--tg-theme-text-color, #222);
+            margin: 0;
+            padding: 4px;
+            font-size: 13px;
+        }
 
-    .container {
-      width: 100%;
-      max-width: 390px;
-      background: var(--tg-theme-secondary-bg-color, #ffffff);
-      border-radius: 12px;
-      padding: 14px;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
+        .container {
+            width: 100%;
+            max-width: 480px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            box-sizing: border-box;
+        }
 
-    /* Status Header */
-    .status-header {
-      color: #10b981;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-    }
+        .app-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            background: #f1f3f5;
+            border-bottom: 1px solid var(--border-color);
+            font-weight: bold;
+        }
 
-    /* 
-      STRUKTUR GRID PRESISI:
-      Kolom 1: Label & Titik dua
-      Kolom 2: Tempat terkunci huruf h, q, K, B, dan Text Box
-    */
-    .property-location-grid {
-      display: grid;
-      grid-template-columns: auto 1fr;
-      column-gap: 6px;
-      row-gap: 6px;
-      align-items: start;
-    }
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 15px;
+            cursor: pointer;
+            color: #555;
+        }
 
-    .grid-label {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      white-space: nowrap;
-      font-weight: 500;
-      color: var(--tg-theme-hint-color, #3f3f46);
-    }
+        .save-top-btn {
+            background: #2481cc;
+            color: #fff;
+            border: none;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+        }
 
-    .grid-label .colon {
-      margin-left: 2px;
-    }
+        .sub-header {
+            display: flex;
+            justify-content: flex-end;
+            padding: 6px 10px 0 10px;
+        }
 
-    .grid-value {
-      word-break: break-all;
-      color: var(--tg-theme-text-color, #18181b);
-    }
+        .code-badge {
+            background: #e9ecef;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-weight: bold;
+            font-size: 11px;
+            color: #333;
+            border: 1px dashed #ced4da;
+        }
 
-    .grid-value a {
-      color: var(--tg-theme-link-color, #2563eb);
-      text-decoration: none;
-    }
+        .section {
+            padding: 8px 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
 
-    /* Textbox Alamat Manual terkunci di Kolom 2 */
-    .address-input-container {
-      grid-column: 2;
-      width: 100%;
-      margin-top: 2px;
-    }
+        .section-title {
+            font-weight: bold;
+            margin-bottom: 6px;
+            color: #1a1a1a;
+            font-size: 12px;
+        }
 
-    .address-input {
-      width: 100%;
-      padding: 8px 10px;
-      border: 1px solid #d4d4d8;
-      border-radius: 6px;
-      font-size: 12px;
-      color: var(--tg-theme-text-color, #27272a);
-      outline: none;
-      background-color: #fafafa;
-      transition: border-color 0.2s;
-    }
+        .card-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 8px;
+            box-sizing: border-box;
+        }
 
-    .address-input:focus {
-      border-color: var(--tg-theme-button-color, #2563eb);
-      background-color: #ffffff;
-    }
+        .form-group {
+            margin-bottom: 6px;
+        }
 
-    .address-input::placeholder {
-      color: #a1a1aa;
-    }
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
 
-    /* Tombol Aksi */
-    .submit-btn {
-      width: 100%;
-      padding: 10px;
-      background-color: var(--tg-theme-button-color, #2563eb);
-      color: var(--tg-theme-button-text-color, #ffffff);
-      border: none;
-      border-radius: 8px;
-      font-weight: 600;
-      font-size: 14px;
-      cursor: pointer;
-      margin-top: 6px;
-    }
+        label {
+            display: block;
+            font-size: 11px;
+            color: #222;
+            font-weight: bold;
+            margin-bottom: 2px;
+        }
 
-    .submit-btn:active {
-      opacity: 0.9;
-    }
-  </style>
+        .form-row {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 6px;
+        }
+
+        .form-col {
+            flex: 1;
+        }
+
+        input[type="text"],
+        input[type="tel"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 6px 8px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-size: 12px;
+            box-sizing: border-box;
+            background: #fff;
+        }
+
+        textarea {
+            resize: vertical;
+            height: 50px;
+        }
+
+        textarea[readonly] {
+            background-color: #f1f3f5;
+            color: #495057;
+        }
+
+        .toggle-btn-text {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            padding: 0;
+            margin: 2px 0;
+            user-select: none;
+            background: transparent;
+            border: none;
+            width: 100%;
+        }
+
+        .toggle-btn-text .toggle-label {
+            font-size: 12px;
+            font-weight: normal;
+            color: #222;
+            line-height: 1;
+        }
+
+        .toggle-btn-text .wedge-icon {
+            font-size: 14px;
+            line-height: 1;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .checkbox-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 4px;
+            max-height: 140px;
+            overflow-y: auto;
+            background: #fff;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            padding: 6px;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 11px;
+            font-weight: normal;
+            cursor: pointer;
+        }
+
+        .radio-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            font-size: 11px;
+            font-weight: normal;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .status-properti-grid {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .unified-tracking-grid {
+            display: grid;
+            grid-template-columns: 21% 33% 21% 25%;
+            gap: 4px 2px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .grid-section-label {
+            font-size: 11px;
+            color: #222;
+            font-weight: bold;
+        }
+
+        .disabled-section {
+            opacity: 0.4;
+            pointer-events: none;
+        }
+
+        .btn-row {
+            display: flex;
+            justify-content: space-around;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+
+        .action-btn {
+            width: 40%;
+            max-width: 150px;
+            padding: 5px 8px;
+            background: #e2e8f0;
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            text-align: center;
+            font-size: 11px;
+            box-sizing: border-box;
+        }
+
+        .hint-text {
+            font-size: 10px;
+            color: #d97706;
+            margin-top: 2px;
+            font-weight: 500;
+        }
+
+        .preview-box {
+            font-size: 11px;
+            color: #666;
+            margin-top: 4px;
+        }
+
+        /* CSS Grid Presisi untuk Lokasi Properti & Tautan (Rata Kiri Kolom Nilai Sempurna) */
+        .location-info {
+            font-size: 11px;
+            margin-top: 6px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            color: #333;
+        }
+
+        .location-grid {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 3px 6px;
+            align-items: start;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .loc-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            white-space: nowrap;
+        }
+
+        .loc-label .colon {
+            margin-left: 2px;
+        }
+
+        .gmaps-link-container {
+            word-break: break-all;
+            overflow-wrap: break-word;
+        }
+
+        .jalan-input-container {
+            grid-column: 2;
+            margin-top: 2px;
+            width: 100%;
+        }
+
+        .footer-action {
+            padding: 10px;
+            background: #fff;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 10px;
+            background: #10b981;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
 
-  <div class="container">
-    
-    <!-- Status Header -->
-    <div class="status-header">
-      ✅Lokasi Berhasil ditambahkan
+<div class="container">
+    <div class="app-header">
+        <button class="close-btn" onclick="Telegram.WebApp.close()">✕</button>
+        <span>Form Data Leads Properti</span>
+        <button class="save-top-btn" onclick="submitData()">Simpan</button>
     </div>
 
-    <!-- Layout Grid Rata Kiri Presisi -->
-    <div class="property-location-grid">
-      
-      <!-- Tautan -->
-      <div class="grid-label">
-        <span>🔗Tautan</span>
-        <span class="colon">:</span>
-      </div>
-      <div class="grid-value">
-        <a href="https://maps.google.com/?q=-6.117276,106.1708675" target="_blank" rel="noopener">https://maps.google.com/?<br>q=-6.117276,106.1708675</a>
-      </div>
-
-      <!-- Wilayah -->
-      <div class="grid-label">
-        <span>📌Wilayah</span>
-        <span class="colon">:</span>
-      </div>
-      <div class="grid-value">
-        Kota/Kab. Serang, Kec. Cipocok Jaya, Kel.<br>Banjaragung
-      </div>
-
-      <!-- Textbox Alamat Manual -->
-      <div class="address-input-container">
-        <input 
-          type="text" 
-          id="detailAlamat"
-          class="address-input" 
-          placeholder="Lengkapi alamat . . . (Kp, Jl, Gg, Blok, No)"
-        />
-      </div>
-
+    <div class="sub-header">
+        <div class="code-badge" id="displayCode">KODE: TA-B0001</div>
     </div>
 
-    <!-- Tombol Simpan/Kirim ke Telegram -->
-    <button class="submit-btn" onclick="simpanData()">Simpan Data Properti</button>
+    <!-- 1. KATEGORI PROPERTI -->
+    <div class="section">
+        <div class="section-title">📌 1. KATEGORI PROPERTI</div>
+        <div class="card-box">
+            <div class="form-group">
+                <label>Kategori</label>
+                <select id="subKategori" onchange="updateCodePrefix()">
+                    <option value="TA">Tanah</option>
+                    <option value="RM">Rumah</option>
+                    <option value="RU">Ruko</option>
+                    <option value="RK">Rukos</option>
+                    <option value="KO">Kosan</option>
+                    <option value="KN">Kontrakan</option>
+                    <option value="KE">Kebun</option>
+                    <option value="VI">Villa</option>
+                    <option value="AP">Apartemen</option>
+                    <option value="GU">Gudang</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Status Properti</label>
+                <div class="status-properti-grid">
+                    <label class="radio-label"><input type="radio" name="statusProperti" value="Baru" checked onchange="updateCodePrefix()"> Baru</label>
+                    <label class="radio-label"><input type="radio" name="statusProperti" value="Secondary" onchange="updateCodePrefix()"> Secondary</label>
+                    <label class="radio-label"><input type="radio" name="statusProperti" value="Lelang" onchange="updateCodePrefix()"> Lelang</label>
+                </div>
+            </div>
+        </div>
+    </div>
 
-  </div>
+    <!-- 2. DATA PEMILIK & MAKELAR -->
+    <div class="section">
+        <div class="section-title">👤 2. DATA PEMILIK & MAKELAR</div>
+        <div class="card-box">
+            <div class="form-row">
+                <div class="form-col">
+                    <label>Nama Pemilik</label>
+                    <input type="text" id="namaPemilik" placeholder="Bpk. Budi (opsional)">
+                </div>
+                <div class="form-col">
+                    <label>Kontak Pemilik</label>
+                    <input type="tel" id="kontakPemilik" placeholder="0812... (opsional)">
+                </div>
+            </div>
+            <div class="form-row" style="margin-bottom: 0;">
+                <div class="form-col">
+                    <label>Nama Makelar</label>
+                    <input type="text" id="namaMakelar" placeholder="(opsional)">
+                </div>
+                <div class="form-col">
+                    <label>Kontak Makelar</label>
+                    <input type="tel" id="kontakMakelar" placeholder="(opsional)">
+                </div>
+            </div>
+        </div>
+    </div>
 
-  <script>
-    // Inisialisasi Telegram WebApp SDK
-    const tg = window.Telegram?.WebApp;
-    
-    if (tg) {
-      tg.ready();
-      tg.expand(); // Memaksimalkan tampilan di HP
+    <!-- 3. FOTO PROPERTI -->
+    <div class="section">
+        <div class="section-title">🖼️ 3. FOTO PROPERTI</div>
+        <div class="card-box">
+            <label>Aksi</label>
+            <div class="btn-row">
+                <button type="button" class="action-btn" onclick="alert('Buka Kamera')">Ambil Foto</button>
+                <button type="button" class="action-btn" onclick="alert('Upload Galeri')">Upload</button>
+            </div>
+            <div class="hint-text">*minimal 1 foto</div>
+            <div class="preview-box" id="fotoPreview">Preview: <em>Belum ada foto dipilih.</em></div>
+        </div>
+    </div>
+
+    <!-- 4. LOKASI PROPERTI -->
+    <div class="section">
+        <div class="section-title">📍 4. LOKASI PROPERTI</div>
+        <div class="card-box">
+            <label>Aksi</label>
+            <div class="btn-row">
+                <button type="button" class="action-btn" onclick="getGpsLocation()">Lokasi Saat ini</button>
+                <button type="button" class="action-btn" onclick="alert('Pin Maps Aktif')">Tandai di Maps</button>
+            </div>
+            
+            <div class="location-info">
+                <div id="statusTitle">⚠️ Tambahkan lokasi</div>
+                
+                <div class="location-grid">
+                    <!-- Baris Tautan -->
+                    <div class="loc-label" id="tautanLabel" style="display:none;">
+                        <span>🔗Tautan</span><span class="colon">:</span>
+                    </div>
+                    <div class="gmaps-link-container" id="tautanContainer" style="display:none;">
+                        <a href="#" target="_blank" id="gmapsLink"></a>
+                    </div>
+
+                    <!-- Baris Wilayah -->
+                    <div class="loc-label">
+                        <span>📌Wilayah</span><span class="colon">:</span>
+                    </div>
+                    <span id="wilayahText">-</span>
+                    
+                    <!-- Baris Input Jalan Manual -->
+                    <div class="jalan-input-container">
+                        <input type="text" id="inputJalan" placeholder="Lengkapi alamat . . . (Kp, Jl, Gg, Blok, No)">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. DETAIL PROPERTI -->
+    <div class="section">
+        <div class="section-title">📝 5. DETAIL PROPERTI</div>
+        <div class="card-box">
+            <!-- 1. Harga -->
+            <div class="form-group">
+                <label>Harga</label>
+                <input type="text" id="hargaProperti" placeholder="Cth: Rp1.000.000,00" oninput="formatHarga(this)">
+            </div>
+
+            <!-- 2. Ringkasan -->
+            <div class="form-group" style="margin-bottom: 2px;">
+                <label>Ringkasan</label>
+                <textarea id="ringkasan" readonly placeholder="Ringkasan otomatis muncul di sini..."></textarea>
+            </div>
+
+            <!-- Tombol Buka -->
+            <div class="toggle-btn-text" id="btnOpenDetails" onclick="toggleDetails(true)">
+                <span class="toggle-label">Lengkapi</span>
+                <span class="wedge-icon">︾</span>
+            </div>
+
+            <!-- Form Isian Tambahan -->
+            <div id="extraDetails" style="display: none; margin: 4px 0; padding: 4px 0; border-top: 1px dashed #cbd5e1; border-bottom: 1px dashed #cbd5e1;">
+                <div class="form-row">
+                    <div class="form-col">
+                        <label>Sertifikasi</label>
+                        <input type="text" id="sertifikasi" placeholder="Cth: SHM" oninput="updateRingkasan()">
+                    </div>
+                    <div class="form-col">
+                        <label>Luas Tanah</label>
+                        <input type="text" id="luasTanah" placeholder="Cth: 120 m²" oninput="updateRingkasan()">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-col">
+                        <label>Luas Bangunan</label>
+                        <input type="text" id="luasBangunan" placeholder="Cth: 90 m²" oninput="updateRingkasan()">
+                    </div>
+                    <div class="form-col">
+                        <label>Jumlah Lantai</label>
+                        <input type="text" id="jumlahLantai" placeholder="Cth: 2" oninput="updateRingkasan()">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-col">
+                        <label>Kamar Tidur</label>
+                        <input type="text" id="kamarTidur" placeholder="Cth: 3" oninput="updateRingkasan()">
+                    </div>
+                    <div class="form-col">
+                        <label>Kamar Mandi</label>
+                        <input type="text" id="kamarMandi" placeholder="Cth: 2" oninput="updateRingkasan()">
+                    </div>
+                </div>
+
+                <!-- Fasilitas Rumah -->
+                <div class="form-group" style="margin-top: 6px;">
+                    <label>Fasilitas Rumah</label>
+                    <div class="checkbox-grid">
+                        <label class="checkbox-label"><input type="checkbox" name="fasilitasRumah" value="PAM" onchange="updateRingkasan()"> PAM</label>
+                        <label class="checkbox-label"><input type="checkbox" name="fasilitasRumah" value="Sumur Bor" onchange="updateRingkasan()"> Sumur Bor</label>
+                        <label class="checkbox-label"><input type="checkbox" name="fasilitasRumah" value="Garasi Mobil" onchange="updateRingkasan()"> Garasi Mobil</label>
+                        <label class="checkbox-label"><input type="checkbox" name="fasilitasRumah" value="Garasi Motor" onchange="updateRingkasan()"> Garasi Motor</label>
+                        <label class="checkbox-label"><input type="checkbox" name="fasilitasRumah" value="Halaman Depan" onchange="updateRingkasan()"> Halaman Depan</label>
+                        <label class="checkbox-label"><input type="checkbox" name="fasilitasRumah" value="Halaman Belakang" onchange="updateRingkasan()"> Halaman Belakang</label>
+                        <label class="checkbox-label"><input type="checkbox" name="fasilitasRumah" value="Ruang Tamu" onchange="updateRingkasan()"> Ruang Tamu</label>
+                        <label class="checkbox-label"><input type="checkbox" name="fasilitasRumah" value="Ruang Keluarga" onchange="updateRingkasan()"> Ruang Keluarga</label>
+                        <label class="checkbox-label"><input type="checkbox" name="fasilitasRumah" value="Ruang Makan" onchange="updateRingkasan()"> Ruang Makan</label>
+                        <label class="checkbox-label"><input type="checkbox" name="fasilitasRumah" value="Ruang Kerja" onchange="updateRingkasan()"> Ruang Kerja</label>
+                        <label class="checkbox-label"><input type="checkbox" name="fasilitasRumah" value="Dapur" onchange="updateRingkasan()"> Dapur</label>
+                        <label class="checkbox-label"><input type="checkbox" name="fasilitasRumah" value="Jemuran" onchange="updateRingkasan()"> Jemuran</label>
+                        <label class="checkbox-label"><input type="checkbox" name="fasilitasRumah" value="Kolam" onchange="updateRingkasan()"> Kolam</label>
+                    </div>
+                </div>
+
+                <!-- Fasilitas Umum/Sosial -->
+                <div class="form-group" style="margin-top: 6px;">
+                    <label>Fasilitas Umum/Sosial</label>
+                    <div class="checkbox-grid">
+                        <label class="checkbox-label"><input type="checkbox" name="fasilitasUmumSosial" value="Pos security" onchange="updateRingkasan()"> Pos security</label>
+                        <label class="checkbox-label"><input type="checkbox" name="fasilitasUmumSosial" value="One gate sistem" onchange="updateRingkasan()"> One gate sistem</label>
+                        <label class="checkbox-label"><input type="checkbox" name="fasilitasUmumSosial" value="Lapangan" onchange="updateRingkasan()"> Lapangan</label>
+                        <label class="checkbox-label"><input type="checkbox" name="fasilitasUmumSosial" value="Musholla" onchange="updateRingkasan()"> Musholla</label>
+                        <label class="checkbox-label"><input type="checkbox" name="fasilitasUmumSosial" value="Masjid" onchange="updateRingkasan()"> Masjid</label>
+                        <label class="checkbox-label"><input type="checkbox" name="fasilitasUmumSosial" value="Taman" onchange="updateRingkasan()"> Taman</label>
+                        <label class="checkbox-label"><input type="checkbox" name="fasilitasUmumSosial" value="Area sport center" onchange="updateRingkasan()"> Area sport center</label>
+                        <label class="checkbox-label"><input type="checkbox" name="fasilitasUmumSosial" value="Lampu PJU" onchange="updateRingkasan()"> Lampu PJU</label>
+                        <label class="checkbox-label"><input type="checkbox" name="fasilitasUmumSosial" value="Jalan Paving" onchange="updateRingkasan()"> Jalan Paving</label>
+                        <label class="checkbox-label"><input type="checkbox" name="fasilitasUmumSosial" value="Jalan Aspal" onchange="updateRingkasan()"> Jalan Aspal</label>
+                        <label class="checkbox-label"><input type="checkbox" name="fasilitasUmumSosial" value="Jalan Cor" onchange="updateRingkasan()"> Jalan Cor</label>
+                        <label class="checkbox-label"><input type="checkbox" name="fasilitasUmumSosial" value="Kolam Renang" onchange="updateRingkasan()"> Kolam Renang</label>
+                    </div>
+                </div>
+
+                <!-- Fasilitas Publik -->
+                <div class="form-group" style="margin-top: 6px; margin-bottom: 0px;">
+                    <label>Fasilitas Publik</label>
+                    <div class="checkbox-grid" style="margin-bottom: 0px;">
+                        <label class="checkbox-label"><input type="checkbox" name="fasilitasPublik" value="Sekolah" onchange="updateRingkasan()"> Sekolah</label>
+                        <label class="checkbox-label"><input type="checkbox" name="fasilitasPublik" value="Universitas" onchange="updateRingkasan()"> Universitas</label>
+                        <label class="checkbox-label"><input type="checkbox" name="fasilitasPublik" value="Halte BUS" onchange="updateRingkasan()"> Halte BUS</label>
+                        <label class="checkbox-label"><input type="checkbox" name="fasilitasPublik" value="Halte Angkot" onchange="updateRingkasan()"> Halte Angkot</label>
+                        <label class="checkbox-label"><input type="checkbox" name="fasilitasPublik" value="Stasiun" onchange="updateRingkasan()"> Stasiun</label>
+                        <label class="checkbox-label"><input type="checkbox" name="fasilitasPublik" value="Terminal" onchange="updateRingkasan()"> Terminal</label>
+                        <label class="checkbox-label"><input type="checkbox" name="fasilitasPublik" value="Bandara" onchange="updateRingkasan()"> Bandara</label>
+                        <label class="checkbox-label"><input type="checkbox" name="fasilitasPublik" value="Pasar" onchange="updateRingkasan()"> Pasar</label>
+                        <label class="checkbox-label"><input type="checkbox" name="fasilitasPublik" value="Minimarket" onchange="updateRingkasan()"> Minimarket</label>
+                        <label class="checkbox-label"><input type="checkbox" name="fasilitasPublik" value="Stadion" onchange="updateRingkasan()"> Stadion</label>
+                        <label class="checkbox-label"><input type="checkbox" name="fasilitasPublik" value="Wisata" onchange="updateRingkasan()"> Wisata</label>
+                    </div>
+                </div>
+
+                <!-- Tombol Tutup -->
+                <div class="toggle-btn-text" style="margin-top: 0px;" onclick="toggleDetails(false)">
+                    <span class="wedge-icon">︽</span>
+                    <span class="toggle-label">Tutup</span>
+                </div>
+            </div>
+
+            <!-- 3. Catatan -->
+            <div class="form-group" style="margin-top: 2px;">
+                <label>Catatan</label>
+                <textarea id="catatan" placeholder="Tulis catatan jika ada (opsional) ..."></textarea>
+            </div>
+        </div>
+    </div>
+
+    <!-- 6. TRACKING LEADS -->
+    <div class="section">
+        <div class="section-title">📊 6. TRACKING LEADS</div>
+        <div class="card-box">
+            <div class="unified-tracking-grid">
+                <!-- Status Listing -->
+                <div class="grid-section-label" style="grid-column: 1 / -1;">Status Listing</div>
+                <label class="radio-label" style="grid-column: 1;"><input type="radio" name="statusListing" value="Open" checked onchange="toggleStatusTracking()"> Open</label>
+                <label class="radio-label" style="grid-column: 2;"><input type="radio" name="statusListing" value="Sold" onchange="toggleStatusTracking()"> Sold</label>
+
+                <!-- Status Followup -->
+                <div class="grid-section-label tracking-dependent" style="grid-column: 1 / -1; margin-top: 4px;">Status Followup</div>
+                <label class="radio-label tracking-dependent" style="grid-column: 1;"><input type="radio" name="statusFollowup" value="Belum" checked> Belum</label>
+                <label class="radio-label tracking-dependent" style="grid-column: 2;"><input type="radio" name="statusFollowup" value="On Process"> On Process</label>
+                <label class="radio-label tracking-dependent" style="grid-column: 3;"><input type="radio" name="statusFollowup" value="Close"> Close</label>
+
+                <!-- Status Leads -->
+                <div class="grid-section-label tracking-dependent" style="grid-column: 1 / -1; margin-top: 4px;">Status Leads</div>
+                <label class="radio-label tracking-dependent" style="grid-column: 1;"><input type="radio" name="statusLeads" value="Cold"> Cold</label>
+                <label class="radio-label tracking-dependent" style="grid-column: 2;"><input type="radio" name="statusLeads" value="Warm"> Warm</label>
+                <label class="radio-label tracking-dependent" style="grid-column: 3;"><input type="radio" name="statusLeads" value="HOT" checked> HOT</label>
+                <label class="radio-label tracking-dependent" style="grid-column: 4;"><input type="radio" name="statusLeads" value="Suspect"> Suspect</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-action">
+        <button class="btn-submit" onclick="submitData()">💾 SIMPAN DATA LEADS</button>
+    </div>
+</div>
+
+<script>
+    const tg = window.Telegram.WebApp;
+    tg.expand();
+
+    let currentKota = "";
+    let currentKec = "";
+    let currentKel = "";
+
+    function updateCodePrefix() {
+        const sub = document.getElementById('subKategori').value;
+        const statusEl = document.querySelector('input[name="statusProperti"]:checked');
+        const statusLetter = statusEl ? statusEl.value.charAt(0).toUpperCase() : 'B';
+        document.getElementById('displayCode').innerText = `KODE: ${sub}-${statusLetter}0001`;
     }
 
-    function simpanData() {
-      const detailAlamat = document.getElementById('detailAlamat').value;
-      
-      const payload = {
-        tautan: "https://maps.google.com/?q=-6.117276,106.1708675",
-        wilayah: "Kota/Kab. Serang, Kec. Cipocok Jaya, Kel. Banjaragung",
-        detailAlamat: detailAlamat
-      };
+    function formatHarga(input) {
+        let cursorPosition = input.selectionStart;
+        let originalLength = input.value.length;
 
-      if (tg) {
-        // Mengirimkan data kembali ke Bot Telegram
-        tg.sendData(JSON.stringify(payload));
-      } else {
-        alert("Data berhasil disimpan: " + JSON.stringify(payload));
-      }
+        let val = input.value.replace(/^Rp\s?/, '').split(',')[0].replace(/[^0-9]/g, '');
+
+        if (val === '') {
+            input.value = '';
+            return;
+        }
+
+        let num = parseInt(val, 10);
+        let formatted = num.toLocaleString('id-ID');
+        input.value = 'Rp' + formatted + ',00';
+
+        let newLength = input.value.length;
+        cursorPosition = cursorPosition + (newLength - originalLength);
+        
+        if (cursorPosition > input.value.length - 3) {
+            cursorPosition = input.value.length - 3;
+        }
+        if (cursorPosition < 0) cursorPosition = 0;
+        
+        input.setSelectionRange(cursorPosition, cursorPosition);
     }
-  </script>
+
+    function toggleDetails(show) {
+        const extra = document.getElementById('extraDetails');
+        const btnOpen = document.getElementById('btnOpenDetails');
+        if (show) {
+            extra.style.display = 'block';
+            btnOpen.style.display = 'none';
+        } else {
+            extra.style.display = 'none';
+            btnOpen.style.display = 'flex';
+        }
+    }
+
+    function updateRingkasan() {
+        let parts = [];
+
+        const fields = [
+            { id: 'sertifikasi', label: 'Sertifikasi' },
+            { id: 'luasTanah', label: 'Luas Tanah' },
+            { id: 'luasBangunan', label: 'Luas Bangunan' },
+            { id: 'jumlahLantai', label: 'Jumlah Lantai' },
+            { id: 'kamarTidur', label: 'Kamar Tidur' },
+            { id: 'kamarMandi', label: 'Kamar Mandi' }
+        ];
+
+        fields.forEach(f => {
+            let val = document.getElementById(f.id).value.trim();
+            if (val) parts.push(`${f.label}: ${val}`);
+        });
+
+        const fRumah = Array.from(document.querySelectorAll('input[name="fasilitasRumah"]:checked')).map(cb => cb.value);
+        if (fRumah.length > 0) parts.push(`Fasilitas Rumah: ${fRumah.join(', ')}`);
+
+        const fUmumSosial = Array.from(document.querySelectorAll('input[name="fasilitasUmumSosial"]:checked')).map(cb => cb.value);
+        if (fUmumSosial.length > 0) parts.push(`Fasilitas Umum/Sosial: ${fUmumSosial.join(', ')}`);
+
+        const fPublik = Array.from(document.querySelectorAll('input[name="fasilitasPublik"]:checked')).map(cb => cb.value);
+        if (fPublik.length > 0) parts.push(`Fasilitas Publik: ${fPublik.join(', ')}`);
+
+        document.getElementById('ringkasan').value = parts.length > 0 ? parts.join(', ') + '.' : '';
+    }
+
+    function toggleStatusTracking() {
+        const statusListing = document.querySelector('input[name="statusListing"]:checked').value;
+        const dependents = document.querySelectorAll('.tracking-dependent');
+        const inputs = document.querySelectorAll('.tracking-dependent input');
+
+        if (statusListing === 'Sold') {
+            dependents.forEach(el => el.classList.add('disabled-section'));
+            inputs.forEach(input => input.disabled = true);
+        } else {
+            dependents.forEach(el => el.classList.remove('disabled-section'));
+            inputs.forEach(input => input.disabled = false);
+        }
+    }
+
+    function renderWilayahText() {
+        const wilayahText = document.getElementById('wilayahText');
+        if (!currentKota && !currentKec && !currentKel) {
+            wilayahText.innerText = '-';
+            return;
+        }
+        wilayahText.innerText = `Kota/Kab. ${currentKota || '-'}, Kec. ${currentKec || '-'}, Kel. ${currentKel || '-'}`;
+    }
+
+    function setLocationData(lat, lng, kota, kec, kel) {
+        const statusTitle = document.getElementById('statusTitle');
+        const tautanLabel = document.getElementById('tautanLabel');
+        const tautanContainer = document.getElementById('tautanContainer');
+        const gmapsLink = document.getElementById('gmapsLink');
+
+        const url = `https://maps.google.com/?q=${lat},${lng}`;
+
+        statusTitle.innerText = '✅Lokasi Berhasil ditambahkan';
+        
+        tautanLabel.style.display = 'flex';
+        tautanContainer.style.display = 'block';
+        gmapsLink.href = url;
+        gmapsLink.innerText = url;
+
+        currentKota = kota;
+        currentKec = kec;
+        currentKel = kel;
+
+        renderWilayahText();
+    }
+
+    function getGpsLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(position => {
+                const lat = position.coords.latitude;
+                const lng = position.coords.longitude;
+                setLocationData(lat, lng, "Serang", "Cipocok Jaya", "Banjaragung");
+            }, () => { alert('Gagal mendeteksi GPS.'); });
+        } else { alert('Geolocation tidak didukung.'); }
+    }
+
+    function submitData() {
+        const statusListingVal = document.querySelector('input[name="statusListing"]:checked').value;
+        
+        const wilayahAdmin = document.getElementById('wilayahText').innerText;
+        const jalanManual = document.getElementById('inputJalan').value.trim();
+        const wilayahLengkapFinal = jalanManual ? `${wilayahAdmin}, Jl. ${jalanManual}` : wilayahAdmin;
+        
+        const payload = {
+            kode_data: document.getElementById('displayCode').innerText.replace('KODE: ', ''),
+            sub_kategori: document.getElementById('subKategori').value,
+            status_properti: document.querySelector('input[name="statusProperti"]:checked').value,
+            nama_pemilik: document.getElementById('namaPemilik').value,
+            kontak_pemilik: document.getElementById('kontakPemilik').value,
+            nama_makelar: document.getElementById('namaMakelar').value,
+            kontak_makelar: document.getElementById('kontakMakelar').value,
+            harga: document.getElementById('hargaProperti').value,
+            ringkasan: document.getElementById('ringkasan').value,
+            catatan: document.getElementById('catatan').value,
+            status_listing: statusListingVal,
+            status_followup: statusListingVal === 'Sold' ? '-' : document.querySelector('input[name="statusFollowup"]:checked').value,
+            status_leads: statusListingVal === 'Sold' ? '-' : document.querySelector('input[name="statusLeads"]:checked').value,
+            tautan_maps: document.getElementById('gmapsLink').href || '',
+            wilayah: wilayahLengkapFinal
+        };
+
+        if (tg) {
+            tg.sendData(JSON.stringify(payload));
+        } else {
+            alert("Data berhasil disimpan: " + JSON.stringify(payload));
+        }
+    }
+</script>
 
 </body>
 </html>
