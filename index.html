@@ -209,14 +209,16 @@
             white-space: nowrap;
         }
 
-        .radio-grid-3 {
+        /* Status Properti Grid: Kustom Persentase (25% 45% 30%) agar Secondary leluasa */
+        .status-properti-grid {
             display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
+            grid-template-columns: 25% 45% 30%;
             gap: 4px;
             width: 100%;
+            box-sizing: border-box;
         }
 
-        /* Master Grid 4 Kolom Proporsional Persentase (Tanpa Scroll, Full Text, Sejajar Sempurna) */
+        /* Master Grid 4 Kolom Proporsional Persentase untuk Tracking Leads */
         .unified-tracking-grid {
             display: grid;
             grid-template-columns: 21% 33% 21% 25%;
@@ -347,7 +349,7 @@
             </div>
             <div class="form-group">
                 <label>Status Properti</label>
-                <div class="radio-grid-3">
+                <div class="status-properti-grid">
                     <label class="radio-label"><input type="radio" name="statusProperti" value="Baru" checked onchange="updateCodePrefix()"> Baru</label>
                     <label class="radio-label"><input type="radio" name="statusProperti" value="Secondary" onchange="updateCodePrefix()"> Secondary</label>
                     <label class="radio-label"><input type="radio" name="statusProperti" value="Lelang" onchange="updateCodePrefix()"> Lelang</label>
