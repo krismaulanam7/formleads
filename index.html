@@ -244,21 +244,17 @@
         }
 
         .action-btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            padding: 7px 10px;
+            width: 40%;
+            max-width: 150px;
+            padding: 5px 8px;
             background: #e2e8f0;
             border: 1px solid #cbd5e1;
             border-radius: 4px;
-            font-weight: 600;
+            font-weight: 500;
             cursor: pointer;
             text-align: center;
             font-size: 11px;
             box-sizing: border-box;
-            user-select: none;
-            color: #1e293b;
         }
 
         .hint-text {
@@ -272,6 +268,223 @@
             font-size: 11px;
             color: #666;
             margin-top: 4px;
+        }
+
+        /* Kontrol foto: input tetap di DOM agar bisa dipicu oleh klik pengguna */
+        .photo-file-input {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        .photo-preview-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+            margin-top: 6px;
+        }
+
+        .photo-thumb {
+            position: relative;
+            width: 72px;
+            height: 72px;
+            flex: 0 0 72px;
+            overflow: hidden;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            background: #fff;
+        }
+
+        .photo-thumb img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .photo-remove-btn {
+            position: absolute;
+            top: 3px;
+            right: 3px;
+            width: 21px;
+            height: 21px;
+            padding: 0;
+            border: 0;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.72);
+            color: #fff;
+            font-size: 15px;
+            line-height: 21px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .photo-status {
+            display: none;
+            margin-top: 6px;
+            color: #475569;
+            font-size: 10px;
+            line-height: 1.4;
+            overflow-wrap: anywhere;
+        }
+
+        .photo-testing-note {
+            margin-top: 6px;
+            color: #64748b;
+            font-size: 10px;
+            line-height: 1.4;
+        }
+
+        /* Kamera langsung di dalam Web App; kamera hanya aktif saat modal dibuka */
+        .camera-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+            padding: 14px;
+            box-sizing: border-box;
+            background: rgba(0, 0, 0, 0.72);
+        }
+
+        .camera-dialog {
+            width: 100%;
+            max-width: 440px;
+            max-height: 92vh;
+            overflow-y: auto;
+            box-sizing: border-box;
+            padding: 12px;
+            border-radius: 10px;
+            background: #fff;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+        }
+
+        .camera-dialog-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 10px;
+            font-size: 14px;
+            font-weight: 700;
+            color: #111827;
+        }
+
+        .camera-close-btn {
+            flex: 0 0 auto;
+            width: 30px;
+            height: 30px;
+            padding: 0;
+            border: 0;
+            border-radius: 6px;
+            background: #e5e7eb;
+            color: #111827;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .camera-preview-frame {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            overflow: hidden;
+            border-radius: 7px;
+            background: #111827;
+        }
+
+        #cameraVideo {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background: #111827;
+        }
+
+        .camera-empty-state {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 18px;
+            box-sizing: border-box;
+            color: #fff;
+            text-align: center;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .camera-status {
+            margin-top: 8px;
+            color: #475569;
+            font-size: 11px;
+            line-height: 1.45;
+            overflow-wrap: anywhere;
+        }
+
+        .camera-modal-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .camera-modal-actions button,
+        .camera-fallback-btn {
+            min-height: 38px;
+            padding: 8px 10px;
+            border: 0;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .camera-capture-btn {
+            flex: 1;
+            background: #10b981;
+            color: #fff;
+        }
+
+        .camera-capture-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .camera-dismiss-btn {
+            background: #e5e7eb;
+            color: #1f2937;
+        }
+
+        .camera-fallback {
+            margin-top: 10px;
+            padding: 10px;
+            border: 1px solid #fed7aa;
+            border-radius: 6px;
+            background: #fff7ed;
+            color: #7c2d12;
+            font-size: 11px;
+            line-height: 1.45;
+        }
+
+        .camera-fallback-btn {
+            width: 100%;
+            margin-top: 8px;
+            background: #ea580c;
+            color: #fff;
+        }
+
+        .camera-modal-note {
+            margin: 8px 0 0;
+            color: #64748b;
+            font-size: 10px;
+            line-height: 1.4;
         }
 
         /* CSS Grid Presisi untuk Lokasi Properti & Tautan */
@@ -462,20 +675,24 @@
         </div>
     </div>
 
-    <!-- 3. FOTO PROPERTI -->
-    <div class="section">
+    <!-- 3. FOTO PROPERTI: hanya untuk preview/testing UI; tidak mengunggah foto ke database -->
+    <div class="section" id="sectionFoto">
         <div class="section-title">🖼️ 3. FOTO PROPERTI</div>
         <div class="card-box">
-            <label>Pilih Foto</label>
+            <label>Pilih</label>
             <div class="btn-row">
-                <!-- Tag label tanpa multiple agar sistem HP memunculkan opsi Kamera / Galeri -->
-                <label class="action-btn">
-                    📷 Ambil / Pilih Foto Properti
-                    <input type="file" id="fotoInput" accept="image/*" style="display:none;" onchange="handleImageFiles(this.files)">
-                </label>
+                <button type="button" class="action-btn" id="btnAmbilFoto" onclick="openCamera()">📷 Ambil Foto</button>
+                <button type="button" class="action-btn" id="btnUploadFoto" onclick="openGalleryPicker()">🖼️ Upload</button>
             </div>
-            <div class="hint-text">*minimal 1 foto (bisa ambil langsung dari kamera atau galeri)</div>
-            <div class="preview-box" id="fotoPreview">Preview: <em>Belum ada foto dipilih.</em></div>
+
+            <!-- Input tersembunyi secara visual; dibuka hanya melalui klik tombol pengguna -->
+            <input class="photo-file-input" type="file" id="cameraInput" accept="image/*" capture="environment" aria-label="Ambil foto dari kamera">
+            <input class="photo-file-input" type="file" id="galleryInput" accept="image/*" multiple aria-label="Pilih foto dari galeri">
+
+            <div class="hint-text">*minimal 1 foto</div>
+            <div class="preview-box" id="fotoPreview" aria-live="polite">Preview: <em>Belum ada foto dipilih.</em></div>
+            <div class="photo-status" id="fotoStatus" role="status" aria-live="polite"></div>
+            <div class="photo-testing-note">Foto hanya ditampilkan sementara untuk pengujian UI/UX. Foto tidak diunggah atau disimpan ke database.</div>
         </div>
     </div>
 
@@ -485,8 +702,8 @@
         <div class="card-box">
             <label>Pilih</label>
             <div class="btn-row">
-                <button type="button" class="action-btn" onclick="getGpsLocation()" style="width: 48%;">Lokasi Saat ini</button>
-                <button type="button" class="action-btn" onclick="tandaiDiMaps()" style="width: 48%;">Tandai di Maps</button>
+                <button type="button" class="action-btn" onclick="getGpsLocation()">Lokasi Saat ini</button>
+                <button type="button" class="action-btn" onclick="tandaiDiMaps()">Tandai di Maps</button>
             </div>
             
             <div class="location-info">
@@ -674,6 +891,30 @@
     </div>
 </div>
 
+<!-- Modal kamera langsung; tidak memerlukan upload/server -->
+<div class="camera-overlay" id="cameraModal" aria-hidden="true">
+    <div class="camera-dialog" role="dialog" aria-modal="true" aria-labelledby="cameraDialogTitle">
+        <div class="camera-dialog-header">
+            <span id="cameraDialogTitle">📷 Ambil Foto Properti</span>
+            <button type="button" class="camera-close-btn" onclick="closeCameraModal()" aria-label="Tutup kamera">×</button>
+        </div>
+        <div class="camera-preview-frame">
+            <video id="cameraVideo" autoplay muted playsinline></video>
+            <div class="camera-empty-state" id="cameraEmptyState">Menyiapkan kamera…</div>
+        </div>
+        <div class="camera-status" id="cameraStatus" role="status" aria-live="polite">Meminta akses kamera perangkat…</div>
+        <div class="camera-modal-actions">
+            <button type="button" class="camera-capture-btn" id="cameraCaptureBtn" onclick="captureCameraPhoto()" disabled>Ambil Gambar</button>
+            <button type="button" class="camera-dismiss-btn" onclick="closeCameraModal()">Selesai</button>
+        </div>
+        <div class="camera-fallback" id="cameraFallback" style="display:none;">
+            Kamera langsung tidak tersedia atau izinnya ditolak di tampilan Telegram ini. Kamu bisa mencoba pemilih kamera perangkat jika disediakan, atau menutup bagian ini lalu memakai tombol Upload.
+            <button type="button" class="camera-fallback-btn" onclick="openDeviceCameraPicker()">Coba kamera perangkat</button>
+        </div>
+        <p class="camera-modal-note">Foto yang diambil hanya menjadi preview sementara. Tutup kamera setelah selesai agar kamera perangkat tidak terus aktif.</p>
+    </div>
+</div>
+
 <!-- Modal Custom Pop-up Tempel Link Maps -->
 <div class="modal-overlay" id="mapsModal">
     <div class="modal-box">
@@ -689,13 +930,22 @@
 </div>
 
 <script>
-    const tg = window.Telegram.WebApp;
-    tg.expand();
+    const tg = (window.Telegram && window.Telegram.WebApp) ? window.Telegram.WebApp : null;
+    if (tg && typeof tg.expand === 'function') tg.expand();
 
     let currentKota = "Serang";
     let currentKec = "Cipocok Jaya";
     let currentKel = "Banjaragung";
+
+    // Foto hanya disimpan sementara di memori halaman untuk testing UI/UX.
+    // Tidak ada localStorage, database, atau upload foto ke server.
     let uploadedPhotos = [];
+    let cameraStream = null;
+    let cameraIsStarting = false;
+    let cameraRequestId = 0;
+    let photoIdCounter = 0;
+    const MAX_PHOTO_DIMENSION = 1280; // batas dimensi, bukan batas ukuran file dalam MB
+    const PHOTO_JPEG_QUALITY = 0.80;
 
     function updateCodePrefix() {
         const sub = document.getElementById('subKategori').value;
@@ -799,7 +1049,7 @@
         const url = `https://maps.google.com/?q=${lat},${lng}`;
 
         statusTitle.innerText = '✅Lokasi Berhasil ditambahkan';
-        statusTitle.style.color = '#10b981';
+        statusTitle.style.color = '#10b981'; // Berubah jadi hijau saat berhasil
         
         tautanLabel.style.display = 'flex';
         tautanContainer.style.display = 'block';
@@ -848,7 +1098,7 @@
             const gmapsLink = document.getElementById('gmapsLink');
 
             statusTitle.innerText = '✅Lokasi Berhasil ditambahkan';
-            statusTitle.style.color = '#10b981';
+            statusTitle.style.color = '#10b981'; // Berubah jadi hijau saat berhasil
             
             tautanLabel.style.display = 'flex';
             tautanContainer.style.display = 'block';
@@ -862,85 +1112,333 @@
         }
     }
 
-    // --- LOGIKA PENANGANAN FOTO, KOMPRESI OTOMATIS & THUMBNAIL BOX ---
-    function handleImageFiles(files) {
-        if (!files || files.length === 0) return;
+    // ==================== FOTO PROPERTI (UI/UX TESTING) ====================
+    function setPhotoStatus(message, isError = false) {
+        const status = document.getElementById('fotoStatus');
+        status.textContent = message || '';
+        status.style.display = message ? 'block' : 'none';
+        status.style.color = isError ? '#b91c1c' : '#475569';
+    }
 
-        Array.from(files).forEach(file => {
-            if (!file.type.match('image.*')) return;
+    function openGalleryPicker() {
+        // Dipanggil langsung dari klik pengguna agar browser mengizinkan pemilih file.
+        const input = document.getElementById('galleryInput');
+        input.value = '';
+        input.click();
+    }
 
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const img = new Image();
-                img.onload = function() {
-                    let width = img.width;
-                    let height = img.height;
-                    const MAX_SIZE = 1280; // Batas maksimal resolusi
+    async function openCamera() {
+        if (cameraIsStarting) return;
+        cameraIsStarting = true;
+        const requestId = ++cameraRequestId;
+        const modal = document.getElementById('cameraModal');
+        const video = document.getElementById('cameraVideo');
+        const emptyState = document.getElementById('cameraEmptyState');
+        const captureBtn = document.getElementById('cameraCaptureBtn');
+        const fallback = document.getElementById('cameraFallback');
 
-                    let canvas = document.createElement('canvas');
-                    let ctx = canvas.getContext('2d');
+        modal.style.display = 'flex';
+        modal.setAttribute('aria-hidden', 'false');
+        emptyState.style.display = 'flex';
+        emptyState.textContent = 'Meminta akses kamera perangkat…';
+        captureBtn.disabled = true;
+        fallback.style.display = 'none';
+        document.getElementById('cameraStatus').textContent = 'Mengaktifkan kamera belakang jika tersedia…';
 
-                    // Cek kondisi apakah ukuran melebihi batas 1280px
-                    if (width > MAX_SIZE || height > MAX_SIZE) {
-                        if (width > height) {
-                            height = Math.round((height * MAX_SIZE) / width);
-                            width = MAX_SIZE;
-                        } else {
-                            width = Math.round((width * MAX_SIZE) / height);
-                            height = MAX_SIZE;
-                        }
-                        canvas.width = width;
-                        canvas.height = height;
-                        ctx.drawImage(img, 0, 0, width, height);
+        try {
+            if (!navigator.mediaDevices || typeof navigator.mediaDevices.getUserMedia !== 'function') {
+                throw new Error('API kamera tidak tersedia. Halaman perlu dibuka melalui HTTPS dan browser yang mendukung kamera.');
+            }
 
-                        // Kompresi otomatis ke JPEG kualitas 0.8 (~200-400KB)
-                        const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.8);
-                        uploadedPhotos.push(compressedDataUrl);
-                    } else {
-                        // Jika ukuran di bawah batas, lewati kompresi agar tidak pecah
-                        uploadedPhotos.push(e.target.result);
-                    }
+            stopCameraStream();
+            // Dipanggil setelah klik tombol Ambil Foto. Tidak meminta akses mikrofon.
+            const requestedStream = await navigator.mediaDevices.getUserMedia({
+                audio: false,
+                video: {
+                    facingMode: { ideal: 'environment' },
+                    width: { ideal: 1280 },
+                    height: { ideal: 960 }
+                }
+            });
+            // Jika pengguna menutup modal selagi izin kamera diminta, jangan tinggalkan kamera aktif.
+            if (requestId !== cameraRequestId || modal.style.display === 'none') {
+                requestedStream.getTracks().forEach(track => track.stop());
+                return;
+            }
+            cameraStream = requestedStream;
 
-                    renderPhotoPreview();
-                };
-                img.src = e.target.result;
-            };
-            reader.readAsDataURL(file);
+            video.srcObject = cameraStream;
+            video.muted = true;
+            video.playsInline = true;
+            await video.play();
+            emptyState.style.display = 'none';
+            captureBtn.disabled = false;
+            document.getElementById('cameraStatus').textContent = 'Kamera aktif. Tekan “Ambil Gambar” untuk menambahkan foto. Kamu bisa mengambil beberapa foto sebelum menekan Selesai.';
+        } catch (error) {
+            if (requestId !== cameraRequestId || modal.style.display === 'none') return;
+            stopCameraStream();
+            video.srcObject = null;
+            emptyState.style.display = 'flex';
+            emptyState.textContent = 'Kamera langsung tidak dapat diaktifkan di sesi ini.';
+            captureBtn.disabled = true;
+            fallback.style.display = 'block';
+            const errorName = error && error.name ? error.name : '';
+            let explanation = 'Akses kamera gagal.';
+            if (errorName === 'NotAllowedError' || errorName === 'SecurityError') {
+                explanation = 'Izin kamera ditolak atau dibatasi oleh Telegram/browser.';
+            } else if (errorName === 'NotFoundError' || errorName === 'DevicesNotFoundError') {
+                explanation = 'Kamera tidak ditemukan di perangkat ini.';
+            } else if (error && error.message) {
+                explanation = error.message;
+            }
+            document.getElementById('cameraStatus').textContent = explanation;
+        } finally {
+            cameraIsStarting = false;
+        }
+    }
+
+    function stopCameraStream() {
+        if (cameraStream) {
+            cameraStream.getTracks().forEach(track => track.stop());
+            cameraStream = null;
+        }
+        const video = document.getElementById('cameraVideo');
+        if (video) video.srcObject = null;
+        const captureBtn = document.getElementById('cameraCaptureBtn');
+        if (captureBtn) captureBtn.disabled = true;
+    }
+
+    function closeCameraModal() {
+        cameraRequestId += 1; // batalkan permintaan kamera yang masih menunggu izin
+        stopCameraStream();
+        const modal = document.getElementById('cameraModal');
+        modal.style.display = 'none';
+        modal.setAttribute('aria-hidden', 'true');
+        cameraIsStarting = false;
+    }
+
+    function openDeviceCameraPicker() {
+        // Fallback hanya dijalankan sesudah klik kedua dari pengguna agar tidak diblokir browser.
+        closeCameraModal();
+        const input = document.getElementById('cameraInput');
+        input.value = '';
+        input.click();
+    }
+
+    function canvasToBlob(canvas, mimeType, quality) {
+        return new Promise((resolve, reject) => {
+            try {
+                canvas.toBlob(blob => {
+                    if (blob) resolve(blob);
+                    else reject(new Error('Browser gagal memproses gambar.'));
+                }, mimeType, quality);
+            } catch (error) {
+                reject(error);
+            }
         });
+    }
 
-        // Reset input file agar file yang sama bisa dipilih kembali jika diperlukan
-        document.getElementById('fotoInput').value = '';
+    function loadImageFromUrl(url) {
+        return new Promise((resolve, reject) => {
+            const img = new Image();
+            img.onload = () => resolve(img);
+            img.onerror = () => reject(new Error('Format gambar tidak dapat dibaca browser untuk preview.'));
+            img.src = url;
+        });
+    }
+
+    async function addPhotoFile(file, source = 'gallery') {
+        if (!file) return false;
+        const looksLikeImage = (file.type && file.type.toLowerCase().startsWith('image/')) ||
+            /\.(jpe?g|png|webp|gif|bmp|heic|heif|avif)$/i.test(file.name || '');
+        if (!looksLikeImage) {
+            setPhotoStatus('File “' + (file.name || 'tanpa nama') + '” bukan gambar. Pilih file foto.', true);
+            return false;
+        }
+
+        let previewUrl = URL.createObjectURL(file);
+        try {
+            const image = await loadImageFromUrl(previewUrl);
+            const originalWidth = image.naturalWidth || image.width;
+            const originalHeight = image.naturalHeight || image.height;
+            if (!originalWidth || !originalHeight) throw new Error('Dimensi gambar tidak terbaca.');
+
+            let finalFile = file;
+            let finalWidth = originalWidth;
+            let finalHeight = originalHeight;
+            let compressed = false;
+
+            // File di bawah/tepat pada 1280 px dipertahankan apa adanya—tidak dienkode ulang.
+            // Hanya gambar yang melewati batas dimensi ini yang di-resize dan dikompres ke JPEG.
+            if (originalWidth > MAX_PHOTO_DIMENSION || originalHeight > MAX_PHOTO_DIMENSION) {
+                const scale = Math.min(MAX_PHOTO_DIMENSION / originalWidth, MAX_PHOTO_DIMENSION / originalHeight);
+                finalWidth = Math.max(1, Math.round(originalWidth * scale));
+                finalHeight = Math.max(1, Math.round(originalHeight * scale));
+
+                const canvas = document.createElement('canvas');
+                canvas.width = finalWidth;
+                canvas.height = finalHeight;
+                const context = canvas.getContext('2d');
+                if (!context) throw new Error('Browser tidak dapat menyiapkan pemrosesan gambar.');
+                // Latar putih mencegah bagian transparan menjadi hitam saat dikonversi ke JPEG.
+                context.fillStyle = '#ffffff';
+                context.fillRect(0, 0, finalWidth, finalHeight);
+                context.drawImage(image, 0, 0, finalWidth, finalHeight);
+                const blob = await canvasToBlob(canvas, 'image/jpeg', PHOTO_JPEG_QUALITY);
+                const baseName = (file.name || 'foto-properti').replace(/\.[^.]+$/, '').replace(/[^a-z0-9_-]/gi, '_');
+                finalFile = new File([blob], baseName + '-resized.jpg', {
+                    type: 'image/jpeg',
+                    lastModified: Date.now()
+                });
+                const resizedUrl = URL.createObjectURL(finalFile);
+                URL.revokeObjectURL(previewUrl);
+                previewUrl = resizedUrl;
+                compressed = true;
+            }
+
+            uploadedPhotos.push({
+                id: ++photoIdCounter,
+                file: finalFile,
+                previewUrl,
+                width: finalWidth,
+                height: finalHeight,
+                compressed,
+                source
+            });
+            return true;
+        } catch (error) {
+            URL.revokeObjectURL(previewUrl);
+            setPhotoStatus((file.name || 'Foto') + ' tidak dapat diproses: ' + (error.message || 'kesalahan tidak diketahui'), true);
+            return false;
+        }
+    }
+
+    async function handleImageFiles(fileList, source = 'gallery') {
+        // Salin FileList terlebih dahulu karena input akan di-reset agar file yang sama bisa dipilih lagi.
+        const files = Array.from(fileList || []);
+        if (files.length === 0) return;
+
+        const inputId = source === 'camera' ? 'cameraInput' : 'galleryInput';
+        const input = document.getElementById(inputId);
+        if (input) input.value = '';
+
+        setPhotoStatus('Memproses ' + files.length + ' foto untuk preview…');
+        let added = 0;
+        for (const file of files) {
+            if (await addPhotoFile(file, source)) added++;
+        }
+        renderPhotoPreview();
+        if (added > 0) {
+            setPhotoStatus(added + ' foto berhasil ditambahkan. Total preview: ' + uploadedPhotos.length + ' foto. Tidak ada foto yang diunggah ke server.');
+        } else if (uploadedPhotos.length === 0) {
+            setPhotoStatus('Tidak ada foto yang berhasil ditambahkan. Coba pilih foto JPG, PNG, atau WebP.', true);
+        }
+    }
+
+    function captureCameraPhoto() {
+        const video = document.getElementById('cameraVideo');
+        const button = document.getElementById('cameraCaptureBtn');
+        if (!cameraStream || !video.videoWidth || !video.videoHeight) {
+            setPhotoStatus('Kamera belum siap. Tunggu sebentar lalu coba lagi.', true);
+            return;
+        }
+
+        button.disabled = true;
+        const canvas = document.createElement('canvas');
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        const context = canvas.getContext('2d');
+        if (!context) {
+            button.disabled = false;
+            setPhotoStatus('Browser tidak dapat mengambil gambar dari kamera.', true);
+            return;
+        }
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+        canvasToBlob(canvas, 'image/jpeg', 0.92)
+            .then(blob => {
+                const file = new File([blob], 'foto-kamera-' + Date.now() + '.jpg', {
+                    type: 'image/jpeg',
+                    lastModified: Date.now()
+                });
+                return addPhotoFile(file, 'camera');
+            })
+            .then(added => {
+                renderPhotoPreview();
+                if (added) {
+                    setPhotoStatus('Foto kamera berhasil ditambahkan. Ambil foto berikutnya atau tekan Selesai.');
+                }
+            })
+            .catch(error => setPhotoStatus('Gagal mengambil foto: ' + (error.message || 'kesalahan tidak diketahui'), true))
+            .finally(() => {
+                // Kamera tetap aktif untuk mengambil lebih dari satu foto sampai modal ditutup.
+                if (cameraStream && document.getElementById('cameraModal').style.display !== 'none') {
+                    button.disabled = false;
+                }
+            });
     }
 
     function renderPhotoPreview() {
         const previewBox = document.getElementById('fotoPreview');
+        previewBox.textContent = '';
+
         if (uploadedPhotos.length === 0) {
             previewBox.innerHTML = 'Preview: <em>Belum ada foto dipilih.</em>';
             return;
         }
 
-        let html = '<div style="display: flex; gap: 6px; flex-wrap: wrap; margin-top: 4px;">';
-        uploadedPhotos.forEach((src, index) => {
-            html += `
-                <div style="position: relative; width: 55px; height: 55px; border-radius: 4px; overflow: hidden; border: 1px solid #cbd5e1; background: #fff;">
-                    <img src="${src}" style="width: 100%; height: 100%; object-fit: cover;">
-                    <button type="button" onclick="removePhoto(${index})" style="position: absolute; top: 2px; right: 2px; background: rgba(0,0,0,0.6); color: white; border: none; border-radius: 50%; width: 16px; height: 16px; font-size: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer;">✕</button>
-                </div>
-            `;
+        const summary = document.createElement('div');
+        summary.textContent = 'Preview: ' + uploadedPhotos.length + ' foto';
+        previewBox.appendChild(summary);
+
+        const grid = document.createElement('div');
+        grid.className = 'photo-preview-grid';
+        uploadedPhotos.forEach((photo, index) => {
+            const thumb = document.createElement('div');
+            thumb.className = 'photo-thumb';
+
+            const image = document.createElement('img');
+            image.src = photo.previewUrl;
+            image.alt = 'Foto properti ' + (index + 1);
+            image.loading = 'lazy';
+            thumb.appendChild(image);
+
+            const removeButton = document.createElement('button');
+            removeButton.type = 'button';
+            removeButton.className = 'photo-remove-btn';
+            removeButton.textContent = '×';
+            removeButton.setAttribute('aria-label', 'Hapus foto ' + (index + 1));
+            removeButton.addEventListener('click', () => removePhoto(index));
+            thumb.appendChild(removeButton);
+            grid.appendChild(thumb);
         });
-        html += '</div>';
-        previewBox.innerHTML = html;
+        previewBox.appendChild(grid);
     }
 
     function removePhoto(index) {
+        if (!Number.isInteger(index) || index < 0 || index >= uploadedPhotos.length) return;
+        URL.revokeObjectURL(uploadedPhotos[index].previewUrl);
         uploadedPhotos.splice(index, 1);
         renderPhotoPreview();
+        setPhotoStatus(uploadedPhotos.length + ' foto tersisa di preview sementara.');
     }
-    // -------------------------------------------------------------------
+
+    // Pasang listener setelah elemen input tersedia di halaman.
+    document.getElementById('cameraInput').addEventListener('change', function () {
+        handleImageFiles(this.files, 'camera');
+    });
+    document.getElementById('galleryInput').addEventListener('change', function () {
+        handleImageFiles(this.files, 'gallery');
+    });
+    window.addEventListener('pagehide', () => {
+        stopCameraStream();
+        uploadedPhotos.forEach(photo => URL.revokeObjectURL(photo.previewUrl));
+    });
+    // ====================================================================
 
     function submitData() {
         if (uploadedPhotos.length === 0) {
             alert('Harap masukkan minimal 1 foto properti!');
+            document.getElementById('sectionFoto').scrollIntoView({ behavior: 'smooth', block: 'center' });
             return;
         }
 
@@ -965,14 +1463,13 @@
             status_followup: statusListingVal === 'Sold' ? '-' : document.querySelector('input[name="statusFollowup"]:checked').value,
             status_leads: statusListingVal === 'Sold' ? '-' : document.querySelector('input[name="statusLeads"]:checked').value,
             tautan_maps: document.getElementById('gmapsLink').href || '',
-            wilayah: wilayahLengkapFinal,
-            jumlah_foto: uploadedPhotos.length
+            wilayah: wilayahLengkapFinal
         };
 
-        if (tg && tg.sendData) {
+        if (tg) {
             tg.sendData(JSON.stringify(payload));
         } else {
-            alert("Data berhasil disiapkan untuk dikirim: " + JSON.stringify(payload));
+            alert("Data berhasil disimpan: " + JSON.stringify(payload));
         }
     }
 </script>
