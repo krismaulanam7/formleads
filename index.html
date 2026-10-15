@@ -468,13 +468,13 @@
         <div class="card-box">
             <label>Pilih Foto</label>
             <div class="btn-row">
-                <!-- Menggunakan Tag Label untuk memanggil file picker / kamera dengan aman -->
+                <!-- Tag label tanpa multiple agar sistem HP memunculkan opsi Kamera / Galeri -->
                 <label class="action-btn">
-                    📷 Tambah Foto Properti
-                    <input type="file" id="fotoInput" accept="image/*" multiple style="display:none;" onchange="handleImageFiles(this.files)">
+                    📷 Ambil / Pilih Foto Properti
+                    <input type="file" id="fotoInput" accept="image/*" style="display:none;" onchange="handleImageFiles(this.files)">
                 </label>
             </div>
-            <div class="hint-text">*minimal 1 foto (bisa ambil langsung atau pilih dari galeri)</div>
+            <div class="hint-text">*minimal 1 foto (bisa ambil langsung dari kamera atau galeri)</div>
             <div class="preview-box" id="fotoPreview">Preview: <em>Belum ada foto dipilih.</em></div>
         </div>
     </div>
