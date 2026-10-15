@@ -247,18 +247,18 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 40%;
-            max-width: 150px;
-            padding: 5px 8px;
+            width: 100%;
+            padding: 7px 10px;
             background: #e2e8f0;
             border: 1px solid #cbd5e1;
             border-radius: 4px;
-            font-weight: 500;
+            font-weight: 600;
             cursor: pointer;
             text-align: center;
             font-size: 11px;
             box-sizing: border-box;
             user-select: none;
+            color: #1e293b;
         }
 
         .hint-text {
@@ -466,19 +466,15 @@
     <div class="section">
         <div class="section-title">🖼️ 3. FOTO PROPERTI</div>
         <div class="card-box">
-            <label>Pilih</label>
+            <label>Pilih Foto</label>
             <div class="btn-row">
-                <!-- Menggunakan Tag Label agar aman dari pemblokiran keamanan browser mobile -->
+                <!-- Menggunakan Tag Label untuk memanggil file picker / kamera dengan aman -->
                 <label class="action-btn">
-                    Ambil Foto
-                    <input type="file" id="cameraInput" accept="image/*" capture="environment" style="display:none;" onchange="handleImageFiles(this.files)">
-                </label>
-                <label class="action-btn">
-                    Upload
-                    <input type="file" id="galleryInput" accept="image/*" multiple style="display:none;" onchange="handleImageFiles(this.files)">
+                    📷 Tambah Foto Properti
+                    <input type="file" id="fotoInput" accept="image/*" multiple style="display:none;" onchange="handleImageFiles(this.files)">
                 </label>
             </div>
-            <div class="hint-text">*minimal 1 foto</div>
+            <div class="hint-text">*minimal 1 foto (bisa ambil langsung atau pilih dari galeri)</div>
             <div class="preview-box" id="fotoPreview">Preview: <em>Belum ada foto dipilih.</em></div>
         </div>
     </div>
@@ -489,8 +485,8 @@
         <div class="card-box">
             <label>Pilih</label>
             <div class="btn-row">
-                <button type="button" class="action-btn" onclick="getGpsLocation()">Lokasi Saat ini</button>
-                <button type="button" class="action-btn" onclick="tandaiDiMaps()">Tandai di Maps</button>
+                <button type="button" class="action-btn" onclick="getGpsLocation()" style="width: 48%;">Lokasi Saat ini</button>
+                <button type="button" class="action-btn" onclick="tandaiDiMaps()" style="width: 48%;">Tandai di Maps</button>
             </div>
             
             <div class="location-info">
@@ -866,7 +862,7 @@
         }
     }
 
-    // --- LOGIKA PENANGANAN FOTO DENGAN TAG LABEL AMAN ---
+    // --- LOGIKA PENANGANAN FOTO, KOMPRESI OTOMATIS & THUMBNAIL BOX ---
     function handleImageFiles(files) {
         if (!files || files.length === 0) return;
 
@@ -879,11 +875,12 @@
                 img.onload = function() {
                     let width = img.width;
                     let height = img.height;
-                    const MAX_SIZE = 1280;
+                    const MAX_SIZE = 1280; // Batas maksimal resolusi
 
                     let canvas = document.createElement('canvas');
                     let ctx = canvas.getContext('2d');
 
+                    // Cek kondisi apakah ukuran melebihi batas 1280px
                     if (width > MAX_SIZE || height > MAX_SIZE) {
                         if (width > height) {
                             height = Math.round((height * MAX_SIZE) / width);
@@ -896,9 +893,11 @@
                         canvas.height = height;
                         ctx.drawImage(img, 0, 0, width, height);
 
+                        // Kompresi otomatis ke JPEG kualitas 0.8 (~200-400KB)
                         const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.8);
                         uploadedPhotos.push(compressedDataUrl);
                     } else {
+                        // Jika ukuran di bawah batas, lewati kompresi agar tidak pecah
                         uploadedPhotos.push(e.target.result);
                     }
 
@@ -909,9 +908,8 @@
             reader.readAsDataURL(file);
         });
 
-        // Reset input agar file yang sama bisa dipilih kembali
-        document.getElementById('cameraInput').value = '';
-        document.getElementById('galleryInput').value = '';
+        // Reset input file agar file yang sama bisa dipilih kembali jika diperlukan
+        document.getElementById('fotoInput').value = '';
     }
 
     function renderPhotoPreview() {
@@ -938,7 +936,7 @@
         uploadedPhotos.splice(index, 1);
         renderPhotoPreview();
     }
-    // ---------------------------------------------------
+    // -------------------------------------------------------------------
 
     function submitData() {
         if (uploadedPhotos.length === 0) {
@@ -971,7 +969,7 @@
             jumlah_foto: uploadedPhotos.length
         };
 
-        if (tg) {
+        if (tg && tg.sendData) {
             tg.sendData(JSON.stringify(payload));
         } else {
             alert("Data berhasil disiapkan untuk dikirim: " + JSON.stringify(payload));
