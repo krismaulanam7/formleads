@@ -908,8 +908,10 @@
             <button type="button" class="camera-dismiss-btn" onclick="closeCameraModal()">Selesai</button>
         </div>
         <div class="camera-fallback" id="cameraFallback" style="display:none;">
-            Kamera langsung tidak tersedia atau izinnya ditolak di tampilan Telegram ini. Kamu bisa mencoba pemilih kamera perangkat jika disediakan, atau menutup bagian ini lalu memakai tombol Upload.
+            Kamera langsung tidak merespons di tampilan ini. Ini bisa terjadi pada Telegram Android meskipun izin sudah disetujui.
             <button type="button" class="camera-fallback-btn" onclick="openDeviceCameraPicker()">Coba kamera perangkat</button>
+            <button type="button" class="camera-fallback-btn" style="background:#2563eb;" onclick="openPageInExternalBrowserForCameraTest()">Buka halaman di browser HP</button>
+            <p style="margin:7px 0 0;">Opsi browser luar hanya untuk menguji kamera. Pengiriman data kembali ke bot mungkin tidak tersedia saat halaman dibuka di luar Telegram.</p>
         </div>
         <p class="camera-modal-note">Foto yang diambil hanya menjadi preview sementara. Tutup kamera setelah selesai agar kamera perangkat tidak terus aktif.</p>
     </div>
@@ -1151,15 +1153,16 @@
             }
 
             stopCameraStream();
-            // Dipanggil setelah klik tombol Ambil Foto. Tidak meminta akses mikrofon.
-            const requestedStream = await navigator.mediaDevices.getUserMedia({
+            // Dipanggil setelah klik pengguna. Batasi waktu tunggu karena sejumlah versi
+            // Telegram Android dapat tidak menyelesaikan permintaan kamera setelah izin diberikan.
+            const requestedStream = await getUserMediaWithTimeout({
                 audio: false,
                 video: {
                     facingMode: { ideal: 'environment' },
                     width: { ideal: 1280 },
                     height: { ideal: 960 }
                 }
-            });
+            }, 10000);
             // Jika pengguna menutup modal selagi izin kamera diminta, jangan tinggalkan kamera aktif.
             if (requestId !== cameraRequestId || modal.style.display === 'none') {
                 requestedStream.getTracks().forEach(track => track.stop());
@@ -1188,12 +1191,54 @@
                 explanation = 'Izin kamera ditolak atau dibatasi oleh Telegram/browser.';
             } else if (errorName === 'NotFoundError' || errorName === 'DevicesNotFoundError') {
                 explanation = 'Kamera tidak ditemukan di perangkat ini.';
+            } else if (errorName === 'CameraRequestTimeout') {
+                explanation = 'Telegram/browser tidak memberi respons kamera setelah izin. Gunakan fallback di bawah untuk menguji kamera melalui browser HP.';
             } else if (error && error.message) {
                 explanation = error.message;
             }
             document.getElementById('cameraStatus').textContent = explanation;
         } finally {
             cameraIsStarting = false;
+        }
+    }
+
+    // Timeout yang aman: jika stream datang terlambat setelah timeout, langsung matikan
+    // track-nya agar kamera tidak tetap aktif di belakang layar.
+    function getUserMediaWithTimeout(constraints, timeoutMs = 10000) {
+        return new Promise((resolve, reject) => {
+            let settled = false;
+            const timer = setTimeout(() => {
+                if (settled) return;
+                settled = true;
+                const error = new Error('Kamera tidak merespons dalam 10 detik setelah izin. Kemungkinan akses kamera dibatasi oleh Telegram Android.');
+                error.name = 'CameraRequestTimeout';
+                reject(error);
+            }, timeoutMs);
+
+            navigator.mediaDevices.getUserMedia(constraints).then(stream => {
+                if (settled) {
+                    stream.getTracks().forEach(track => track.stop());
+                    return;
+                }
+                settled = true;
+                clearTimeout(timer);
+                resolve(stream);
+            }).catch(error => {
+                if (settled) return;
+                settled = true;
+                clearTimeout(timer);
+                reject(error);
+            });
+        });
+    }
+
+    function openPageInExternalBrowserForCameraTest() {
+        // Telegram.WebApp.openLink membuka URL di browser eksternal saat dipanggil dari klik.
+        // Fitur ini hanya jalur uji kamera; sendData tidak dijamin berjalan di luar Telegram.
+        if (tg && typeof tg.openLink === 'function') {
+            tg.openLink(window.location.href);
+        } else {
+            window.open(window.location.href, '_blank', 'noopener');
         }
     }
 
