@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Form Data Leads Properti</title>
+    <title>Form Data Leads Properti - Foto V4</title>
     <!-- Telegram Web App SDK -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
@@ -692,8 +692,13 @@
 
             <div class="hint-text">*minimal 1 foto</div>
             <div class="preview-box" id="fotoPreview" aria-live="polite">Preview: <em>Belum ada foto dipilih.</em></div>
-            <div class="photo-status" id="fotoStatus" role="status" aria-live="polite"></div>
+            <div class="photo-status" id="fotoStatus" role="status" aria-live="polite">Foto V4 siap. Foto hanya disimpan sementara di halaman.</div>
             <div class="photo-testing-note">Foto hanya ditampilkan sementara untuk pengujian UI/UX. Foto tidak diunggah atau disimpan ke database.</div>
+            <div id="telegramCameraHelp" style="display:none; margin-top:8px; padding:8px; border:1px solid #f3c969; border-radius:6px; background:#fffbeb; color:#78350f; font-size:11px; line-height:1.45;">
+                <strong>Kamera di Telegram Android</strong><br>
+                Telegram pada perangkat ini mengarahkan input foto ke galeri. Halaman HTML tidak bisa memaksa aplikasi Telegram membuka aplikasi kamera native. Untuk menguji kamera langsung, buka form ini di browser HP.
+                <button type="button" class="action-btn" style="display:block; width:100%; max-width:none; margin-top:7px;" onclick="openPageInExternalBrowserForCameraTest()">Buka form di browser HP</button>
+            </div>
         </div>
     </div>
 
@@ -1130,26 +1135,54 @@
         input.click();
     }
 
-    function openCamera() {
-        // Pada HP, utamakan pemilih kamera native melalui input file capture.
-        // Ini tidak memakai getUserMedia, sehingga Chrome tidak menahan kamera sebagai
-        // stream WebRTC di latar halaman. Input dipicu langsung dari klik pengguna.
-        const ua = navigator.userAgent || '';
-        const isMobileDevice = /Android|iPhone|iPad|iPod|Mobile/i.test(ua);
+    function isTelegramAndroidWebApp() {
+        const platform = String((tg && tg.platform) || '').toLowerCase();
+        return !!tg && (platform === 'android' || platform.startsWith('android_'));
+    }
 
-        if (isMobileDevice) {
-            const input = document.getElementById('cameraInput');
-            if (!input) {
-                setPhotoStatus('Input kamera tidak ditemukan pada halaman ini.', true);
-                return;
-            }
+    function shouldUseDeviceCameraPicker() {
+        const ua = navigator.userAgent || '';
+        const mobileUA = /Android|iPhone|iPad|iPod|Mobile/i.test(ua);
+        const telegramPlatform = String((tg && tg.platform) || '').toLowerCase();
+        const telegramMobile = /^(android|ios|iphone|ipad|ipod)(_|$)/.test(telegramPlatform);
+        let coarsePointer = false;
+        try {
+            coarsePointer = !!(window.matchMedia && window.matchMedia('(pointer: coarse)').matches);
+        } catch (_) {}
+        // Use both UA and primary input type. This avoids accidentally starting WebRTC
+        // camera capture on a touch-first phone whose UA is modified by an in-app browser.
+        return mobileUA || telegramMobile || coarsePointer;
+    }
+
+    function openCamera() {
+        const input = document.getElementById('cameraInput');
+        if (!input) {
+            setPhotoStatus('Input kamera tidak ditemukan pada halaman ini.', true);
+            return;
+        }
+
+        // Telegram Android WebView is known to route file inputs to the photo picker and
+        // can fail to render getUserMedia camera preview. Do not pretend this button can
+        // force a native camera there; explain the platform limitation and offer browser test.
+        if (isTelegramAndroidWebApp()) {
+            const help = document.getElementById('telegramCameraHelp');
+            if (help) help.style.display = 'block';
+            setPhotoStatus('Versi V4 aktif. Telegram Android tidak selalu meneruskan capture ke kamera native. Gunakan “Buka form di browser HP” untuk menguji kamera langsung; tombol Upload tetap untuk galeri.');
+            return;
+        }
+
+        if (shouldUseDeviceCameraPicker()) {
+            // Mobile browser: native file capture only. This branch must never call getUserMedia,
+            // so Chrome should not show the persistent “Accessing video input” WebRTC notice.
+            const help = document.getElementById('telegramCameraHelp');
+            if (help) help.style.display = 'none';
+            setPhotoStatus('Versi V4 aktif: membuka kamera perangkat melalui input capture (tanpa WebRTC).');
             input.value = '';
-            setPhotoStatus('Membuka kamera perangkat… Jika menu kamera tidak muncul, browser atau Telegram mungkin tidak mendukung pembukaan kamera melalui halaman ini.');
             input.click();
             return;
         }
 
-        // Di laptop/desktop, pertahankan kamera live di dalam halaman seperti versi sebelumnya.
+        // Laptop/desktop retains the existing in-page webcam experience.
         openInlineCamera();
     }
 
