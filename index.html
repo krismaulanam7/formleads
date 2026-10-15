@@ -692,7 +692,7 @@
 
             <div class="hint-text">*minimal 1 foto</div>
             <div class="preview-box" id="fotoPreview" aria-live="polite">Preview: <em>Belum ada foto dipilih.</em></div>
-            <div class="photo-status" id="fotoStatus" role="status" aria-live="polite">Foto V4 siap. Foto hanya disimpan sementara di halaman.</div>
+            <div class="photo-status" id="fotoStatus" role="status" aria-live="polite">Foto V5 siap. Foto hanya disimpan sementara di halaman.</div>
             <div class="photo-testing-note">Foto hanya ditampilkan sementara untuk pengujian UI/UX. Foto tidak diunggah atau disimpan ke database.</div>
             <div id="telegramCameraHelp" style="display:none; margin-top:8px; padding:8px; border:1px solid #f3c969; border-radius:6px; background:#fffbeb; color:#78350f; font-size:11px; line-height:1.45;">
                 <strong>Kamera di Telegram Android</strong><br>
@@ -914,9 +914,9 @@
             <button type="button" class="camera-dismiss-btn" onclick="closeCameraModal()">Selesai</button>
         </div>
         <div class="camera-fallback" id="cameraFallback" style="display:none;">
-            Kamera langsung tidak merespons di tampilan ini. Ini bisa terjadi pada Telegram Android meskipun izin sudah disetujui.
-            <button type="button" class="camera-fallback-btn" onclick="openDeviceCameraPicker()">Coba kamera perangkat</button>
-            <button type="button" class="camera-fallback-btn" style="background:#2563eb;" onclick="openPageInExternalBrowserForCameraTest()">Buka halaman di browser HP</button>
+            <span id="cameraFallbackText">Kamera langsung tidak merespons di tampilan ini.</span>
+            <button type="button" class="camera-fallback-btn" id="cameraPickerFallbackBtn" onclick="openDeviceCameraPicker()">Coba kamera perangkat</button>
+            <button type="button" class="camera-fallback-btn" id="cameraBrowserFallbackBtn" style="background:#2563eb;" onclick="openPageInExternalBrowserForCameraTest()">Buka halaman di browser HP</button>
             <p style="margin:7px 0 0;">Opsi browser luar hanya untuk menguji kamera. Pengiriman data kembali ke bot mungkin tidak tersedia saat halaman dibuka di luar Telegram.</p>
         </div>
         <p class="camera-modal-note">Foto yang diambil hanya menjadi preview sementara. Tutup kamera setelah selesai agar kamera perangkat tidak terus aktif.</p>
@@ -1161,28 +1161,28 @@
             return;
         }
 
-        // Telegram Android WebView is known to route file inputs to the photo picker and
-        // can fail to render getUserMedia camera preview. Do not pretend this button can
-        // force a native camera there; explain the platform limitation and offer browser test.
+        const help = document.getElementById('telegramCameraHelp');
+
+        // V5: di Telegram Android, coba kamera inline (getUserMedia) terlebih dahulu.
+        // V4 sengaja keluar lebih awal pada Telegram Android sehingga kamera sama sekali
+        // tidak dicoba. Input capture tetap disediakan sebagai fallback, namun di Telegram
+        // Android dapat diarahkan ke galeri oleh WebView.
         if (isTelegramAndroidWebApp()) {
-            const help = document.getElementById('telegramCameraHelp');
-            if (help) help.style.display = 'block';
-            setPhotoStatus('Versi V4 aktif. Telegram Android tidak selalu meneruskan capture ke kamera native. Gunakan “Buka form di browser HP” untuk menguji kamera langsung; tombol Upload tetap untuk galeri.');
+            if (help) help.style.display = 'none';
+            setPhotoStatus('V5: mencoba membuka kamera di dalam Telegram. Izinkan akses kamera bila diminta.');
+            openInlineCamera();
             return;
         }
 
         if (shouldUseDeviceCameraPicker()) {
-            // Mobile browser: native file capture only. This branch must never call getUserMedia,
-            // so Chrome should not show the persistent “Accessing video input” WebRTC notice.
-            const help = document.getElementById('telegramCameraHelp');
             if (help) help.style.display = 'none';
-            setPhotoStatus('Versi V4 aktif: membuka kamera perangkat melalui input capture (tanpa WebRTC).');
+            setPhotoStatus('V5: membuka kamera perangkat melalui input capture.');
             input.value = '';
             input.click();
             return;
         }
 
-        // Laptop/desktop retains the existing in-page webcam experience.
+        // Laptop/desktop mempertahankan pengalaman kamera langsung di dalam halaman.
         openInlineCamera();
     }
 
@@ -1242,6 +1242,21 @@
             emptyState.textContent = 'Kamera langsung tidak dapat diaktifkan di sesi ini.';
             captureBtn.disabled = true;
             fallback.style.display = 'block';
+            const telegramAndroid = isTelegramAndroidWebApp();
+            const fallbackText = document.getElementById('cameraFallbackText');
+            const pickerFallbackBtn = document.getElementById('cameraPickerFallbackBtn');
+            const browserFallbackBtn = document.getElementById('cameraBrowserFallbackBtn');
+            if (telegramAndroid) {
+                // Input kamera di Telegram Android sering diarahkan ke pemilih galeri,
+                // jadi jangan menyarankan tombol itu seolah-olah pasti membuka kamera.
+                if (fallbackText) fallbackText.textContent = 'Telegram Android belum berhasil menampilkan kamera di dalam Web App. Kamu bisa mencoba lagi atau membuka halaman di browser HP.';
+                if (pickerFallbackBtn) pickerFallbackBtn.style.display = 'none';
+                if (browserFallbackBtn) browserFallbackBtn.textContent = 'Buka di browser HP';
+            } else {
+                if (fallbackText) fallbackText.textContent = 'Kamera langsung tidak merespons. Kamu bisa mencoba kamera perangkat atau browser HP.';
+                if (pickerFallbackBtn) pickerFallbackBtn.style.display = 'block';
+                if (browserFallbackBtn) browserFallbackBtn.textContent = 'Buka halaman di browser HP';
+            }
             const errorName = error && error.name ? error.name : '';
             let explanation = 'Akses kamera gagal.';
             if (errorName === 'NotAllowedError' || errorName === 'SecurityError') {
