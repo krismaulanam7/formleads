@@ -467,8 +467,9 @@
                 <button type="button" class="action-btn" onclick="openCamera()">Ambil Foto</button>
                 <button type="button" class="action-btn" onclick="openGallery()">Upload</button>
             </div>
-            <!-- Input File Tersembunyi untuk Kamera & Galeri -->
+            <!-- Input Kamera khusus tangkapan tunggal via kamera HP -->
             <input type="file" id="cameraInput" accept="image/*" capture="environment" style="display:none;" onchange="handleImageFiles(this.files)">
+            <!-- Input Galeri mendukung pemilihan banyak foto sekaligus -->
             <input type="file" id="galleryInput" accept="image/*" multiple style="display:none;" onchange="handleImageFiles(this.files)">
 
             <div class="hint-text">*minimal 1 foto</div>
@@ -692,7 +693,7 @@
     let currentKota = "Serang";
     let currentKec = "Cipocok Jaya";
     let currentKel = "Banjaragung";
-    let uploadedPhotos = []; // Array untuk menampung data foto yang diunggah
+    let uploadedPhotos = [];
 
     function updateCodePrefix() {
         const sub = document.getElementById('subKategori').value;
@@ -859,7 +860,7 @@
         }
     }
 
-    // --- LOGIKA PENANGANAN FOTO & KOMPRESI OTOMATIS (FRONT-END) ---
+    // --- LOGIKA PENANGANAN FOTO (KAMERA & GALERI) ---
     function openCamera() {
         document.getElementById('cameraInput').click();
     }
@@ -880,12 +881,11 @@
                 img.onload = function() {
                     let width = img.width;
                     let height = img.height;
-                    const MAX_SIZE = 1280; // Batas maksimal resolusi
+                    const MAX_SIZE = 1280;
 
                     let canvas = document.createElement('canvas');
                     let ctx = canvas.getContext('2d');
 
-                    // Cek kondisi apakah ukuran melebihi batas 1280px
                     if (width > MAX_SIZE || height > MAX_SIZE) {
                         if (width > height) {
                             height = Math.round((height * MAX_SIZE) / width);
@@ -898,11 +898,9 @@
                         canvas.height = height;
                         ctx.drawImage(img, 0, 0, width, height);
 
-                        // Konversi & kompresi otomatis (kualitas 0.8)
                         const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.8);
                         uploadedPhotos.push(compressedDataUrl);
                     } else {
-                        // Jika ukuran di bawah batas, lewati kompresi (biar tidak pecah)
                         uploadedPhotos.push(e.target.result);
                     }
 
@@ -913,7 +911,6 @@
             reader.readAsDataURL(file);
         });
 
-        // Reset input agar bisa pilih file yang sama kembali jika diperlukan
         document.getElementById('cameraInput').value = '';
         document.getElementById('galleryInput').value = '';
     }
@@ -942,10 +939,9 @@
         uploadedPhotos.splice(index, 1);
         renderPhotoPreview();
     }
-    // -------------------------------------------------------------
+    // -----------------------------------------------
 
     function submitData() {
-        // Validasi minimal 1 foto
         if (uploadedPhotos.length === 0) {
             alert('Harap masukkan minimal 1 foto properti!');
             return;
