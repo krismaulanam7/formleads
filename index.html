@@ -675,7 +675,7 @@
         </div>
     </div>
 
-    <!-- 3. FOTO PROPERTI: hanya untuk preview/testing UI; tidak mengunggah foto ke database -->
+    <!-- 3. FOTO PROPERTI: HP memakai kamera native; laptop/desktop memakai kamera live; semua hanya preview/testing -->
     <div class="section" id="sectionFoto">
         <div class="section-title">🖼️ 3. FOTO PROPERTI</div>
         <div class="card-box">
@@ -686,6 +686,7 @@
             </div>
 
             <!-- Input tersembunyi secara visual; dibuka hanya melalui klik tombol pengguna -->
+            <!-- capture=environment memberi petunjuk agar browser HP membuka kamera belakang -->
             <input class="photo-file-input" type="file" id="cameraInput" accept="image/*" capture="environment" aria-label="Ambil foto dari kamera">
             <input class="photo-file-input" type="file" id="galleryInput" accept="image/*" multiple aria-label="Pilih foto dari galeri">
 
@@ -891,7 +892,7 @@
     </div>
 </div>
 
-<!-- Modal kamera langsung; tidak memerlukan upload/server -->
+<!-- Modal kamera live untuk laptop/desktop; di HP tombol menggunakan kamera native perangkat -->
 <div class="camera-overlay" id="cameraModal" aria-hidden="true">
     <div class="camera-dialog" role="dialog" aria-modal="true" aria-labelledby="cameraDialogTitle">
         <div class="camera-dialog-header">
@@ -1129,7 +1130,30 @@
         input.click();
     }
 
-    async function openCamera() {
+    function openCamera() {
+        // Pada HP, utamakan pemilih kamera native melalui input file capture.
+        // Ini tidak memakai getUserMedia, sehingga Chrome tidak menahan kamera sebagai
+        // stream WebRTC di latar halaman. Input dipicu langsung dari klik pengguna.
+        const ua = navigator.userAgent || '';
+        const isMobileDevice = /Android|iPhone|iPad|iPod|Mobile/i.test(ua);
+
+        if (isMobileDevice) {
+            const input = document.getElementById('cameraInput');
+            if (!input) {
+                setPhotoStatus('Input kamera tidak ditemukan pada halaman ini.', true);
+                return;
+            }
+            input.value = '';
+            setPhotoStatus('Membuka kamera perangkat… Jika menu kamera tidak muncul, browser atau Telegram mungkin tidak mendukung pembukaan kamera melalui halaman ini.');
+            input.click();
+            return;
+        }
+
+        // Di laptop/desktop, pertahankan kamera live di dalam halaman seperti versi sebelumnya.
+        openInlineCamera();
+    }
+
+    async function openInlineCamera() {
         if (cameraIsStarting) return;
         cameraIsStarting = true;
         const requestId = ++cameraRequestId;
